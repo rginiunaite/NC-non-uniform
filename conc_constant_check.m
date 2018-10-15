@@ -55,7 +55,7 @@ ylim([0 1.5])
 %yticklabels({'0.0', '0.2', '0.4', '0.6', '0.8', '1.0'})
 ylabel('Concentration  of chemoattractant, c')
 
-legend('1','2','3','4','5')
+legend('t = 0','t = 50','t = 100','t = 150','t = 200')
 
 xlabel('Distance from the neural tube, \mu m')
 
@@ -63,16 +63,30 @@ set(gca,'FontSize',36)
 ax = gca;
 
 % calculate area under the curve
-int1 = trapz(distance1, concentration1)
-int2 = trapz(distance2, concentration2)
-int3 = trapz(distance3, concentration3)
-int4 = trapz(distance4, concentration4)
-int5 = trapz(distance5, concentration5)
+int(1) = trapz(distance1, concentration1)
+int(2) = trapz(distance2, concentration2)
+int(3) = trapz(distance3, concentration3)
+int(4) = trapz(distance4, concentration4)
+int(5) = trapz(distance5, concentration5)
 
 
-figure
-plot(distance2,concentration2)
-figure
-plot(distance5,concentration5)
+% figure
+% plot(distance2,concentration2)
+% figure
+% plot(distance5,concentration5)
 
 sum1 = sum(concentration5 > 0.9999);
+
+
+timesteps = [0 50 100 150 199]
+figure
+plot (timesteps,int,'Linewidth',3)
+ylim([0,31])
+%xlim([0,200])
+ylabel('Total concentration  of chemoattractant, c')
+
+xlabel('Time, min')
+
+set(gca,'FontSize',36)
+ax = gca;
+

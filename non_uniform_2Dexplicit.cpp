@@ -75,7 +75,7 @@ int main() {
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient /// FOR NO DIFFUSION VIDEO I HAD 0.00001
+    double D = 1;//0.05; // to 10^5 \nu m^2/h diffusion coefficient /// FOR NO DIFFUSION VIDEO I HAD 0.00001
     double t = 0; // initialise time, redundant
     double dt = 0.5; // time step
     double dt_init = dt;
@@ -107,43 +107,36 @@ int main() {
 
     double domain_len_der = 0; // initialise derivative of the domain growth function
 
-    MatrixXf strain = MatrixXf::Zero(length_x, length_y);
+    VectorXf strain = VectorXf::Zero(length_x);
 
     // first part it is linear growth
     for (int i = 0; i < theta1; i++) {
-        for (int j = 0; j < length_y; j++) {
-            strain(i, j) = linear_par * (i + 1);
-        }
+        strain(i) = linear_par * (i);
+
     }
 
 
     // second part is constant
     for (int i = theta1; i < theta2; i++) {
-        for (int j = 0; j < length_y; j++) {
-            strain(i, j) = linear_par * theta1;// constant, continuous with the previous
-            //strain(i, j) = linear_par * theta1 / (theta1 - (theta2 - 1)) * (i - (theta2 - 1)); // linearly decreasing
-        }
+        strain(i) = linear_par*theta1; // constant to where it was
+        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
     }
 
     // third part no growth, constant
     for (int i = theta2; i < length_x; i++) {
-        for (int j = 0; j < length_y; j++) {
-            strain(i, j) = 0;
-        }
+        strain(i) = 0;
     }
 
     // growth function
 
     // I will mainly use its first derivative with respect to x
 
-    MatrixXf Gamma_x = MatrixXf::Zero(length_x, length_y);
+    VectorXf Gamma_x = VectorXf::Zero(length_x);
+    VectorXf Gamma = VectorXf::Zero(length_x);
 
     for (int i = 0; i < length_x; i++) {
-        for (int j = 0; j < length_y; j++) {
-            Gamma_x(i, j) = i * exp(0 * strain(i, j));
-        }
+        Gamma_x(i) =  exp(0 * strain(i));
     }
-
 
     /*
     * initialise a matrix that stores values of concentration of chemoattractant
@@ -220,31 +213,26 @@ int main() {
 
         t =t + dt;
 
+
         // update the strain rate
         for (int i = 0; i < length_x; i++) {
-            for (int j = 0; j < length_y; j++) {
-                cout << "strain " << strain(i, j) << endl;
-                Gamma_x(i, j) = exp(t * strain(i, j));
-                cout << "Gamma_x " << Gamma_x(i, j) << endl;
-            }
+            Gamma_x(i) = exp(t * strain(i));
         }
 
 
         // domain length
 
-        cout << "Gamma last" << Gamma_x(length_x - 1, 0) << endl;
 
         /*
          * this is important and it will change based on strain rates, now since there is linear growth in the first section,
          * the first factor appears due to integration
          *
          * */
-        if (t != 0) {
-            domain_length = 1.0 / (t * linear_par) * (Gamma_x(theta1 - 1, 0) - 1) +
-                            (theta2 - 1 - (theta1 - 1)) * Gamma_x(theta2 - 1, 0) + length_x - 1 - (theta2 - 1);
+        if (t != 0 ){
+            domain_length = 1.0/(t*linear_par)* (Gamma_x(theta1-1) - 1 ) + (theta2-1 - (theta1-1)) * Gamma_x(theta2-1) + length_x-1-(theta2-1);
         }
 
-        cout << "domain_length" << domain_length << endl;
+
 
 
         /*
@@ -255,18 +243,33 @@ int main() {
 
         // inner part, explicit method
 
-        for (int i = 1; i < length_x - 1; i++) {
-            for (int j = 0; j < length_y; j++) {
-                chemo_new(i, j) = dt * (D * 1.0 / Gamma_x(i, j) / (dx*2.0) *
-                                    (((1.0 / Gamma_x(i, j) + 1.0 / Gamma_x(i + 1, j))) *
-                                     (chemo(i + 1, j) - chemo(i, j)) / dx -
-                                     (1.0 / Gamma_x(i, j) + 1.0 / Gamma_x(i - 1, j)) *
-                                    (chemo(i, j) - chemo(i - 1, j)) / dx) - strain(i,j)*chemo(i,j))+ chemo(i,j);
-            }
 
+
+
+        if (length_y >1){
+            for (int i = 1; i < length_x - 1; i++) {
+                for (int j = 1; j < length_y-1; j++) {
+                    chemo_new(i, j) = dt * (D * 1.0 / (Gamma_x(i) *dx*2.0) *
+                                            (((1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1))) *
+                                             (chemo(i + 1, j) - chemo(i, j)) / dx -
+                                             (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1)) *
+                                             (chemo(i, j) - chemo(i - 1, j)) / dx) + D * (chemo(i,j+1) - 2 * chemo(i,j) + chemo(i,j-1))/dy*dy - strain(i)*chemo(i,j))+ chemo(i,j);
+                }
+
+            }
         }
 
-        //boundary, zero flux implicit method
+        if (length_y == 1){
+            for (int i = 1; i < length_x - 1; i++) {
+                    chemo_new(i, 0) = dt * (D * 1.0 / (Gamma_x(i) *dx*2.0) *
+                                            (((1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1))) *
+                                             (chemo(i + 1, 0) - chemo(i, 0)) / dx -
+                                             (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1)) *
+                                             (chemo(i, 0) - chemo(i - 1, 0)) / dx)- strain(i)*chemo(i,0))+ chemo(i,0);
+                }
+        }
+
+        //boundary, zero flux explicit method
 
         if (length_y>1) { //if more than 1D
             for (int i = 0; i < length_x; i++) {
@@ -292,9 +295,50 @@ int main() {
 
 
 
+
+        for (int i = 0; i < theta1; i++) {
+            for (int j = 0; j < length_y; j++) {
+                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(i) - 1);
+
+            }
+        }
+
+
+
+        // second part is constant
+        for (int i = theta1; i < theta2; i++) {
+            Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(theta1-1)-1) + (i - (theta1-1)) * Gamma_x(i); // constant to where it was
+            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
+
+
+        }
+
+        cout << " " << endl;
+
+        // third part no growth, constant
+        for (int i = theta2; i < length_x; i++) {
+            for (int j = 0; j < length_y; j++) {
+                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(theta1-1) - 1) + (theta2-1 - (theta1-1)) * Gamma_x(theta2 -1) + i - (theta2-1);
+            }
+        }
+
+
+
+
+
+
         // save the chemoattractant concentration with properly rescaled coordinates
-        for (int i = 0; i < length_x * length_y; i++) {
-            chemo_3col(i, 0) = chemo_3col_ind(i, 0) * (domain_length / length_x);
+
+        int counting_first = 0;
+        int counting_final = 0;
+
+        for (int a = 0; a < length_x; a++){
+            counting_first = length_y*a;
+            //cout << " Gamma a " << Gamma(a) << endl;
+            counting_final = counting_first + length_y;
+            for (int k = counting_first; k < counting_final;k++){
+                chemo_3col(k,0) = Gamma(a);
+            }
         }
 
 

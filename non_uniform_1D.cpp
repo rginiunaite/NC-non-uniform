@@ -37,9 +37,11 @@ int main(){
  */
 
 
-    int length_x = 30+1; // length in x direction of the chemoattractant matrix
+    int space_grid_controller = 1;
+
+    int length_x = (30+1)* space_grid_controller;; // length in x direction of the chemoattractant matrix
     double domain_length = 30+1; //this variable is for the actual domain length, since it will be increasing
-    double old_length = 30;// this is important for the update of the positions of cells
+    double initial_domain_length = domain_length;
     const int length_y = 1; // length in y direction of the chemoattractant matrix
     double cell_radius = 0.75;//0.5; // radius of a cell
     const double diameter =
@@ -75,12 +77,12 @@ int main(){
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 0.00001; // to 10^5 \nu m^2/h diffusion coefficient
+    double D = 1; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0; // initialise time
     double dt = 1; // time step
     double dt_init = dt;
     int number_time = int(1/dt_init); // how many timesteps in 1min, which is the actual simulation timestep
-    double dx = 1; // space step in x direction, double to be consistent with other types
+    double dx = space_grid_controller; // space step in x direction, double to be consistent with other types
     double dy = 1; // space step in y direction
     double kai = 0.00001;//0;//0.1 // to 1 /h production rate of chemoattractant
 
@@ -100,8 +102,14 @@ int main(){
     * */
 
     // regions where the domain growth rate is different
-    int theta1 = 10;
-    int theta2 = 20;
+
+    int theta1real = 10;
+    int theta2real = 20;
+    int theta1 = theta1real * space_grid_controller; // this is for numerical simulations
+    int theta2 = theta2real*space_grid_controller;
+
+
+
 
     double linear_par = 0.001;//05;
 
@@ -110,7 +118,7 @@ int main(){
     VectorXf strain = VectorXf::Zero(length_x);
 
     // first part it is linear growth
-    for (int i = 0; i < theta1+1; i++) {
+    for (int i = 0; i < theta1; i++) {
             strain(i) = linear_par * (i);
 
     }
@@ -230,7 +238,7 @@ int main(){
          *
          * */
         if (t != 0 ){
-            domain_length = 1.0/(t*linear_par)* (Gamma_x(theta1-1) - 1 ) + (theta2-1 - (theta1-1)) * Gamma_x(theta2-1) + length_x-1-(theta2-1);
+            domain_length = 1.0/(t*linear_par)* (Gamma_x(theta1real-1) - 1 ) + ((theta2real-1) - (theta1real-1)) * Gamma_x(theta2-1) + initial_domain_length-1-(theta2real-1);
         }
 
 
@@ -337,35 +345,27 @@ int main(){
         for (int i = 0; i < theta1; i++) {
             for (int j = 0; j < length_y; j++) {
                 Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(i) - 1);
-                cout << "Gamma_x " << Gamma_x(i) << endl;
-                cout << "ratio " <<  1.0/(t*linear_par) << endl;
-                cout << "Gamma1st "<< Gamma(i) << endl;
+
             }
         }
-
-        cout << " " << endl;
 
 
         // second part is constant
         for (int i = theta1; i < theta2; i++) {
-                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(theta1-1)-1) + (i - (theta1-1)) * Gamma_x(i); // constant to where it was
+                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(theta1-1)-1) + (i - (theta1real-1)) * Gamma_x(i); // constant to where it was
                 //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
 
-                cout << "Gamma2nd "<< Gamma(i) << endl;
 
         }
 
-        cout << " " << endl;
 
         // third part no growth, constant
         for (int i = theta2; i < length_x; i++) {
             for (int j = 0; j < length_y; j++) {
-                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(theta1-1) - 1) + (theta2-1 - (theta1-1)) * Gamma_x(theta2 -1) + i - (theta2-1);
-                cout << "Gamma3rd "<< Gamma(i) << endl;
+                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(theta1-1) - 1) + (theta2real-1 - (theta1real-1)) * Gamma_x(theta2 -1) + i - (theta2real-1);
             }
         }
 
-        cout << " " << endl;
 
 
 
@@ -423,11 +423,6 @@ int main(){
 
 
     }
-
-
-
-
-
 
 
 }
