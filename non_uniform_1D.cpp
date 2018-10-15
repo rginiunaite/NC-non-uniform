@@ -110,8 +110,8 @@ int main(){
     VectorXf strain = VectorXf::Zero(length_x);
 
     // first part it is linear growth
-    for (int i = 0; i < theta1; i++) {
-            strain(i) = linear_par * (i+1);
+    for (int i = 0; i < theta1+1; i++) {
+            strain(i) = linear_par * (i);
 
     }
 
@@ -330,14 +330,15 @@ int main(){
 
 
 
-
         chemo = chemo_new; // update chemo concentration
         //}
 
 
         for (int i = 0; i < theta1; i++) {
             for (int j = 0; j < length_y; j++) {
-                Gamma(i) = 1.0/(t*linear_par) * Gamma_x(i);
+                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(i) - 1);
+                cout << "Gamma_x " << Gamma_x(i) << endl;
+                cout << "ratio " <<  1.0/(t*linear_par) << endl;
                 cout << "Gamma1st "<< Gamma(i) << endl;
             }
         }
@@ -347,7 +348,7 @@ int main(){
 
         // second part is constant
         for (int i = theta1; i < theta2; i++) {
-                Gamma(i) = 1.0/(t*linear_par) * Gamma_x(theta1-1) + (i - (theta1-1)) * Gamma_x(i); // constant to where it was
+                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(theta1-1)-1) + (i - (theta1-1)) * Gamma_x(i); // constant to where it was
                 //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
 
                 cout << "Gamma2nd "<< Gamma(i) << endl;
@@ -359,10 +360,13 @@ int main(){
         // third part no growth, constant
         for (int i = theta2; i < length_x; i++) {
             for (int j = 0; j < length_y; j++) {
-                Gamma(i) = 1.0/(t*linear_par) * Gamma_x(theta1-1) + (theta2-1 - (theta1-1)) * Gamma_x(theta2 -1) + i - (theta2-1);
+                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(theta1-1) - 1) + (theta2-1 - (theta1-1)) * Gamma_x(theta2 -1) + i - (theta2-1);
                 cout << "Gamma3rd "<< Gamma(i) << endl;
             }
         }
+
+        cout << " " << endl;
+
 
 
 
