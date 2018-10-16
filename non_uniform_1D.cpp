@@ -23,7 +23,7 @@ using namespace Aboria;
 using namespace Eigen; // objects VectorXf, MatrixXf
 
 
-int main(){
+int main() {
 
 
 // parameters
@@ -37,10 +37,10 @@ int main(){
  */
 
 
-    int space_grid_controller = 1;
+    int space_grid_controller = 2;
 
-    int length_x = (30+1)* space_grid_controller;; // length in x direction of the chemoattractant matrix
-    double domain_length = 30+1; //this variable is for the actual domain length, since it will be increasing
+    int length_x = (30) * space_grid_controller + 1; // length in x direction of the chemoattractant matrix
+    double domain_length = 30 + 1; //this variable is for the actual domain length, since it will be increasing
     double initial_domain_length = domain_length;
     const int length_y = 1; // length in y direction of the chemoattractant matrix
     double cell_radius = 0.75;//0.5; // radius of a cell
@@ -77,12 +77,13 @@ int main(){
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 1; // to 10^5 \nu m^2/h diffusion coefficient
+    double D = 1;///double(space_grid_controller); // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0; // initialise time
     double dt = 1; // time step
     double dt_init = dt;
-    int number_time = int(1/dt_init); // how many timesteps in 1min, which is the actual simulation timestep
-    double dx = space_grid_controller; // space step in x direction, double to be consistent with other types
+    int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
+    double dx =
+            1.0 / double(space_grid_controller); // space step in x direction, double to be consistent with other types
     double dy = 1; // space step in y direction
     double kai = 0.00001;//0;//0.1 // to 1 /h production rate of chemoattractant
 
@@ -103,36 +104,33 @@ int main(){
 
     // regions where the domain growth rate is different
 
-    int theta1real = 10;
-    int theta2real = 20;
-    int theta1 = theta1real * space_grid_controller; // this is for numerical simulations
-    int theta2 = theta2real*space_grid_controller;
-
-
+    double theta1real = 10;
+    double theta2real = 20;
+    int theta1 = int(theta1real) * space_grid_controller; // this is for numerical simulations
+    int theta2 = int(theta2real) * space_grid_controller;
 
 
     double linear_par = 0.001;//05;
 
-    double domain_len_der = 0; // initialise derivative of the domain growth function
 
     VectorXf strain = VectorXf::Zero(length_x);
 
     // first part it is linear growth
     for (int i = 0; i < theta1; i++) {
-            strain(i) = linear_par * (i);
+        strain(i) = linear_par * (double(i) / double(space_grid_controller));
 
     }
 
 
     // second part is constant
     for (int i = theta1; i < theta2; i++) {
-            strain(i) = linear_par*theta1; // constant to where it was
-            //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
+        strain(i) = linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
+        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
     }
 
     // third part no growth, constant
     for (int i = theta2; i < length_x; i++) {
-            strain(i) = 0;
+        strain(i) = 0;
     }
 
     // growth function
@@ -143,7 +141,7 @@ int main(){
     VectorXf Gamma = VectorXf::Zero(length_x);
 
     for (int i = 0; i < length_x; i++) {
-            Gamma_x(i) =  exp(0 * strain(i));
+        Gamma_x(i) = exp(0 * strain(i));
     }
 
 
@@ -186,10 +184,11 @@ int main(){
         }
     }
 
-    // save the chemoattractant concentration, no scaling initially
+    // save the x coordinates, scaling only based on the grid
     for (int i = 0; i < length_x * length_y; i++) {
-        chemo_3col(i, 0) = chemo_3col_ind(i, 0);
+        chemo_3col(i, 0) = chemo_3col_ind(i, 0) / double(space_grid_controller);
     }
+
 
 
     // u column
@@ -198,10 +197,9 @@ int main(){
     }
 
 
-    // y and x (initially) column
+    // y coordinates, 1D so nothing changes
     for (int i = 0; i < length_x * length_y; i++) {
         chemo_3col(i, 1) = chemo_3col_ind(i, 1);
-        chemo_3col(i, 0) = chemo_3col_ind(i, 0);
     }
 
     // save data to plot chemoattractant concentration
@@ -214,18 +212,19 @@ int main(){
         for (int j = 0; j < 4; j++) {
             output << chemo_3col(i, j) << ", ";
         }
-        output << "\n" << endl; }
+        output << "\n" << endl;
+    }
 
 
     //for each timestep
-    while (t < final_time){
+    while (t < final_time) {
 
-        t=t + dt;
+        t = t + dt;
 
 
         // update the strain rate
         for (int i = 0; i < length_x; i++) {
-                Gamma_x(i) = exp(t * strain(i));
+            Gamma_x(i) = exp(t * strain(i));
         }
 
 
@@ -237,8 +236,10 @@ int main(){
          * the first factor appears due to integration
          *
          * */
-        if (t != 0 ){
-            domain_length = 1.0/(t*linear_par)* (Gamma_x(theta1real-1) - 1 ) + ((theta2real-1) - (theta1real-1)) * Gamma_x(theta2-1) + initial_domain_length-1-(theta2real-1);
+        if (t != 0) {
+            domain_length = 1.0 / (t * linear_par) * (Gamma_x(theta1 - 1) - 1) +
+                            ((theta2real - 1) - (theta1real - 1)) * Gamma_x(theta2 - 1) + initial_domain_length - 1 -
+                            (theta2real - 1);
         }
 
 
@@ -250,51 +251,53 @@ int main(){
         // coefficient of tridiagonal matrix which is contained in the linear system
 
         // only works if y = 1
-        MatrixXf ai = MatrixXf::Zero(length_x,length_y);
-        MatrixXf bi = MatrixXf::Zero(length_x,length_y);
-        MatrixXf gi = MatrixXf::Zero(length_x,length_y);
-        MatrixXf di = MatrixXf::Zero(length_x,length_y);
+        MatrixXf ai = MatrixXf::Zero(length_x, length_y);
+        MatrixXf bi = MatrixXf::Zero(length_x, length_y);
+        MatrixXf gi = MatrixXf::Zero(length_x, length_y);
+        MatrixXf di = MatrixXf::Zero(length_x, length_y);
 
 
         // inner coefficients
 
-        for (int i = 1; i < length_x-1; i++){
-            for (int j = 0; j< length_y; j++ ){
-                ai(i,j) = - D * dt/(2.0*Gamma_x(i)*dx*dx)* (1.0/Gamma_x(i) + 1.0/Gamma_x(i-1));
+        for (int i = 1; i < length_x - 1; i++) {
+            for (int j = 0; j < length_y; j++) {
+                ai(i, j) = -D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1));
 
             }
         }
 
 
-        for (int i = 1; i < length_x-1; i++){
-            for (int j = 0; j< length_y; j++ ){
-                bi(i,j) =( 1 + dt*strain(i) + D * dt/(2.0*Gamma_x(i)*dx*dx)*( 1.0/ Gamma_x(i) + 1.0/Gamma_x(i+1)) + D * dt/(2.0*Gamma_x(i)*dx*dx)*(1.0/Gamma_x(i) + 1.0/Gamma_x(i-1))) ;
+        for (int i = 1; i < length_x - 1; i++) {
+            for (int j = 0; j < length_y; j++) {
+                bi(i, j) = (1 + dt * strain(i) +
+                            D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1)) +
+                            D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1)));
             }
         }
 
 
-        for (int i = 1; i < length_x-1; i++){
-            for (int j = 0; j< length_y; j++ ){
-                gi(i,j) = - D * dt/(2.0*Gamma_x(i)*dx*dx)* (1.0/Gamma_x(i) + 1.0/Gamma_x(i+1));
+        for (int i = 1; i < length_x - 1; i++) {
+            for (int j = 0; j < length_y; j++) {
+                gi(i, j) = -D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1));
 
             }
         }
 
 
         // zero flux boundary
-        for (int j=0;j<length_y;j++){
-            bi(0,j) = 1;
-            gi(0,j) = -1;
-            ai(length_x-1,j) = -1;
-            bi(length_x-1, j) = 1;
+        for (int j = 0; j < length_y; j++) {
+            bi(0, j) = 1;
+            gi(0, j) = -1;
+            ai(length_x - 1, j) = -1;
+            bi(length_x - 1, j) = 1;
         }
 
         // RHS of linear system Ax = d
-        di(0,0) = 0;
+        di(0, 0) = 0;
         di(length_x - 1, 0) = 0;
 
-        for (int i=1;i<length_x-1;i++){
-            di(i,0) = chemo(i,0);
+        for (int i = 1; i < length_x - 1; i++) {
+            di(i, 0) = chemo(i, 0);
         }
 
 
@@ -302,24 +305,24 @@ int main(){
 
         // new matrix coefficients
 
-        MatrixXf cidash = MatrixXf::Zero(length_x,length_y);
-        MatrixXf didash = MatrixXf::Zero(length_x,length_y);
+        MatrixXf cidash = MatrixXf::Zero(length_x, length_y);
+        MatrixXf didash = MatrixXf::Zero(length_x, length_y);
 
         // first entry
-        cidash(0,0) = gi(0,0)/bi(0,0);
+        cidash(0, 0) = gi(0, 0) / bi(0, 0);
 
-        for (int i = 1; i < length_x-1; i++){
-            for (int j = 0; j< length_y; j++ ){
-                cidash(i,j) = gi(i,j)/(bi(i,j)-ai(i,j)*cidash(i-1,j));
+        for (int i = 1; i < length_x - 1; i++) {
+            for (int j = 0; j < length_y; j++) {
+                cidash(i, j) = gi(i, j) / (bi(i, j) - ai(i, j) * cidash(i - 1, j));
             }
         }
 
-        didash(0,0) = di(0,0)/bi(0,0);
+        didash(0, 0) = di(0, 0) / bi(0, 0);
 
-        for (int i = 1; i < length_x; i++){
-            for (int j = 0; j< length_y; j++ ){
+        for (int i = 1; i < length_x; i++) {
+            for (int j = 0; j < length_y; j++) {
 
-                didash(i,j) = (di(i,j) - ai(i,j)*didash(i-1,j))/(bi(i,j)-ai(i,j)*cidash(i-1,j));
+                didash(i, j) = (di(i, j) - ai(i, j) * didash(i - 1, j)) / (bi(i, j) - ai(i, j) * cidash(i - 1, j));
 
 
             }
@@ -328,14 +331,14 @@ int main(){
 
         // Using this decomposition we get that
 
-        chemo_new(length_x-1,0) = didash(length_x-1,0); // since only one entry in y, would need to change if I had two dimensions
+        chemo_new(length_x - 1, 0) = didash(length_x - 1,
+                                            0); // since only one entry in y, would need to change if I had two dimensions
 
-        for (int k = length_x - 2; k >= 0; k--){
-            for(int j=0; j< length_y; j++){
-                chemo_new(k,j) = didash(k,j) - cidash(k,j) * chemo_new (k+1,j);
+        for (int k = length_x - 2; k >= 0; k--) {
+            for (int j = 0; j < length_y; j++) {
+                chemo_new(k, j) = didash(k, j) - cidash(k, j) * chemo_new(k + 1, j);
             }
         }
-
 
 
         chemo = chemo_new; // update chemo concentration
@@ -344,7 +347,7 @@ int main(){
 
         for (int i = 0; i < theta1; i++) {
             for (int j = 0; j < length_y; j++) {
-                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(i) - 1);
+                Gamma(i) = 1.0 / (t * linear_par) * (Gamma_x(i) - 1);
 
             }
         }
@@ -352,9 +355,11 @@ int main(){
 
         // second part is constant
         for (int i = theta1; i < theta2; i++) {
-                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(theta1-1)-1) + (i - (theta1real-1)) * Gamma_x(i); // constant to where it was
-                //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
-
+            Gamma(i) = 1.0 / (t * linear_par) * (Gamma_x(theta1 - 1) - 1) + (double(i) / double(space_grid_controller) -
+                                                                             double(theta1 - 1) /
+                                                                             double(space_grid_controller)) *
+                                                                            Gamma_x(i); // constant to where it was
+            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
 
         }
 
@@ -362,7 +367,11 @@ int main(){
         // third part no growth, constant
         for (int i = theta2; i < length_x; i++) {
             for (int j = 0; j < length_y; j++) {
-                Gamma(i) = 1.0/(t*linear_par) * (Gamma_x(theta1-1) - 1) + (theta2real-1 - (theta1real-1)) * Gamma_x(theta2 -1) + i - (theta2real-1);
+                Gamma(i) = 1.0 / (t * linear_par) * (Gamma_x(theta1 - 1) - 1) +
+                           (double(theta2 - 1) / double(space_grid_controller) -
+                            double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta2 - 1) +
+                           double(i) / double(space_grid_controller) -
+                           (double(theta2 - 1) / double(space_grid_controller));
             }
         }
 
@@ -376,12 +385,12 @@ int main(){
         int counting_first = 0;
         int counting_final = 0;
 
-        for (int a = 0; a < length_x; a++){
-                counting_first = length_y*a;
+        for (int a = 0; a < length_x; a++) {
+            counting_first = length_y * a;
             //cout << " Gamma a " << Gamma(a) << endl;
-                counting_final = counting_first + length_y;
-            for (int k = counting_first; k < counting_final;k++){
-                chemo_3col(k,0) = Gamma(a);
+            counting_final = counting_first + length_y;
+            for (int k = counting_first; k < counting_final; k++) {
+                chemo_3col(k, 0) = Gamma(a);
             }
         }
 
@@ -404,21 +413,21 @@ int main(){
 
         // update chemoattractant profile after the domain grew
 
+        if (t == 50 || t == 100 || t == 150 || t == 199) {
+
+            // save data to plot chemoattractant concentration
+            ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
+
+            // output << "x, y, z, u" << "\n" << endl;
 
 
-        // save data to plot chemoattractant concentration
-        ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
-
-        // output << "x, y, z, u" << "\n" << endl;
-
-
-        for (int i = 0; i < length_x * length_y; i++) {
-            for (int j = 0; j < 4; j++) {
-                output << chemo_3col(i, j) << ", ";
+            for (int i = 0; i < length_x * length_y; i++) {
+                for (int j = 0; j < 4; j++) {
+                    output << chemo_3col(i, j) << ", ";
+                }
+                output << "\n" << endl;
             }
-            output << "\n" << endl; }
-
-
+        }
 
 
 

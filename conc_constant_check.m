@@ -7,7 +7,6 @@ distance1 = M1(:,1);
 concentration1 = M1(:,4);
 
 
-
 sim2 = 'matrix_non_uniform50.000000.csv';
 M2 = csvread(sim2);
 distance2 = M2(:,1);
