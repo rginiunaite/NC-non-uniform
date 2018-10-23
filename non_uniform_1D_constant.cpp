@@ -2,7 +2,7 @@
 // Created by Rasa on 18.10.8.
 //
 /*
- * Reaction-diffusion equation on a non-uniformly growing domain, 1D, implicit method
+ * Reaction-diffusion equation on a non-uniformly growing domain, 1D, implicit method, uniform growth
  * Initially there will be no cell dynamics
  * */
 
@@ -37,9 +37,9 @@ int main() {
  */
 
 
-    int space_grid_controller = 1;
+    double space_grid_controller = 0.5;
 
-    int length_x = (30) * space_grid_controller + 1; // length in x direction of the chemoattractant matrix
+    int length_x = (10) * int(space_grid_controller) + 1; // length in x direction of the chemoattractant matrix
     double domain_length = 30 + 1; //this variable is for the actual domain length, since it will be increasing
     double initial_domain_length = domain_length;
     const int length_y = 1; // length in y direction of the chemoattractant matrix
@@ -101,10 +101,6 @@ int main() {
 
     // regions where the domain growth rate is different
 
-    double theta1real = 10;
-    double theta2real = 20;
-    int theta1 = int(theta1real) * space_grid_controller; // this is for numerical simulations
-    int theta2 = int(theta2real) * space_grid_controller;
 
 
     double linear_par = 0.0001;//05;
@@ -112,21 +108,9 @@ int main() {
 
     VectorXf strain = VectorXf::Zero(length_x);
 
-    // first part it is linear growth
-    for (int i = 0; i < theta1; i++) {
-        strain(i) = 0.001;//linear_par * double(theta1) /
-                   // double(space_grid_controller);//linear_par * (double(i) / double(space_grid_controller));
-    }
-
-
-    // second part is constant
-    for (int i = theta1; i < theta2; i++) {
-        strain(i) = 0.001;// 0.002;//0.5 * linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
-        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
-    }
 
     // third part no growth, constant
-    for (int i = theta2; i < length_x; i++) {
+    for (int i = 0; i < length_x; i++) {
         strain(i) = 0.001;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
     }
 
@@ -152,7 +136,7 @@ int main() {
     for (int i = 0; i < length_x; i++) {
         for (int j = 0; j < length_y; j++) {
             chemo(i, j) = 1; // uniform concentration initially
-            chemo_new(i, j) = 1; // this is for later updates
+            chemo_new(i, j) = 0; // this is for later updates
         }
     }
 
