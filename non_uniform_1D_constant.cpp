@@ -20,7 +20,7 @@
 
 using namespace std;
 using namespace Aboria;
-using namespace Eigen; // objects VectorXf, MatrixXf
+using namespace Eigen; // objects VectorXd, MatrixXd
 
 
 int main() {
@@ -37,9 +37,9 @@ int main() {
  */
 
 
-    double space_grid_controller = 0.5;
+    double space_grid_controller = 1000;
 
-    int length_x = (10) * int(space_grid_controller) + 1; // length in x direction of the chemoattractant matrix
+    int length_x = (30) * int(space_grid_controller) + 1; // length in x direction of the chemoattractant matrix
     double domain_length = 30 + 1; //this variable is for the actual domain length, since it will be increasing
     double initial_domain_length = domain_length;
     const int length_y = 1; // length in y direction of the chemoattractant matrix
@@ -106,7 +106,7 @@ int main() {
     double linear_par = 0.0001;//05;
 
 
-    VectorXf strain = VectorXf::Zero(length_x);
+    VectorXd strain = VectorXd::Zero(length_x);
 
 
     // third part no growth, constant
@@ -118,8 +118,8 @@ int main() {
 
     // I will mainly use its first derivative with respect to x
 
-    VectorXf Gamma_x = VectorXf::Zero(length_x);
-    VectorXf Gamma = VectorXf::Zero(length_x);
+    VectorXd Gamma_x = VectorXd::Zero(length_x);
+    VectorXd Gamma = VectorXd::Zero(length_x);
 
     for (int i = 0; i < length_x; i++) {
         Gamma_x(i) = exp(0 * strain(i));
@@ -130,25 +130,25 @@ int main() {
     * initialise a matrix that stores values of concentration of chemoattractant
     */
 
-    MatrixXf chemo = MatrixXf::Zero(length_x, length_y);
-    MatrixXf chemo_new = MatrixXf::Zero(length_x, length_y);
+    MatrixXd chemo = MatrixXd::Zero(length_x, length_y);
+    MatrixXd chemo_new = MatrixXd::Zero(length_x, length_y);
 
     for (int i = 0; i < length_x; i++) {
         for (int j = 0; j < length_y; j++) {
             chemo(i, j) = 1; // uniform concentration initially
-            chemo_new(i, j) = 0; // this is for later updates
+            chemo_new(i, j) = 1; // this is for later updates
         }
     }
 
     // initialise internalisation matrix
-    MatrixXf intern = MatrixXf::Zero(length_x, length_y);
+    MatrixXd intern = MatrixXd::Zero(length_x, length_y);
 
 
     // four columns for x, y, z, u (z is necessary for paraview)
 
     // form a matrix which would store x,y,z,u
 
-    MatrixXf chemo_3col(length_x * length_y, 4), chemo_3col_ind(length_x * length_y,
+    MatrixXd chemo_3col(length_x * length_y, 4), chemo_3col_ind(length_x * length_y,
                                                                 2); // need for because that is how paraview accepts data, third dimension is just zeros
 
     // x, y coord, 1st and 2nd columns respectively
@@ -196,12 +196,15 @@ int main() {
         output << "\n" << endl;
     }
 
+
+    int counter = 0;
+
     //for each timestep
     while (t < final_time) {
 
         t = t + dt;
 
-
+        counter = counter +1;
 
         // update the strain rate
         for (int i = 0; i < length_x; i++) {
@@ -232,10 +235,10 @@ int main() {
         // coefficient of tridiagonal matrix which is contained in the linear system
 
         // only works if y = 1
-        MatrixXf ai = MatrixXf::Zero(length_x, length_y);
-        MatrixXf bi = MatrixXf::Zero(length_x, length_y);
-        MatrixXf gi = MatrixXf::Zero(length_x, length_y);
-        MatrixXf di = MatrixXf::Zero(length_x, length_y);
+        MatrixXd ai = MatrixXd::Zero(length_x, length_y);
+        MatrixXd bi = MatrixXd::Zero(length_x, length_y);
+        MatrixXd gi = MatrixXd::Zero(length_x, length_y);
+        MatrixXd di = MatrixXd::Zero(length_x, length_y);
 
 
         // inner coefficients
@@ -286,8 +289,8 @@ int main() {
 
         // new matrix coefficients
 
-        MatrixXf cidash = MatrixXf::Zero(length_x, length_y);
-        MatrixXf didash = MatrixXf::Zero(length_x, length_y);
+        MatrixXd cidash = MatrixXd::Zero(length_x, length_y);
+        MatrixXd didash = MatrixXd::Zero(length_x, length_y);
 
         // first entry
         cidash(0, 0) = gi(0, 0) / bi(0, 0);
@@ -455,8 +458,9 @@ int main() {
 //        }
 
 
+        //if (counter % 50 == 0) {
 
-        if (t == 400 || t == 800 || t == 1200 || t == 1600) {
+            if (t == 400 || t == 800 || t == 1200 || t == 1600) {
             //cout << "heeere " << endl;
             // save data to plot chemoattractant concentration
             ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
@@ -470,8 +474,8 @@ int main() {
                 }
                 output << "\n" << endl;
             }
-        }
-
+            }
+       // }
 
     }
 
