@@ -37,7 +37,7 @@ int main() {
  */
 
 
-    double space_grid_controller = 1;
+    double space_grid_controller = 200;
 
     int length_x = (30) * int(space_grid_controller) + 1; // length in x direction of the chemoattractant matrix
     double domain_length = 30 + 1; //this variable is for the actual domain length, since it will be increasing
@@ -77,7 +77,7 @@ int main() {
 
     double D = 1.0;///double(space_grid_controller); // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
-    double dt = 1; // time step
+    double dt = 1.0; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx = 1.0 / double(space_grid_controller); // space step in x direction, double to be consistent with other types
@@ -96,17 +96,6 @@ int main() {
 
 
     /*
-    * strain rate
-    * */
-
-    // regions where the domain growth rate is different
-
-
-
-    double linear_par = 0.0001;//05;
-
-
-/*
     * strain rate
     * */
 
@@ -357,90 +346,41 @@ int main() {
 
 
         /*
-         * three different regions
+         * Piecewise constant
          * */
 
 
-//        for (int i = 0; i < theta1; i++) {
-//            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = 1.0 / (t * linear_par) * (Gamma_x(i) - 1); // linearly increasing
-//
-//            }
-//        }
-//
-//
-//        // second part is constant
-//        for (int i = theta1; i < theta2; i++) {
-//            Gamma(i) = 1.0 / (t * linear_par) * (Gamma_x(theta1 - 1) - 1) + (double(i) / double(space_grid_controller) -
-//                                                                             double(theta1 - 1) /
-//                                                                             double(space_grid_controller)) *
-//                                                                            Gamma_x(i); // first was linear, this constant
-//            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
-//
-//        }
-//
-//
-//        // third part no growth, constant
-//        for (int i = theta2; i < length_x; i++) {
-//            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = 1.0 / (t * linear_par) * (Gamma_x(theta1 - 1) - 1) +
-//                           (double(theta2 - 1) / double(space_grid_controller) -
-//                            double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta2 - 1) +
-//                           double(i) / double(space_grid_controller) -
-//                           (double(theta2 - 1) / double(space_grid_controller)); // linear, constant, zero
-//            }
-//        }
-
-
-        /*
-         * Constant growth
-         *
-         * */
-
-
-        for (int i = 0; i < length_x; i++) {
+        for (int i = 0; i < theta1; i++) {
             for (int j = 0; j < length_y; j++) {
-                Gamma(i) = (double(i) / double(space_grid_controller)) * Gamma_x(i);
+                Gamma(i) = (double(i) / double(space_grid_controller)) * Gamma_x(i); // linearly increasing
+
             }
         }
 
 
-//        /*
-//         * Piecewise constant
-//         * */
-//
-//
-//        for (int i = 0; i < theta1; i++) {
-//            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = (double(i) / double(space_grid_controller)) * Gamma_x(i); // linearly increasing
-//
-//            }
-//        }
-//
-//
-//        // second part is constant
-//        for (int i = theta1; i < theta2; i++) {
-//
-//            Gamma(i) = (double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta1 - 1) +
-//                       (double(i) / double(space_grid_controller) - double(theta1 - 1) /
-//                                                                    double(space_grid_controller)) * Gamma_x(i);
-//
-//            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
-//
-//        }
-//
-//
-//        // third part no growth, constant
-//        for (int i = theta2; i < length_x; i++) {
-//            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = (double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta1 - 1) +
-//                           (double(theta2 - 1) / double(space_grid_controller) - double(theta1 - 1) /
-//                                                                                 double(space_grid_controller)) *
-//                           Gamma_x(theta2 - 1) + (double(i) / double(space_grid_controller) - double(theta2 - 1) /
-//                                                                                              double(space_grid_controller)) *
-//                                                 Gamma_x(i);
-//            }
-//        }
+        // second part is constant
+        for (int i = theta1; i < theta2; i++) {
+
+            Gamma(i) = (double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta1 - 1) +
+                       (double(i) / double(space_grid_controller) - double(theta1 - 1) /
+                                                                    double(space_grid_controller)) * Gamma_x(i);
+
+            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
+
+        }
+
+
+        // third part no growth, constant
+        for (int i = theta2; i < length_x; i++) {
+            for (int j = 0; j < length_y; j++) {
+                Gamma(i) = (double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta1 - 1) +
+                           (double(theta2 - 1) / double(space_grid_controller) - double(theta1 - 1) /
+                                                                                 double(space_grid_controller)) *
+                           Gamma_x(theta2 - 1) + (double(i) / double(space_grid_controller) - double(theta2 - 1) /
+                                                                                              double(space_grid_controller)) *
+                                                 Gamma_x(i);
+            }
+        }
 
 
 
@@ -501,8 +441,8 @@ int main() {
                 }
                 output << "\n" << endl;
             }
+        //}
         }
-        // }
 
     }
 

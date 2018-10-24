@@ -361,7 +361,6 @@ int main() {
 //                                                                             double(theta1 - 1) /
 //                                                                             double(space_grid_controller)) *
 //                                                                            Gamma_x(i); // first was linear, this constant
-//            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
 //
 //        }
 //
