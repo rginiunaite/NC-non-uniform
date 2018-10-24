@@ -7,25 +7,25 @@ distance1 = M1(:,1);
 concentration1 = M1(:,4);
 
 
-sim2 = 'matrix_non_uniform50.000000.csv';
+sim2 = 'matrix_non_uniform400.000000.csv';
 M2 = csvread(sim2);
 distance2 = M2(:,1);
 concentration2 = M2(:,4);
 
 
-sim3 = 'matrix_non_uniform100.000000.csv';
+sim3 = 'matrix_non_uniform800.000000.csv';
 M3 = csvread(sim3);
 distance3 = M3(:,1);
 concentration3 = M3(:,4);
 
 
-sim4 = 'matrix_non_uniform150.000000.csv';
+sim4 = 'matrix_non_uniform1200.000000.csv';
 M4 = csvread(sim4);
 distance4 = M4(:,1);
 concentration4 = M4(:,4);
 
 
-sim5 = 'matrix_non_uniform199.000000.csv';
+sim5 = 'matrix_non_uniform1600.000000.csv';
 M5 = csvread(sim5);
 distance5 = M5(:,1);
 concentration5 = M5(:,4);
@@ -62,11 +62,14 @@ set(gca,'FontSize',36)
 ax = gca;
 
 % calculate area under the curve
-int(1) = trapz(distance1, concentration1)
-int(2) = trapz(distance2, concentration2)
-int(3) = trapz(distance3, concentration3)
-int(4) = trapz(distance4, concentration4)
-int(5) = trapz(distance5, concentration5)
+int(1) = trapz(distance1, concentration1);
+int(2) = trapz(distance2, concentration2);
+int(3) = trapz(distance3, concentration3);
+int(4) = trapz(distance4, concentration4);
+int(5) = trapz(distance5, concentration5);
+
+
+error = abs( (int - 30)/30)*100;
 
 
 % figure
@@ -77,15 +80,20 @@ int(5) = trapz(distance5, concentration5)
 sum1 = sum(concentration5 > 0.9999);
 
 
-timesteps = [0 50 100 150 199]
+timesteps = [0 400 800 1200 1600]
 figure
-plot (timesteps,int,'Linewidth',3)
-ylim([0,31])
+plot (timesteps,error,'Linewidth',3)
+%ylim([0,1.5])
 %xlim([0,200])
-ylabel('Total concentration  of chemoattractant, c')
+ylabel('Relative percentage error, %')
 
 xlabel('Time, min')
 
 set(gca,'FontSize',36)
 ax = gca;
+
+box on
+
+
+dlmwrite('errordx0001.txt',error','delimiter',' ')
 

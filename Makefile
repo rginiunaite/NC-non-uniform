@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named non_uniform_1D
+# Target rules for targets named non_uniform_1D_constant
 
 # Build rule for target.
-non_uniform_1D: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 non_uniform_1D
-.PHONY : non_uniform_1D
+non_uniform_1D_constant: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 non_uniform_1D_constant
+.PHONY : non_uniform_1D_constant
 
 # fast build rule for target.
-non_uniform_1D/fast:
-	$(MAKE) -f CMakeFiles/non_uniform_1D.dir/build.make CMakeFiles/non_uniform_1D.dir/build
-.PHONY : non_uniform_1D/fast
+non_uniform_1D_constant/fast:
+	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/build
+.PHONY : non_uniform_1D_constant/fast
 
-non_uniform_1D.o: non_uniform_1D.cpp.o
+non_uniform_1D_constant.o: non_uniform_1D_constant.cpp.o
 
-.PHONY : non_uniform_1D.o
+.PHONY : non_uniform_1D_constant.o
 
 # target to build an object file
-non_uniform_1D.cpp.o:
-	$(MAKE) -f CMakeFiles/non_uniform_1D.dir/build.make CMakeFiles/non_uniform_1D.dir/non_uniform_1D.cpp.o
-.PHONY : non_uniform_1D.cpp.o
+non_uniform_1D_constant.cpp.o:
+	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/non_uniform_1D_constant.cpp.o
+.PHONY : non_uniform_1D_constant.cpp.o
 
-non_uniform_1D.i: non_uniform_1D.cpp.i
+non_uniform_1D_constant.i: non_uniform_1D_constant.cpp.i
 
-.PHONY : non_uniform_1D.i
+.PHONY : non_uniform_1D_constant.i
 
 # target to preprocess a source file
-non_uniform_1D.cpp.i:
-	$(MAKE) -f CMakeFiles/non_uniform_1D.dir/build.make CMakeFiles/non_uniform_1D.dir/non_uniform_1D.cpp.i
-.PHONY : non_uniform_1D.cpp.i
+non_uniform_1D_constant.cpp.i:
+	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/non_uniform_1D_constant.cpp.i
+.PHONY : non_uniform_1D_constant.cpp.i
 
-non_uniform_1D.s: non_uniform_1D.cpp.s
+non_uniform_1D_constant.s: non_uniform_1D_constant.cpp.s
 
-.PHONY : non_uniform_1D.s
+.PHONY : non_uniform_1D_constant.s
 
 # target to generate assembly for a file
-non_uniform_1D.cpp.s:
-	$(MAKE) -f CMakeFiles/non_uniform_1D.dir/build.make CMakeFiles/non_uniform_1D.dir/non_uniform_1D.cpp.s
-.PHONY : non_uniform_1D.cpp.s
+non_uniform_1D_constant.cpp.s:
+	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/non_uniform_1D_constant.cpp.s
+.PHONY : non_uniform_1D_constant.cpp.s
 
 # Help Target
 help:
@@ -158,10 +158,10 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... non_uniform_1D"
-	@echo "... non_uniform_1D.o"
-	@echo "... non_uniform_1D.i"
-	@echo "... non_uniform_1D.s"
+	@echo "... non_uniform_1D_constant"
+	@echo "... non_uniform_1D_constant.o"
+	@echo "... non_uniform_1D_constant.i"
+	@echo "... non_uniform_1D_constant.s"
 .PHONY : help
 
 

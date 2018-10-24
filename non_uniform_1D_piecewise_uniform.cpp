@@ -2,7 +2,7 @@
 // Created by Rasa on 18.10.8.
 //
 /*
- * Reaction-diffusion equation on a non-uniformly growing domain, 1D, implicit method, uniform growth
+ * Reaction-diffusion equation on a non-uniformly growing domain, 1D, implicit method, piecewise uniform growth
  * Initially there will be no cell dynamics
  * */
 
@@ -37,7 +37,7 @@ int main() {
  */
 
 
-    double space_grid_controller = 10;
+    double space_grid_controller = 1;
 
     int length_x = (30) * int(space_grid_controller) + 1; // length in x direction of the chemoattractant matrix
     double domain_length = 30 + 1; //this variable is for the actual domain length, since it will be increasing
@@ -106,12 +106,39 @@ int main() {
     double linear_par = 0.0001;//05;
 
 
-    VectorXd strain = VectorXd::Zero(length_x);
+/*
+    * strain rate
+    * */
 
+    // regions where the domain growth rate is different
+
+    double theta1real = 10;
+    double theta2real = 20;
+    int theta1 = int(theta1real) * space_grid_controller; // this is for numerical simulations
+    int theta2 = int(theta2real) * space_grid_controller;
+
+
+    double linear_par = 0.0001;//05;
+
+
+    VectorXf strain = VectorXf::Zero(length_x);
+
+    // first part it is linear growth
+    for (int i = 0; i < theta1; i++) {
+        strain(i) = 0.001;//linear_par * double(theta1) /
+        // double(space_grid_controller);//linear_par * (double(i) / double(space_grid_controller));
+    }
+
+
+    // second part is constant
+    for (int i = theta1; i < theta2; i++) {
+        strain(i) = 0.002;//0.5 * linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
+        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
+    }
 
     // third part no growth, constant
-    for (int i = 0; i < length_x; i++) {
-        strain(i) = 0.001;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
+    for (int i = theta2; i < length_x; i++) {
+        strain(i) = 0;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
     }
 
     // growth function
@@ -460,7 +487,7 @@ int main() {
 
         //if (counter % 50 == 0) {
 
-            if (t == 400 || t == 800 || t == 1200 || t == 1600) {
+        if (t == 400 || t == 800 || t == 1200 || t == 1600) {
             //cout << "heeere " << endl;
             // save data to plot chemoattractant concentration
             ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
@@ -474,8 +501,8 @@ int main() {
                 }
                 output << "\n" << endl;
             }
-            }
-       // }
+        }
+        // }
 
     }
 
