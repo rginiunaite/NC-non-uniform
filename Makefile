@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/rasa/NC-non-uniform
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/home/rasa/Documents/clion-2017.3.1/bin/cmake/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -77,6 +66,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/home/rasa/Documents/clion-2017.3.1/bin/cmake/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named non_uniform_1D_piecewise_uniform
+# Target rules for targets named non_uniform_explicit_piecewise
 
 # Build rule for target.
-non_uniform_1D_piecewise_uniform: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 non_uniform_1D_piecewise_uniform
-.PHONY : non_uniform_1D_piecewise_uniform
+non_uniform_explicit_piecewise: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 non_uniform_explicit_piecewise
+.PHONY : non_uniform_explicit_piecewise
 
 # fast build rule for target.
-non_uniform_1D_piecewise_uniform/fast:
-	$(MAKE) -f CMakeFiles/non_uniform_1D_piecewise_uniform.dir/build.make CMakeFiles/non_uniform_1D_piecewise_uniform.dir/build
-.PHONY : non_uniform_1D_piecewise_uniform/fast
+non_uniform_explicit_piecewise/fast:
+	$(MAKE) -f CMakeFiles/non_uniform_explicit_piecewise.dir/build.make CMakeFiles/non_uniform_explicit_piecewise.dir/build
+.PHONY : non_uniform_explicit_piecewise/fast
 
-non_uniform_1D_piecewise_uniform.o: non_uniform_1D_piecewise_uniform.cpp.o
+non_uniform_explicit_piecewise.o: non_uniform_explicit_piecewise.cpp.o
 
-.PHONY : non_uniform_1D_piecewise_uniform.o
+.PHONY : non_uniform_explicit_piecewise.o
 
 # target to build an object file
-non_uniform_1D_piecewise_uniform.cpp.o:
-	$(MAKE) -f CMakeFiles/non_uniform_1D_piecewise_uniform.dir/build.make CMakeFiles/non_uniform_1D_piecewise_uniform.dir/non_uniform_1D_piecewise_uniform.cpp.o
-.PHONY : non_uniform_1D_piecewise_uniform.cpp.o
+non_uniform_explicit_piecewise.cpp.o:
+	$(MAKE) -f CMakeFiles/non_uniform_explicit_piecewise.dir/build.make CMakeFiles/non_uniform_explicit_piecewise.dir/non_uniform_explicit_piecewise.cpp.o
+.PHONY : non_uniform_explicit_piecewise.cpp.o
 
-non_uniform_1D_piecewise_uniform.i: non_uniform_1D_piecewise_uniform.cpp.i
+non_uniform_explicit_piecewise.i: non_uniform_explicit_piecewise.cpp.i
 
-.PHONY : non_uniform_1D_piecewise_uniform.i
+.PHONY : non_uniform_explicit_piecewise.i
 
 # target to preprocess a source file
-non_uniform_1D_piecewise_uniform.cpp.i:
-	$(MAKE) -f CMakeFiles/non_uniform_1D_piecewise_uniform.dir/build.make CMakeFiles/non_uniform_1D_piecewise_uniform.dir/non_uniform_1D_piecewise_uniform.cpp.i
-.PHONY : non_uniform_1D_piecewise_uniform.cpp.i
+non_uniform_explicit_piecewise.cpp.i:
+	$(MAKE) -f CMakeFiles/non_uniform_explicit_piecewise.dir/build.make CMakeFiles/non_uniform_explicit_piecewise.dir/non_uniform_explicit_piecewise.cpp.i
+.PHONY : non_uniform_explicit_piecewise.cpp.i
 
-non_uniform_1D_piecewise_uniform.s: non_uniform_1D_piecewise_uniform.cpp.s
+non_uniform_explicit_piecewise.s: non_uniform_explicit_piecewise.cpp.s
 
-.PHONY : non_uniform_1D_piecewise_uniform.s
+.PHONY : non_uniform_explicit_piecewise.s
 
 # target to generate assembly for a file
-non_uniform_1D_piecewise_uniform.cpp.s:
-	$(MAKE) -f CMakeFiles/non_uniform_1D_piecewise_uniform.dir/build.make CMakeFiles/non_uniform_1D_piecewise_uniform.dir/non_uniform_1D_piecewise_uniform.cpp.s
-.PHONY : non_uniform_1D_piecewise_uniform.cpp.s
+non_uniform_explicit_piecewise.cpp.s:
+	$(MAKE) -f CMakeFiles/non_uniform_explicit_piecewise.dir/build.make CMakeFiles/non_uniform_explicit_piecewise.dir/non_uniform_explicit_piecewise.cpp.s
+.PHONY : non_uniform_explicit_piecewise.cpp.s
 
 # Help Target
 help:
@@ -156,12 +156,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... non_uniform_1D_piecewise_uniform"
-	@echo "... non_uniform_1D_piecewise_uniform.o"
-	@echo "... non_uniform_1D_piecewise_uniform.i"
-	@echo "... non_uniform_1D_piecewise_uniform.s"
+	@echo "... rebuild_cache"
+	@echo "... non_uniform_explicit_piecewise"
+	@echo "... non_uniform_explicit_piecewise.o"
+	@echo "... non_uniform_explicit_piecewise.i"
+	@echo "... non_uniform_explicit_piecewise.s"
 .PHONY : help
 
 

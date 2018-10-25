@@ -68,8 +68,9 @@ include_directories(src ${INCLUDES})
 #add_executable(non_uniform_1D non_uniform_1D.cpp)
 #add_executable(non_uniform_2Dexplicit non_uniform_2Dexplicit.cpp)
 #add_executable(non_uniform_1D_constant non_uniform_1D_constant.cpp)
-add_executable(non_uniform_1D_piecewise_uniform non_uniform_1D_piecewise_uniform.cpp)
-
+#add_executable(non_uniform_1D_piecewise_uniform non_uniform_1D_piecewise_uniform.cpp)
+#add_executable(non_uniform_explicit_constant non_uniform_explicit_constant.cpp)
+add_executable(non_uniform_explicit_piecewise non_uniform_explicit_piecewise.cpp)
 
 
 #target_link_libraries(NC-model ${LIBRARIES})
@@ -105,4 +106,6 @@ add_executable(non_uniform_1D_piecewise_uniform non_uniform_1D_piecewise_uniform
 #target_link_libraries(non_uniform_1D ${LIBRARIES})
 #target_link_libraries(non_uniform_2Dexplicit ${LIBRARIES})
 #target_link_libraries(non_uniform_1D_constant ${LIBRARIES})
-target_link_libraries(non_uniform_1D_piecewise_uniform ${LIBRARIES})
+#target_link_libraries(non_uniform_1D_piecewise_uniform ${LIBRARIES})
+#target_link_libraries(non_uniform_explicit_constant ${LIBRARIES})
+target_link_libraries(non_uniform_explicit_piecewise ${LIBRARIES})

@@ -95,5 +95,5 @@ ax = gca;
 box on
 
 
-dlmwrite('error_piece_dx002.txt',error','delimiter',' ')
+dlmwrite('error_piece_test.txt',error','delimiter',' ')
 

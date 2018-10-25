@@ -99,10 +99,6 @@ int main() {
     * strain rate
     * */
 
-    // regions where the domain growth rate is different
-
-
-
     double linear_par = 0.0001;//05;
 
 

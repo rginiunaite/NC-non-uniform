@@ -55,5 +55,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/non_uniform_1D_piecewise_uniform.dir/DependInfo.cmake"
+  "CMakeFiles/non_uniform_explicit_piecewise.dir/DependInfo.cmake"
   )

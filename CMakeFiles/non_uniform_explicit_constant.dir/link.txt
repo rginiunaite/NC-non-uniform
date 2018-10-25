@@ -1,0 +1,1 @@
+/usr/bin/c++   -fopenmp -std=c++14 -g    CMakeFiles/non_uniform_explicit_constant.dir/non_uniform_explicit_constant.cpp.o  -o non_uniform_explicit_constant 

@@ -3,22 +3,22 @@
 
 %%
 
-errordx1 = 'error_piece_dx1.txt';
+errordx1 = 'explicit_error_piece_dt05dx1.txt';
 dx1 = csvread(errordx1);
 
-errordx01 = 'error_piece_dx01.txt';
+errordx01 = 'explicit_error_piece_dt05dx01.txt';
 dx01 = csvread(errordx01);
 
-errordx001 = 'error_piece_dx001.txt';
+errordx001 = 'explicit_error_piece_dt05dx001.txt';
 dx001 = csvread(errordx001);
 
-errordx002 = 'error_piece_dx002.txt';
-dx002 = csvread(errordx002);
+ errordx002 = 'explicit_error_piece_dt05dx002.txt';
+ dx002 = csvread(errordx002);
 
-errordx0001 = 'error_piece_dx0001.txt';
+errordx0001 = 'explicit_error_piece_dt05dx0001.txt';
 dx0001 = csvread(errordx0001);
 
-errordx05 = 'error_piece_dx05.txt';
+errordx05 = 'explicit_error_piece_dt05dx05.txt';
 dx05 = csvread(errordx05);
 
 %% plot relative percentange error versus time for different time steps
