@@ -60,39 +60,39 @@ CMAKE_SOURCE_DIR = /home/rasa/NC-non-uniform
 CMAKE_BINARY_DIR = /home/rasa/NC-non-uniform
 
 #=============================================================================
-# Target rules for target CMakeFiles/non_uniform_explicit_piecewise.dir
+# Target rules for target CMakeFiles/analytical_vs_numerical.dir
 
 # All Build rule for target.
-CMakeFiles/non_uniform_explicit_piecewise.dir/all:
-	$(MAKE) -f CMakeFiles/non_uniform_explicit_piecewise.dir/build.make CMakeFiles/non_uniform_explicit_piecewise.dir/depend
-	$(MAKE) -f CMakeFiles/non_uniform_explicit_piecewise.dir/build.make CMakeFiles/non_uniform_explicit_piecewise.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rasa/NC-non-uniform/CMakeFiles --progress-num=1,2 "Built target non_uniform_explicit_piecewise"
-.PHONY : CMakeFiles/non_uniform_explicit_piecewise.dir/all
+CMakeFiles/analytical_vs_numerical.dir/all:
+	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/depend
+	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rasa/NC-non-uniform/CMakeFiles --progress-num=1,2 "Built target analytical_vs_numerical"
+.PHONY : CMakeFiles/analytical_vs_numerical.dir/all
 
 # Include target in all.
-all: CMakeFiles/non_uniform_explicit_piecewise.dir/all
+all: CMakeFiles/analytical_vs_numerical.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/non_uniform_explicit_piecewise.dir/rule: cmake_check_build_system
+CMakeFiles/analytical_vs_numerical.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/rasa/NC-non-uniform/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/non_uniform_explicit_piecewise.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/analytical_vs_numerical.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/rasa/NC-non-uniform/CMakeFiles 0
-.PHONY : CMakeFiles/non_uniform_explicit_piecewise.dir/rule
+.PHONY : CMakeFiles/analytical_vs_numerical.dir/rule
 
 # Convenience name for target.
-non_uniform_explicit_piecewise: CMakeFiles/non_uniform_explicit_piecewise.dir/rule
+analytical_vs_numerical: CMakeFiles/analytical_vs_numerical.dir/rule
 
-.PHONY : non_uniform_explicit_piecewise
-
-# clean rule for target.
-CMakeFiles/non_uniform_explicit_piecewise.dir/clean:
-	$(MAKE) -f CMakeFiles/non_uniform_explicit_piecewise.dir/build.make CMakeFiles/non_uniform_explicit_piecewise.dir/clean
-.PHONY : CMakeFiles/non_uniform_explicit_piecewise.dir/clean
+.PHONY : analytical_vs_numerical
 
 # clean rule for target.
-clean: CMakeFiles/non_uniform_explicit_piecewise.dir/clean
+CMakeFiles/analytical_vs_numerical.dir/clean:
+	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/clean
+.PHONY : CMakeFiles/analytical_vs_numerical.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/analytical_vs_numerical.dir/clean
 
 .PHONY : clean
 

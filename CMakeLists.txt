@@ -70,8 +70,8 @@ include_directories(src ${INCLUDES})
 #add_executable(non_uniform_1D_constant non_uniform_1D_constant.cpp)
 #add_executable(non_uniform_1D_piecewise_uniform non_uniform_1D_piecewise_uniform.cpp)
 #add_executable(non_uniform_explicit_constant non_uniform_explicit_constant.cpp)
-add_executable(non_uniform_explicit_piecewise non_uniform_explicit_piecewise.cpp)
-
+#add_executable(non_uniform_explicit_piecewise non_uniform_explicit_piecewise.cpp)
+add_executable(analytical_vs_numerical analytical_vs_numerical.cpp)
 
 #target_link_libraries(NC-model ${LIBRARIES})
 #target_link_libraries(NC-model-tunneling ${LIBRARIES})
@@ -108,4 +108,5 @@ add_executable(non_uniform_explicit_piecewise non_uniform_explicit_piecewise.cpp
 #target_link_libraries(non_uniform_1D_constant ${LIBRARIES})
 #target_link_libraries(non_uniform_1D_piecewise_uniform ${LIBRARIES})
 #target_link_libraries(non_uniform_explicit_constant ${LIBRARIES})
-target_link_libraries(non_uniform_explicit_piecewise ${LIBRARIES})
+#target_link_libraries(non_uniform_explicit_piecewise ${LIBRARIES})
+target_link_libraries(analytical_vs_numerical ${LIBRARIES})

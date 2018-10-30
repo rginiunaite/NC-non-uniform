@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/rasa/NC-non-uniform
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/home/rasa/Documents/clion-2017.3.1/bin/cmake/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/home/rasa/Documents/clion-2017.3.1/bin/cmake/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named non_uniform_explicit_piecewise
+# Target rules for targets named analytical_vs_numerical
 
 # Build rule for target.
-non_uniform_explicit_piecewise: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 non_uniform_explicit_piecewise
-.PHONY : non_uniform_explicit_piecewise
+analytical_vs_numerical: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 analytical_vs_numerical
+.PHONY : analytical_vs_numerical
 
 # fast build rule for target.
-non_uniform_explicit_piecewise/fast:
-	$(MAKE) -f CMakeFiles/non_uniform_explicit_piecewise.dir/build.make CMakeFiles/non_uniform_explicit_piecewise.dir/build
-.PHONY : non_uniform_explicit_piecewise/fast
+analytical_vs_numerical/fast:
+	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/build
+.PHONY : analytical_vs_numerical/fast
 
-non_uniform_explicit_piecewise.o: non_uniform_explicit_piecewise.cpp.o
+analytical_vs_numerical.o: analytical_vs_numerical.cpp.o
 
-.PHONY : non_uniform_explicit_piecewise.o
+.PHONY : analytical_vs_numerical.o
 
 # target to build an object file
-non_uniform_explicit_piecewise.cpp.o:
-	$(MAKE) -f CMakeFiles/non_uniform_explicit_piecewise.dir/build.make CMakeFiles/non_uniform_explicit_piecewise.dir/non_uniform_explicit_piecewise.cpp.o
-.PHONY : non_uniform_explicit_piecewise.cpp.o
+analytical_vs_numerical.cpp.o:
+	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/analytical_vs_numerical.cpp.o
+.PHONY : analytical_vs_numerical.cpp.o
 
-non_uniform_explicit_piecewise.i: non_uniform_explicit_piecewise.cpp.i
+analytical_vs_numerical.i: analytical_vs_numerical.cpp.i
 
-.PHONY : non_uniform_explicit_piecewise.i
+.PHONY : analytical_vs_numerical.i
 
 # target to preprocess a source file
-non_uniform_explicit_piecewise.cpp.i:
-	$(MAKE) -f CMakeFiles/non_uniform_explicit_piecewise.dir/build.make CMakeFiles/non_uniform_explicit_piecewise.dir/non_uniform_explicit_piecewise.cpp.i
-.PHONY : non_uniform_explicit_piecewise.cpp.i
+analytical_vs_numerical.cpp.i:
+	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/analytical_vs_numerical.cpp.i
+.PHONY : analytical_vs_numerical.cpp.i
 
-non_uniform_explicit_piecewise.s: non_uniform_explicit_piecewise.cpp.s
+analytical_vs_numerical.s: analytical_vs_numerical.cpp.s
 
-.PHONY : non_uniform_explicit_piecewise.s
+.PHONY : analytical_vs_numerical.s
 
 # target to generate assembly for a file
-non_uniform_explicit_piecewise.cpp.s:
-	$(MAKE) -f CMakeFiles/non_uniform_explicit_piecewise.dir/build.make CMakeFiles/non_uniform_explicit_piecewise.dir/non_uniform_explicit_piecewise.cpp.s
-.PHONY : non_uniform_explicit_piecewise.cpp.s
+analytical_vs_numerical.cpp.s:
+	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/analytical_vs_numerical.cpp.s
+.PHONY : analytical_vs_numerical.cpp.s
 
 # Help Target
 help:
@@ -156,12 +156,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... non_uniform_explicit_piecewise"
-	@echo "... non_uniform_explicit_piecewise.o"
-	@echo "... non_uniform_explicit_piecewise.i"
-	@echo "... non_uniform_explicit_piecewise.s"
+	@echo "... edit_cache"
+	@echo "... analytical_vs_numerical"
+	@echo "... analytical_vs_numerical.o"
+	@echo "... analytical_vs_numerical.i"
+	@echo "... analytical_vs_numerical.s"
 .PHONY : help
 
 
