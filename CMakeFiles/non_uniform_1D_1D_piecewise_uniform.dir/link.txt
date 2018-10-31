@@ -1,1 +1,0 @@
-/usr/bin/c++   -fopenmp -std=c++14 -g    CMakeFiles/non_uniform_1D_1D_piecewise_uniform.dir/non_uniform_1D_constant.cpp.o  -o non_uniform_1D_1D_piecewise_uniform 

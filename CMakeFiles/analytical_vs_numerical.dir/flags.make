@@ -6,5 +6,5 @@ CXX_FLAGS =  -fopenmp -std=c++14 -g
 
 CXX_DEFINES = -DABORIA_LOG_LEVEL=1 -DHAVE_VTK
 
-CXX_INCLUDES = -I/home/rasa/NC-non-uniform/src -I/usr/include/vtk-5.10 -I/usr/include/eigen3 -I/home/rasa/NC-non-uniform/Aboria/src -I/home/rasa/NC-non-uniform/Aboria/third-party 
+CXX_INCLUDES = -I/home/giniunaite/NC-non-uniform/src -I/usr/include/vtk-7.1 -I/usr/include/freetype2 -I/usr/include/x86_64-linux-gnu -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include -I/usr/lib/x86_64-linux-gnu/openmpi/include -I/usr/include/python3.6m -I/usr/include/hdf5/openmpi -I/usr/include/jsoncpp -I/usr/include/libxml2 -I/usr/include/tcl -I/usr/include/eigen3 -I/home/giniunaite/NC-non-uniform/Aboria/src -I/home/giniunaite/NC-non-uniform/Aboria/third-party 
 

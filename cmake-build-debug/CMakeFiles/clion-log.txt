@@ -1,4 +1,4 @@
-/snap/clion/44/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/rasa/NC-non-uniform
+/home/giniunaite/clion-2017.3.3/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/giniunaite/NC-non-uniform
 -- The C compiler identification is GNU 7.3.0
 -- The CXX compiler identification is GNU 7.3.0
 -- Check for working C compiler: /usr/bin/cc
@@ -16,21 +16,27 @@
 -- Boost version: 1.65.1
 -- Found the following Boost libraries:
 --   python
-CMake Error at CMakeLists.txt:12 (find_package):
-  By not providing "FindVTK.cmake" in CMAKE_MODULE_PATH this project has
-  asked CMake to find a package configuration file provided by "VTK", but
-  CMake did not find one.
+-- The imported target "vtkRenderingPythonTkWidgets" references the file
+   "/usr/lib/x86_64-linux-gnu/libvtkRenderingPythonTkWidgets.so"
+but this file does not exist.  Possible reasons include:
+* The file was deleted, renamed, or moved to another location.
+* An install or uninstall procedure did not complete successfully.
+* The installation package was faulty and contained
+   "/usr/lib/cmake/vtk-7.1/VTKTargets.cmake"
+but not all the files it references.
 
-  Could not find a package configuration file provided by "VTK" with any of
-  the following names:
+-- The imported target "vtk" references the file
+   "/usr/bin/vtk"
+but this file does not exist.  Possible reasons include:
+* The file was deleted, renamed, or moved to another location.
+* An install or uninstall procedure did not complete successfully.
+* The installation package was faulty and contained
+   "/usr/lib/cmake/vtk-7.1/VTKTargets.cmake"
+but not all the files it references.
 
-    VTKConfig.cmake
-    vtk-config.cmake
-
-  Add the installation prefix of "VTK" to CMAKE_PREFIX_PATH or set "VTK_DIR"
-  to a directory containing one of the above files.  If "VTK" provides a
-  separate development package or SDK, be sure it has been installed.
-
-
--- Configuring incomplete, errors occurred!
-See also "/home/rasa/NC-non-uniform/CMakeFiles/CMakeOutput.log".
+-- Found Eigen3: /usr/include/eigen3 (Required is at least version "2.91.0") 
+-- Found OpenMP_C: -fopenmp (found version "4.5") 
+-- Found OpenMP_CXX: -fopenmp (found version "4.5") 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/giniunaite/NC-non-uniform

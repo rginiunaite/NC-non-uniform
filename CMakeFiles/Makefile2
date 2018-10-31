@@ -45,19 +45,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/rasa/Documents/clion-2017.3.1/bin/cmake/bin/cmake
+CMAKE_COMMAND = /home/giniunaite/clion-2017.3.3/bin/cmake/bin/cmake
 
 # The command to remove a file.
-RM = /home/rasa/Documents/clion-2017.3.1/bin/cmake/bin/cmake -E remove -f
+RM = /home/giniunaite/clion-2017.3.3/bin/cmake/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/rasa/NC-non-uniform
+CMAKE_SOURCE_DIR = /home/giniunaite/NC-non-uniform
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/rasa/NC-non-uniform
+CMAKE_BINARY_DIR = /home/giniunaite/NC-non-uniform
 
 #=============================================================================
 # Target rules for target CMakeFiles/analytical_vs_numerical.dir
@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /home/rasa/NC-non-uniform
 CMakeFiles/analytical_vs_numerical.dir/all:
 	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/depend
 	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rasa/NC-non-uniform/CMakeFiles --progress-num=1,2 "Built target analytical_vs_numerical"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=1,2 "Built target analytical_vs_numerical"
 .PHONY : CMakeFiles/analytical_vs_numerical.dir/all
 
 # Include target in all.
@@ -76,9 +76,9 @@ all: CMakeFiles/analytical_vs_numerical.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/analytical_vs_numerical.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/rasa/NC-non-uniform/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/giniunaite/NC-non-uniform/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/analytical_vs_numerical.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/rasa/NC-non-uniform/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/giniunaite/NC-non-uniform/CMakeFiles 0
 .PHONY : CMakeFiles/analytical_vs_numerical.dir/rule
 
 # Convenience name for target.
