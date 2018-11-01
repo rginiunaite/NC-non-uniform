@@ -20,7 +20,7 @@ int main() {
     // model parameters
 
     double D = 0.01;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
-    double k = 0.105; // reacition term
+    double k_reac = 0.105; // reaction term
     double C0 = 1.0; // initial chemo concentration in the first part
     double length_x_initial = 1.0; // initial length of the domain
     int solution_grid = 100; // solution grid
@@ -38,8 +38,8 @@ int main() {
     VectorXd dn = VectorXd::Zero(n);  // all terms multiplied
 
 
-    MatrixXd chemo = MatrixXd::Zero(solution_grid,t_final); // exponential terms
-    MatrixXi grid_changes = MatrixXi::Zero(solution_grid,t_final); // this will keep track of changing coordinates
+    MatrixXd chemo = MatrixXd::Zero(solution_grid,t_final+1); // exponential terms
+    MatrixXi grid_changes = MatrixXi::Zero(solution_grid,t_final+1); // this will keep track of changing coordinates
 
     double x;
 
@@ -52,14 +52,15 @@ int main() {
     }
 
 
-    for (int t = 0; t <t_final;t++){
+    for (int t = 0; t <t_final+1;t++){
 
         length_x = length_x_initial * exp(alpha*t);
+
         //cout << "length " << length_x << endl;
 
         for (int i = 0; i< n;i++){
 
-            cn(i) = exp(- (D*i*i*M_PI*M_PI*(1.0- exp(-2.0*alpha*t)))/(2.0*alpha*length_x_initial*length_x_initial) +t*(k-alpha) );
+            cn(i) = exp(- (D*i*i*M_PI*M_PI*(1.0- exp(-2.0*alpha*t)))/(2.0*alpha*length_x_initial*length_x_initial) +t*(k_reac-alpha) );
             for (int xL= 0;xL< solution_grid;xL++){
 
                 x = length_x*double(xL)/solution_grid;
@@ -99,7 +100,8 @@ int main() {
         for (int i = 0;i < solution_grid;i++){
             grid_changes(i,t) = i * length_x/length_x_initial;
         }
-
+//        cout << "t " << t << endl;
+//        cout << "length_x " << length_x << endl;
     }
 
     ofstream output("analytical_solution.csv");
@@ -108,7 +110,7 @@ int main() {
 
 
     for (int i = 0; i < solution_grid; i++) {
-        for (int j = 0; j < t_final; j++) {
+        for (int j = 0; j < t_final+1; j++) {
             output << chemo(i, j) << ", ";
         }
         output << "\n" << endl;
@@ -117,7 +119,7 @@ int main() {
     ofstream output2("grid_changes.csv");
 
     for (int i = 0; i < solution_grid; i++) {
-        for (int j = 0; j < t_final; j++) {
+        for (int j = 0; j < t_final+1; j++) {
             output2 << grid_changes(i, j) << ", ";
         }
         output2 << "\n" << endl;

@@ -7,13 +7,13 @@ distance1 = M1(:,1);
 concentration1 = M1(:,4);
 
 
-sim2 = 'matrix_non_uniform400.000000.csv';
+sim2 = 'matrix_non_uniform400.000000.csv'; 
 M2 = csvread(sim2);
 distance2 = M2(:,1);
 concentration2 = M2(:,4);
 
 
-sim3 = 'matrix_non_uniform800.000000.csv';
+sim3 = 'matrix_non_uniform800.000000.csv'; 
 M3 = csvread(sim3);
 distance3 = M3(:,1);
 concentration3 = M3(:,4);

@@ -35,70 +35,40 @@ int main() {
  * All the length parameters will be scaled consistently, i.e. /10.
  *
  */
-    int space_grid_controller = 1;
+    double space_grid_controller = 100;
 
-    int length_x = (30) * double(space_grid_controller) + 1; // length in x direction of the chemoattractant matrix
-    double domain_length = 30; //this variable is for the actual domain length, since it will be increasing
-    double old_length = 30;// this is important for the update of the positions of cells
+    double domain_length = 1.0; //this variable is for the actual domain length, since it will be increasing
+    int length_x = int(domain_length) * int(space_grid_controller); // length in x direction of the chemoattractant matrix
+    double initial_domain_length = domain_length;
     const int length_y = 1; // length in y direction of the chemoattractant matrix
-    double cell_radius = 0.75;//0.5; // radius of a cell
-    const double diameter =
-            2 * cell_radius; // diameter of a cell
-    const int final_time = 1601; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
-    const size_t N = 5; // initial number of cells
-    double l_filo_y = 2.75;//2; // sensing radius, filopodia + cell radius
-    double l_filo_x = 2.75; // sensing radius, it will have to be rescaled when domain grows
-    double l_filo_x_in = l_filo_x; // this value is used for rescaling when domain grows based on initial value
-    double l_filo_max = 4.5; // this is the length when two cells which were previously in a chain become dettached
-//double diff_conc = 0.1; // sensing threshold, i.e. how much concentration has to be bigger, so that the cell moves in that direction
-    int freq_growth = 1; // determines how frequently domain grows (actually not relevant because it will go every timestep)
-    int insertion_freq = 1; // determines how frequently new cells are inserted, regulates the density of population
-    double speed_l = 0.08;// 0.05;//1;//0.05; // speed of a leader cell
-    double increase_fol_speed = 1.3;
-    double speed_f = increase_fol_speed * speed_l;//0.05;//0.1;//0.08; // speed of a follower cell
-    double chemo_leader = 0.9; //0.5; // phenotypic switching happens when the concentration of chemoattractant is higher than this (presentation video 0.95), no phenotypic switching
-    double eps = 1; // for phenotypic switching, the distance has to be that much higher
-    const int filo_number = 1; // number of filopodia sent
-    int same_dir = 0; // number of steps in the same direction +1, because if 0, then only one step in the same direction
-    bool random_pers = true; // persistent movement also when the cell moves randomly
-    int count_dir = 0; // this is to count the number of times the cell moved the same direction, up to same_dir for each cell
-
-
-// distance to the track parameters
-    double dist_thres = 1;
-    int closest_time;
-    int leader_track;
-
-
-
+    const double final_time = 20.0; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
 
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 1;//0.05; // to 10^5 \nu m^2/h diffusion coefficient /// FOR NO DIFFUSION VIDEO I HAD 0.00001
-    double t = 0; // initialise time, redundant
-    double dt = 1.0; // time step
+    double D = 0.01;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
+    double t = 0.0; // initialise time
+    double dt = 1; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
-    double dx = 1.0; // space step in x direction, double to be consistent with other types
+    double dx = 1.0 / double(space_grid_controller); // space step in x direction, double to be consistent with other types
     double dy = 1; // space step in y direction
     double kai = 0.00001;//0;//0.1 // to 1 /h production rate of chemoattractant
 
 
-// parameters for internalisation
+    // reaction rate
+    double k_reac = 0.2;//.205; // reaction term
 
-    double R = cell_radius;//7.5/10; // \nu m cell radius
-    double lam = 0.00035;//(100)/10; // to 1000 /h chemoattractant internalisation
+
+
 
 
 
     // domain growth parameters
 
-    /*
-    * strain rate
-    * */
+    // for comparison with analytical
+    double alpha = 0.1;
 
-    double linear_par = 0.0001;//05;
 
 
     VectorXd strain = VectorXd::Zero(length_x);
@@ -106,7 +76,7 @@ int main() {
 
     // third part no growth, constant
     for (int i = 0; i < length_x; i++) {
-        strain(i) = 0.001;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
+        strain(i) = alpha;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
     }
 
     // growth function
@@ -128,12 +98,26 @@ int main() {
     MatrixXd chemo = MatrixXd::Zero(length_x, length_y);
     MatrixXd chemo_new = MatrixXd::Zero(length_x, length_y);
 
+    // uniform initial
     for (int i = 0; i < length_x; i++) {
         for (int j = 0; j < length_y; j++) {
             chemo(i, j) = 1; // uniform concentration initially
             chemo_new(i, j) = 1; // this is for later updates
         }
     }
+
+
+//    // non uniform initial conditions
+//    double beta = 0.2; // up to here the initial chemo concentration is C_0
+//    double C0 = 0.5; // initially non-zero, afterwards zero
+//
+//    for (int i = 0; i < beta*space_grid_controller; i++) {
+//        for (int j = 0; j < length_y; j++) {
+//            chemo(i, j) = C0;
+//        }
+//    }
+
+
 
     // initialise internalisation matrix
     MatrixXd intern = MatrixXd::Zero(length_x, length_y);
@@ -306,7 +290,7 @@ int main() {
 
         // update chemoattractant profile after the domain grew
 
-        if (counter % 5 == 0) {
+        //if (counter % 5 == 0) {
 
         //if (t == 400 || t == 800 || t == 1200 || t == 1600) {
             //cout << "heeere " << endl;
@@ -322,7 +306,7 @@ int main() {
                 }
                 output << "\n" << endl;
             }
-        }
+        //}
     }
 
 

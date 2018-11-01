@@ -37,47 +37,20 @@ int main() {
  */
 
 
-    double space_grid_controller = 10;
+    double space_grid_controller = 1000;
 
-    int length_x = (30) * int(space_grid_controller) + 1; // length in x direction of the chemoattractant matrix
-    double domain_length = 30 + 1; //this variable is for the actual domain length, since it will be increasing
+    double domain_length = 1.0; //this variable is for the actual domain length, since it will be increasing
+    int length_x = int(domain_length) * int(space_grid_controller); // length in x direction of the chemoattractant matrix
     double initial_domain_length = domain_length;
     const int length_y = 1; // length in y direction of the chemoattractant matrix
-    double cell_radius = 0.75;//0.5; // radius of a cell
-    const double diameter =
-            2 * cell_radius; // diameter of a cell
-    const double final_time = 1601.0; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
-    const size_t N = 5; // initial number of cells
-    double l_filo_y = 2.75;//2; // sensing radius, filopodia + cell radius
-    double l_filo_x = 2.75; // sensing radius, it will have to be rescaled when domain grows
-    double l_filo_x_in = l_filo_x; // this value is used for rescaling when domain grows based on initial value
-    double l_filo_max = 4.5; // this is the length when two cells which were previously in a chain become dettached
-//double diff_conc = 0.1; // sensing threshold, i.e. how much concentration has to be bigger, so that the cell moves in that direction
-    int freq_growth = 1; // determines how frequently domain grows (actually not relevant because it will go every timestep)
-    int insertion_freq = 1; // determines how frequently new cells are inserted, regulates the density of population
-    double speed_l = 0.08;// 0.05;//1;//0.05; // speed of a leader cell
-    double increase_fol_speed = 1.3;
-    double speed_f = increase_fol_speed * speed_l;//0.05;//0.1;//0.08; // speed of a follower cell
-    double chemo_leader = 0.9; //0.5; // phenotypic switching happens when the concentration of chemoattractant is higher than this (presentation video 0.95), no phenotypic switching
-    double eps = 1; // for phenotypic switching, the distance has to be that much higher
-    const int filo_number = 1; // number of filopodia sent
-    int same_dir = 0; // number of steps in the same direction +1, because if 0, then only one step in the same direction
-    bool random_pers = true; // persistent movement also when the cell moves randomly
-    int count_dir = 0; // this is to count the number of times the cell moved the same direction, up to same_dir for each cell
-
-
-// distance to the track parameters
-    double dist_thres = 1;
-    int closest_time;
-    int leader_track;
-
+    const double final_time = 20.0; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
 
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 1.0;///double(space_grid_controller); // to 10^5 \nu m^2/h diffusion coefficient
+    double D = 0.01;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
-    double dt = 1; // time step
+    double dt = 0.001; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx = 1.0 / double(space_grid_controller); // space step in x direction, double to be consistent with other types
@@ -85,11 +58,8 @@ int main() {
     double kai = 0.00001;//0;//0.1 // to 1 /h production rate of chemoattractant
 
 
-// parameters for internalisation
-
-    double R = cell_radius;//7.5/10; // \nu m cell radius
-    double lam = 0.00035;//(100)/10; // to 1000 /h chemoattractant internalisation
-
+    // reaction rate
+    double k_reac = 0.105;//.205; // reaction term
 
 
     // domain growth parameters
@@ -99,15 +69,19 @@ int main() {
     * strain rate
     * */
 
-    double linear_par = 0.0001;//05;
+    //double linear_par = 0.0001;//05;
+
+
+    // for comparison with analytical
+    double alpha = 0.1;
 
 
     VectorXd strain = VectorXd::Zero(length_x);
 
 
-    // third part no growth, constant
+    // constant
     for (int i = 0; i < length_x; i++) {
-        strain(i) = 0.001;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
+        strain(i) = alpha;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
     }
 
     // growth function
@@ -129,10 +103,21 @@ int main() {
     MatrixXd chemo = MatrixXd::Zero(length_x, length_y);
     MatrixXd chemo_new = MatrixXd::Zero(length_x, length_y);
 
-    for (int i = 0; i < length_x; i++) {
+//    // uniform initial conditions
+//    for (int i = 0; i < length_x; i++) {
+//        for (int j = 0; j < length_y; j++) {
+//            chemo(i, j) = 1; // uniform concentration initially
+//            chemo_new(i, j) = 1; // this is for later updates
+//        }
+//    }
+
+    // non uniform initial conditions
+    double beta = 0.2; // up to here the initial chemo concentration is C_0
+    double C0 = 1.0; // initially non-zero, afterwards zero
+
+    for (int i = 0; i < beta*space_grid_controller; i++) {
         for (int j = 0; j < length_y; j++) {
-            chemo(i, j) = 1; // uniform concentration initially
-            chemo_new(i, j) = 1; // this is for later updates
+            chemo(i, j) = C0;
         }
     }
 
@@ -249,7 +234,7 @@ int main() {
 
         for (int i = 1; i < length_x - 1; i++) {
             for (int j = 0; j < length_y; j++) {
-                bi(i, j) = (1 + dt * strain(i) +
+                bi(i, j) = (1 + dt *( strain(i) - k_reac) +
                             D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1)) +
                             D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1)));
             }
@@ -265,18 +250,42 @@ int main() {
 
 
         // zero flux boundary
-        for (int j = 0; j < length_y; j++) {
-            bi(0, j) = 1;
-            gi(0, j) = -1;
-            ai(length_x - 1, j) = -1;
-            bi(length_x - 1, j) = 1;
-        }
+//        for (int j = 0; j < length_y; j++) {
+//            bi(0, j) = 1;
+//            gi(0, j) = -1;
+//            ai(length_x - 1, j) = -1;
+//            bi(length_x - 1, j) = 1;
+//        }
 
-        // RHS of linear system Ax = d
-        di(0, 0) = 0;
-        di(length_x - 1, 0) = 0;
+        // new implementation of zero flux boundary
 
-        for (int i = 1; i < length_x - 1; i++) {
+            for (int j = 0; j < length_y; j++) {
+                ai(length_x-1, j) = -2*D * dt / (2.0 * Gamma_x(length_x-1) * dx * dx) * (1.0 / Gamma_x(length_x-1) + 1.0 / Gamma_x(length_x - 2));
+                bi(0, j) = (1 + dt *( strain(0) - k_reac) +
+                            D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1)) +
+                            D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1)));
+                bi(length_x-1, j) = (1 + dt *( strain(length_x-1) - k_reac) +
+                            D * dt / (2.0 * Gamma_x(length_x-1) * dx * dx) * (1.0 / Gamma_x(length_x-1) + 1.0 / Gamma_x(length_x-2)) +
+                            D * dt / (2.0 * Gamma_x(length_x-1) * dx * dx) * (1.0 / Gamma_x(length_x-1) + 1.0 / Gamma_x(length_x-2)));
+                gi(0, j) = -2*D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1));
+            }
+
+
+
+
+
+       //  RHS of linear system Ax = d //   THIS IS LIKELY TO BE WRONG
+//        di(0, 0) = 0;
+//        di(length_x - 1, 0) = 0;
+//
+//        for (int i = 1; i < length_x - 1; i++) {
+//            di(i, 0) = chemo(i, 0);
+//        }
+
+
+        // new implementation of zero flux
+
+        for (int i = 0; i < length_x; i++) {
             di(i, 0) = chemo(i, 0);
         }
 
@@ -314,11 +323,14 @@ int main() {
         chemo_new(length_x - 1, 0) = didash(length_x - 1,
                                             0); // since only one entry in y, would need to change if I had two dimensions
 
+        //cout << "last " << didash(length_x - 1,0) << endl;
+
         for (int k = length_x - 2; k >= 0; --k) {
             for (int j = 0; j < length_y; j++) {
                 chemo_new(k, j) = didash(k, j) - cidash(k, j) * chemo_new(k + 1, j);
             }
         }
+
 
 
         chemo = chemo_new; // update chemo concentration
@@ -456,7 +468,7 @@ int main() {
 
         //if (counter % 50 == 0) {
 
-            if (t == 400 || t == 800 || t == 1200 || t == 1600) {
+            if (t == 1 || t == 10 || t == 20 ) {
             //cout << "heeere " << endl;
             // save data to plot chemoattractant concentration
             ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
@@ -470,9 +482,10 @@ int main() {
                 }
                 output << "\n" << endl;
             }
-            }
-       // }
 
+        }
+ //   cout << "t " << t << endl;
+//        cout << "domain length " << Gamma_x(length_x-1) << endl;
     }
 
 

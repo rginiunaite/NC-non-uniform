@@ -123,6 +123,32 @@ analytical_vs_numerical/fast:
 	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/build
 .PHONY : analytical_vs_numerical/fast
 
+#=============================================================================
+# Target rules for targets named non_uniform_explicit_constant
+
+# Build rule for target.
+non_uniform_explicit_constant: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 non_uniform_explicit_constant
+.PHONY : non_uniform_explicit_constant
+
+# fast build rule for target.
+non_uniform_explicit_constant/fast:
+	$(MAKE) -f CMakeFiles/non_uniform_explicit_constant.dir/build.make CMakeFiles/non_uniform_explicit_constant.dir/build
+.PHONY : non_uniform_explicit_constant/fast
+
+#=============================================================================
+# Target rules for targets named non_uniform_1D_constant
+
+# Build rule for target.
+non_uniform_1D_constant: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 non_uniform_1D_constant
+.PHONY : non_uniform_1D_constant
+
+# fast build rule for target.
+non_uniform_1D_constant/fast:
+	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/build
+.PHONY : non_uniform_1D_constant/fast
+
 analytical_vs_numerical.o: analytical_vs_numerical.cpp.o
 
 .PHONY : analytical_vs_numerical.o
@@ -150,6 +176,60 @@ analytical_vs_numerical.cpp.s:
 	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/analytical_vs_numerical.cpp.s
 .PHONY : analytical_vs_numerical.cpp.s
 
+non_uniform_1D_constant.o: non_uniform_1D_constant.cpp.o
+
+.PHONY : non_uniform_1D_constant.o
+
+# target to build an object file
+non_uniform_1D_constant.cpp.o:
+	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/non_uniform_1D_constant.cpp.o
+.PHONY : non_uniform_1D_constant.cpp.o
+
+non_uniform_1D_constant.i: non_uniform_1D_constant.cpp.i
+
+.PHONY : non_uniform_1D_constant.i
+
+# target to preprocess a source file
+non_uniform_1D_constant.cpp.i:
+	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/non_uniform_1D_constant.cpp.i
+.PHONY : non_uniform_1D_constant.cpp.i
+
+non_uniform_1D_constant.s: non_uniform_1D_constant.cpp.s
+
+.PHONY : non_uniform_1D_constant.s
+
+# target to generate assembly for a file
+non_uniform_1D_constant.cpp.s:
+	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/non_uniform_1D_constant.cpp.s
+.PHONY : non_uniform_1D_constant.cpp.s
+
+non_uniform_explicit_constant.o: non_uniform_explicit_constant.cpp.o
+
+.PHONY : non_uniform_explicit_constant.o
+
+# target to build an object file
+non_uniform_explicit_constant.cpp.o:
+	$(MAKE) -f CMakeFiles/non_uniform_explicit_constant.dir/build.make CMakeFiles/non_uniform_explicit_constant.dir/non_uniform_explicit_constant.cpp.o
+.PHONY : non_uniform_explicit_constant.cpp.o
+
+non_uniform_explicit_constant.i: non_uniform_explicit_constant.cpp.i
+
+.PHONY : non_uniform_explicit_constant.i
+
+# target to preprocess a source file
+non_uniform_explicit_constant.cpp.i:
+	$(MAKE) -f CMakeFiles/non_uniform_explicit_constant.dir/build.make CMakeFiles/non_uniform_explicit_constant.dir/non_uniform_explicit_constant.cpp.i
+.PHONY : non_uniform_explicit_constant.cpp.i
+
+non_uniform_explicit_constant.s: non_uniform_explicit_constant.cpp.s
+
+.PHONY : non_uniform_explicit_constant.s
+
+# target to generate assembly for a file
+non_uniform_explicit_constant.cpp.s:
+	$(MAKE) -f CMakeFiles/non_uniform_explicit_constant.dir/build.make CMakeFiles/non_uniform_explicit_constant.dir/non_uniform_explicit_constant.cpp.s
+.PHONY : non_uniform_explicit_constant.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -159,9 +239,17 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... analytical_vs_numerical"
+	@echo "... non_uniform_explicit_constant"
+	@echo "... non_uniform_1D_constant"
 	@echo "... analytical_vs_numerical.o"
 	@echo "... analytical_vs_numerical.i"
 	@echo "... analytical_vs_numerical.s"
+	@echo "... non_uniform_1D_constant.o"
+	@echo "... non_uniform_1D_constant.i"
+	@echo "... non_uniform_1D_constant.s"
+	@echo "... non_uniform_explicit_constant.o"
+	@echo "... non_uniform_explicit_constant.i"
+	@echo "... non_uniform_explicit_constant.s"
 .PHONY : help
 
 
