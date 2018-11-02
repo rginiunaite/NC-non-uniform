@@ -1,4 +1,4 @@
-//analytical solution of reaction equation on a growing domain
+//analytical solution of reaction equation on a uniformly growing domain
 
 #include <numeric>
 #include <random>

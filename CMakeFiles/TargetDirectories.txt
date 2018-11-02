@@ -1,5 +1,6 @@
 /home/giniunaite/NC-non-uniform/CMakeFiles/rebuild_cache.dir
 /home/giniunaite/NC-non-uniform/CMakeFiles/edit_cache.dir
+/home/giniunaite/NC-non-uniform/CMakeFiles/analytical_piecewise.dir
 /home/giniunaite/NC-non-uniform/CMakeFiles/analytical_vs_numerical.dir
 /home/giniunaite/NC-non-uniform/CMakeFiles/non_uniform_explicit_constant.dir
 /home/giniunaite/NC-non-uniform/CMakeFiles/non_uniform_1D_constant.dir

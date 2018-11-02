@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named analytical_piecewise
+
+# Build rule for target.
+analytical_piecewise: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 analytical_piecewise
+.PHONY : analytical_piecewise
+
+# fast build rule for target.
+analytical_piecewise/fast:
+	$(MAKE) -f CMakeFiles/analytical_piecewise.dir/build.make CMakeFiles/analytical_piecewise.dir/build
+.PHONY : analytical_piecewise/fast
+
+#=============================================================================
 # Target rules for targets named analytical_vs_numerical
 
 # Build rule for target.
@@ -148,6 +161,33 @@ non_uniform_1D_constant: cmake_check_build_system
 non_uniform_1D_constant/fast:
 	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/build
 .PHONY : non_uniform_1D_constant/fast
+
+analytical_piecewise.o: analytical_piecewise.cpp.o
+
+.PHONY : analytical_piecewise.o
+
+# target to build an object file
+analytical_piecewise.cpp.o:
+	$(MAKE) -f CMakeFiles/analytical_piecewise.dir/build.make CMakeFiles/analytical_piecewise.dir/analytical_piecewise.cpp.o
+.PHONY : analytical_piecewise.cpp.o
+
+analytical_piecewise.i: analytical_piecewise.cpp.i
+
+.PHONY : analytical_piecewise.i
+
+# target to preprocess a source file
+analytical_piecewise.cpp.i:
+	$(MAKE) -f CMakeFiles/analytical_piecewise.dir/build.make CMakeFiles/analytical_piecewise.dir/analytical_piecewise.cpp.i
+.PHONY : analytical_piecewise.cpp.i
+
+analytical_piecewise.s: analytical_piecewise.cpp.s
+
+.PHONY : analytical_piecewise.s
+
+# target to generate assembly for a file
+analytical_piecewise.cpp.s:
+	$(MAKE) -f CMakeFiles/analytical_piecewise.dir/build.make CMakeFiles/analytical_piecewise.dir/analytical_piecewise.cpp.s
+.PHONY : analytical_piecewise.cpp.s
 
 analytical_vs_numerical.o: analytical_vs_numerical.cpp.o
 
@@ -238,9 +278,13 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... analytical_piecewise"
 	@echo "... analytical_vs_numerical"
 	@echo "... non_uniform_explicit_constant"
 	@echo "... non_uniform_1D_constant"
+	@echo "... analytical_piecewise.o"
+	@echo "... analytical_piecewise.i"
+	@echo "... analytical_piecewise.s"
 	@echo "... analytical_vs_numerical.o"
 	@echo "... analytical_vs_numerical.i"
 	@echo "... analytical_vs_numerical.s"

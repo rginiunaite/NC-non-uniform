@@ -60,13 +60,50 @@ CMAKE_SOURCE_DIR = /home/giniunaite/NC-non-uniform
 CMAKE_BINARY_DIR = /home/giniunaite/NC-non-uniform
 
 #=============================================================================
+# Target rules for target CMakeFiles/analytical_piecewise.dir
+
+# All Build rule for target.
+CMakeFiles/analytical_piecewise.dir/all:
+	$(MAKE) -f CMakeFiles/analytical_piecewise.dir/build.make CMakeFiles/analytical_piecewise.dir/depend
+	$(MAKE) -f CMakeFiles/analytical_piecewise.dir/build.make CMakeFiles/analytical_piecewise.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=1,2 "Built target analytical_piecewise"
+.PHONY : CMakeFiles/analytical_piecewise.dir/all
+
+# Include target in all.
+all: CMakeFiles/analytical_piecewise.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/analytical_piecewise.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/giniunaite/NC-non-uniform/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/analytical_piecewise.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/giniunaite/NC-non-uniform/CMakeFiles 0
+.PHONY : CMakeFiles/analytical_piecewise.dir/rule
+
+# Convenience name for target.
+analytical_piecewise: CMakeFiles/analytical_piecewise.dir/rule
+
+.PHONY : analytical_piecewise
+
+# clean rule for target.
+CMakeFiles/analytical_piecewise.dir/clean:
+	$(MAKE) -f CMakeFiles/analytical_piecewise.dir/build.make CMakeFiles/analytical_piecewise.dir/clean
+.PHONY : CMakeFiles/analytical_piecewise.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/analytical_piecewise.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/analytical_vs_numerical.dir
 
 # All Build rule for target.
 CMakeFiles/analytical_vs_numerical.dir/all:
 	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/depend
 	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=1,2 "Built target analytical_vs_numerical"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=3,4 "Built target analytical_vs_numerical"
 .PHONY : CMakeFiles/analytical_vs_numerical.dir/all
 
 # Include target in all.
@@ -103,7 +140,7 @@ clean: CMakeFiles/analytical_vs_numerical.dir/clean
 CMakeFiles/non_uniform_explicit_constant.dir/all:
 	$(MAKE) -f CMakeFiles/non_uniform_explicit_constant.dir/build.make CMakeFiles/non_uniform_explicit_constant.dir/depend
 	$(MAKE) -f CMakeFiles/non_uniform_explicit_constant.dir/build.make CMakeFiles/non_uniform_explicit_constant.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=5,6 "Built target non_uniform_explicit_constant"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=7,8 "Built target non_uniform_explicit_constant"
 .PHONY : CMakeFiles/non_uniform_explicit_constant.dir/all
 
 # Include target in all.
@@ -140,7 +177,7 @@ clean: CMakeFiles/non_uniform_explicit_constant.dir/clean
 CMakeFiles/non_uniform_1D_constant.dir/all:
 	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/depend
 	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=3,4 "Built target non_uniform_1D_constant"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=5,6 "Built target non_uniform_1D_constant"
 .PHONY : CMakeFiles/non_uniform_1D_constant.dir/all
 
 # Include target in all.

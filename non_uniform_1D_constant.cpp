@@ -466,9 +466,9 @@ int main() {
 //        }
 
 
-        //if (counter % 50 == 0) {
+        if (counter % 1000 == 0) {
 
-            if (t == 1 || t == 10 || t == 20 ) {
+            //if (t == 1 || t == 10 || t == 20 ) {
             //cout << "heeere " << endl;
             // save data to plot chemoattractant concentration
             ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
