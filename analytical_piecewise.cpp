@@ -19,13 +19,13 @@ int main() {
 
     // model parameters
 
-    double D = 1;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
-    double k_reac = 0.105; // reaction term
+    double D = 0.0001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
+    double k_reac = 0;//0.105; // reaction term
     double C0 = 1.0; // initial chemo concentration in the first part
     double length_x_initial = 1.0; // initial length of the domain
     int solution_grid = 100; // solution grid
     double length_x = length_x_initial; // this will be the actual length
-    double beta = 0.4; // initially chemo is non-zero up to beta
+    double beta = 0.5; // initially chemo is non-zero up to beta
     double non_growing_final = beta*0.5; // up to here domain does not grow
     double beta_non_grow = non_growing_final; // initially chemo is non-zero up to beta_non_grow in the non-growing part
     double beta_grow = beta - beta_non_grow; // this is non-zero chemo for the growing part
@@ -91,8 +91,9 @@ int main() {
 
         an(0, j) = beta_non_grow * C0 / length_constant_initial;
     }
-    for (int j = int(non_growing_final*double(solution_grid));j < solution_grid; j++) {
-        an(0, j) = beta_grow * C0 / length_growing_initial;
+    //for (int j = int(non_growing_final*double(solution_grid));j < solution_grid; j++) {
+    for (int j = 0 ;j < solution_grid- int(non_growing_final*double(solution_grid)); j++) {
+        an(0 , j+ int(non_growing_final*double(solution_grid))) = beta_grow * C0 / length_growing_initial;
     }
 
     for (int i = 1; i< n; i++){
@@ -101,8 +102,8 @@ int main() {
 
             an(i,j) = 2*C0 / (i*M_PI) * sin(i *M_PI*beta_non_grow /length_constant_initial);
         }
-        for (int j = int(non_growing_final*double(solution_grid));j < solution_grid; j++) {
-            an(i,j) = 2*C0 / (i*M_PI) * sin(i *M_PI*beta_grow / length_growing_initial);
+        for (int j = 0; j < solution_grid - int(non_growing_final*double(solution_grid)); j++) {
+            an(i ,j+ int(non_growing_final*double(solution_grid))) = 2*C0 / (i*M_PI) * sin(i *M_PI*beta_grow / length_growing_initial);
         }
 
 
@@ -130,10 +131,10 @@ int main() {
                 x = double(xL)/solution_grid;
                 bn(i,xL) = cos (i*M_PI*x/length_constant_initial);
             }
-            for (int xL = int(non_growing_final*double(solution_grid));xL < solution_grid; xL++) {
-                cn(i,xL) = exp(- (D*i*i*M_PI*M_PI*(1.0- exp(-2.0*alpha*t)))/(2.0*alpha*length_constant_initial*length_constant_initial) +t*(k_reac-alpha) );
+            for (int xL = 0 ;xL < solution_grid- int(non_growing_final*double(solution_grid)); xL++) {
+                cn(i ,xL+ int(non_growing_final*double(solution_grid))) = exp(- (D*i*i*M_PI*M_PI*(1.0- exp(-2.0*alpha*t)))/(2.0*alpha*length_constant_initial*length_constant_initial) +t*(k_reac-alpha) );
                 x = length_x_growing_part*double(xL)/solution_grid;
-                bn(i,xL) = cos (i*M_PI*x/length_x_growing_part);
+                bn(i ,xL + int(non_growing_final*double(solution_grid))) = cos (i*M_PI*x/length_x_growing_part);
             }
         }
 
@@ -177,15 +178,12 @@ int main() {
         for (int i = 0; i < int(non_growing_final*double(solution_grid)); i++) {
             grid_changes(i,t) = i; //grid does not changes
         }
-        for (int i = int(non_growing_final*double(solution_grid)); i< solution_grid; i++){
-            grid_changes(i,t) = i * length_x_growing_part;
+        for (int i = 0;  i< solution_grid - int(non_growing_final*double(solution_grid)); i++){
+            grid_changes(i + int(non_growing_final*double(solution_grid)),t) = i * length_x_growing_part/length_growing_initial + int(non_growing_final*double(solution_grid));
         }
 
 
 
-        cout << " " << endl;
-//        cout << "t " << t << endl;
-//        cout << "length_x " << length_x << endl;
     }
 
     ofstream output("analytical_solution.csv");

@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named analytical_piecewise_constant_end
+
+# Build rule for target.
+analytical_piecewise_constant_end: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 analytical_piecewise_constant_end
+.PHONY : analytical_piecewise_constant_end
+
+# fast build rule for target.
+analytical_piecewise_constant_end/fast:
+	$(MAKE) -f CMakeFiles/analytical_piecewise_constant_end.dir/build.make CMakeFiles/analytical_piecewise_constant_end.dir/build
+.PHONY : analytical_piecewise_constant_end/fast
+
+#=============================================================================
 # Target rules for targets named analytical_piecewise
 
 # Build rule for target.
@@ -188,6 +201,36 @@ analytical_piecewise.s: analytical_piecewise.cpp.s
 analytical_piecewise.cpp.s:
 	$(MAKE) -f CMakeFiles/analytical_piecewise.dir/build.make CMakeFiles/analytical_piecewise.dir/analytical_piecewise.cpp.s
 .PHONY : analytical_piecewise.cpp.s
+
+analytical_piecewise_constant_end.o: analytical_piecewise_constant_end.cpp.o
+
+.PHONY : analytical_piecewise_constant_end.o
+
+# target to build an object file
+analytical_piecewise_constant_end.cpp.o:
+	$(MAKE) -f CMakeFiles/analytical_piecewise_constant_end.dir/build.make CMakeFiles/analytical_piecewise_constant_end.dir/analytical_piecewise_constant_end.cpp.o
+	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/analytical_piecewise_constant_end.cpp.o
+.PHONY : analytical_piecewise_constant_end.cpp.o
+
+analytical_piecewise_constant_end.i: analytical_piecewise_constant_end.cpp.i
+
+.PHONY : analytical_piecewise_constant_end.i
+
+# target to preprocess a source file
+analytical_piecewise_constant_end.cpp.i:
+	$(MAKE) -f CMakeFiles/analytical_piecewise_constant_end.dir/build.make CMakeFiles/analytical_piecewise_constant_end.dir/analytical_piecewise_constant_end.cpp.i
+	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/analytical_piecewise_constant_end.cpp.i
+.PHONY : analytical_piecewise_constant_end.cpp.i
+
+analytical_piecewise_constant_end.s: analytical_piecewise_constant_end.cpp.s
+
+.PHONY : analytical_piecewise_constant_end.s
+
+# target to generate assembly for a file
+analytical_piecewise_constant_end.cpp.s:
+	$(MAKE) -f CMakeFiles/analytical_piecewise_constant_end.dir/build.make CMakeFiles/analytical_piecewise_constant_end.dir/analytical_piecewise_constant_end.cpp.s
+	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/analytical_piecewise_constant_end.cpp.s
+.PHONY : analytical_piecewise_constant_end.cpp.s
 
 analytical_vs_numerical.o: analytical_vs_numerical.cpp.o
 
@@ -278,6 +321,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... analytical_piecewise_constant_end"
 	@echo "... analytical_piecewise"
 	@echo "... analytical_vs_numerical"
 	@echo "... non_uniform_explicit_constant"
@@ -285,6 +329,9 @@ help:
 	@echo "... analytical_piecewise.o"
 	@echo "... analytical_piecewise.i"
 	@echo "... analytical_piecewise.s"
+	@echo "... analytical_piecewise_constant_end.o"
+	@echo "... analytical_piecewise_constant_end.i"
+	@echo "... analytical_piecewise_constant_end.s"
 	@echo "... analytical_vs_numerical.o"
 	@echo "... analytical_vs_numerical.i"
 	@echo "... analytical_vs_numerical.s"
