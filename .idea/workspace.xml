@@ -3,10 +3,10 @@
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
     <generated>
       <config projectName="Project" targetName="non_uniform_1D_constant" />
-      <config projectName="Project" targetName="non_uniform_explicit_constant" />
-      <config projectName="Project" targetName="analytical_vs_numerical" />
       <config projectName="Project" targetName="analytical_piecewise_constant_end" />
+      <config projectName="Project" targetName="analytical_vs_numerical" />
       <config projectName="Project" targetName="analytical_piecewise" />
+      <config projectName="Project" targetName="non_uniform_explicit_constant" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -17,12 +17,14 @@
   <component name="ChangeListManager">
     <list default="true" id="eb949dde-e06e-422c-86ba-7a31cc08d610" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/.nfs00000000000249f2000007a7" afterPath="" />
       <change beforePath="$PROJECT_DIR$/Aboria" afterPath="$PROJECT_DIR$/Aboria" />
       <change beforePath="$PROJECT_DIR$/Aboria/cxxtest/test/namespace.out" afterPath="" />
       <change beforePath="$PROJECT_DIR$/CMakeFiles/analytical_piecewise.dir/analytical_piecewise.cpp.o" afterPath="$PROJECT_DIR$/CMakeFiles/analytical_piecewise.dir/analytical_piecewise.cpp.o" />
       <change beforePath="$PROJECT_DIR$/analytical_piecewise" afterPath="$PROJECT_DIR$/analytical_piecewise" />
       <change beforePath="$PROJECT_DIR$/analytical_piecewise.cpp" afterPath="$PROJECT_DIR$/analytical_piecewise.cpp" />
       <change beforePath="$PROJECT_DIR$/analytical_solution.csv" afterPath="$PROJECT_DIR$/analytical_solution.csv" />
+      <change beforePath="$PROJECT_DIR$/analytical_solution_comp_numerical.m" afterPath="$PROJECT_DIR$/analytical_solution_comp_numerical.m" />
       <change beforePath="$PROJECT_DIR$/grid_changes.csv" afterPath="$PROJECT_DIR$/grid_changes.csv" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -50,7 +52,7 @@
       <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1350">
+            <state relative-caret-position="0">
               <caret line="75" column="86" lean-forward="false" selection-start-line="75" selection-start-column="86" selection-end-line="75" selection-end-column="86" />
               <folding />
             </state>
@@ -70,9 +72,11 @@
       <file leaf-file-name="analytical_piecewise.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/analytical_piecewise.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="22" column="25" lean-forward="false" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
-              <folding />
+            <state relative-caret-position="378">
+              <caret line="21" column="18" lean-forward="false" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
+              <folding>
+                <element signature="e#157#175#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -80,7 +84,7 @@
       <file leaf-file-name="analytical_piecewise_constant_end.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/analytical_piecewise_constant_end.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="728">
+            <state relative-caret-position="3078">
               <caret line="171" column="34" lean-forward="false" selection-start-line="171" selection-start-column="34" selection-end-line="171" selection-end-column="34" />
               <folding />
             </state>
@@ -91,10 +95,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>is</find>
-      <find>dt</find>
-      <find>theta1</find>
-      <find>space_grid</find>
       <find>space_gr</find>
       <find>dx</find>
       <find>MatrixXd</find>
@@ -121,6 +121,10 @@
       <find>beta</find>
       <find>is it</find>
       <find>length_new_growing_initialtial</find>
+      <find>ex</find>
+      <find>gamma</find>
+      <find>non_growing</find>
+      <find>chemo</find>
     </findStrings>
     <replaceStrings>
       <replace>MatrixXd</replace>
@@ -269,7 +273,8 @@
       <workItem from="1540887864654" duration="390000" />
       <workItem from="1540888703699" duration="14403000" />
       <workItem from="1541061196876" duration="34081000" />
-      <workItem from="1541607751735" duration="3681000" />
+      <workItem from="1541607751735" duration="3766000" />
+      <workItem from="1541674733747" duration="10967000" />
     </task>
     <task id="LOCAL-00001" summary="works not ok">
       <created>1540310643176</created>
@@ -289,7 +294,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="123833000" />
+    <option name="totallyTimeSpent" value="134885000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -367,7 +372,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
           <caret line="21" column="15" lean-forward="false" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="15" />
-          <folding />
+          <folding>
+            <element signature="e#157#175#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -493,7 +500,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2107">
           <caret line="67" column="43" lean-forward="false" selection-start-line="67" selection-start-column="43" selection-end-line="67" selection-end-column="43" />
-          <folding />
+          <folding>
+            <element signature="e#157#175#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -642,7 +651,7 @@
     <entry file="file://$PROJECT_DIR$/analytical_piecewise_constant_end.h" />
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1350">
+        <state relative-caret-position="0">
           <caret line="75" column="86" lean-forward="false" selection-start-line="75" selection-start-column="86" selection-end-line="75" selection-end-column="86" />
           <folding />
         </state>
@@ -650,7 +659,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/analytical_piecewise_constant_end.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="728">
+        <state relative-caret-position="3078">
           <caret line="171" column="34" lean-forward="false" selection-start-line="171" selection-start-column="34" selection-end-line="171" selection-end-column="34" />
           <folding />
         </state>
@@ -666,9 +675,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/analytical_piecewise.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="22" column="25" lean-forward="false" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
-          <folding />
+        <state relative-caret-position="378">
+          <caret line="21" column="18" lean-forward="false" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
+          <folding>
+            <element signature="e#157#175#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

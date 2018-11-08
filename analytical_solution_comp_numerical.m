@@ -11,9 +11,9 @@ figure
 
 plot (real_grid(:,1), sol(:,1),'LineWidth',2); % corresponds to time 0
 hold on
-plot (real_grid(:,11),sol(:,11),'LineWidth',2); %% corresponds to time 10
+plot (real_grid(:,11),sol(:,2),'LineWidth',2); %% corresponds to time 10
 
-plot(real_grid(:,21),sol(:,21),'LineWidth',2);
+plot(real_grid(:,21),sol(:,3),'LineWidth',2);
 xlim([0,800])
 xticks([0.0, 200.0, 400.0, 600.0, 800.0])
 xticklabels({'0', '2', '4', '6', '8'});
@@ -128,15 +128,15 @@ box on
 
 %% Finding norms
 
-difference_time1 = sol(:,1) - concentration1;
-difference_time10 = sol(:,10) - concentration3;
-difference_time20 = sol(:,20) - concentration4;
-
-Linft1 = max (abs(difference_time1))
-Linft10 = max (abs(difference_time10))
-Linft20 = max (abs(difference_time20))
-
-L2t1 = norm(difference_time1(1:2:end))
-L2t10 = norm(difference_time10(1:2:end))
-L2_t20 = norm(difference_time20(1:2:end))
+% difference_time1 = sol(:,1) - concentration1;
+% difference_time10 = sol(:,10) - concentration3;
+% difference_time20 = sol(:,20) - concentration4;
+% 
+% Linft1 = max (abs(difference_time1))
+% Linft10 = max (abs(difference_time10))
+% Linft20 = max (abs(difference_time20))
+% 
+% L2t1 = norm(difference_time1(1:2:end))
+% L2t10 = norm(difference_time10(1:2:end))
+% L2_t20 = norm(difference_time20(1:2:end))
 
