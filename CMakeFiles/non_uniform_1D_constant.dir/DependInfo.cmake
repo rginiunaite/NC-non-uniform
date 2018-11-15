@@ -4,7 +4,6 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/giniunaite/NC-non-uniform/analytical_piecewise_constant_end.cpp" "/home/giniunaite/NC-non-uniform/CMakeFiles/non_uniform_1D_constant.dir/analytical_piecewise_constant_end.cpp.o"
   "/home/giniunaite/NC-non-uniform/non_uniform_1D_constant.cpp" "/home/giniunaite/NC-non-uniform/CMakeFiles/non_uniform_1D_constant.dir/non_uniform_1D_constant.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

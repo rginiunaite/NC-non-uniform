@@ -219,6 +219,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/analytical_piecewise_constant_end.dir/DependInfo.cmake"
   "CMakeFiles/analytical_piecewise.dir/DependInfo.cmake"
+  "CMakeFiles/analytical_piecewise_new_approach.dir/DependInfo.cmake"
   "CMakeFiles/analytical_vs_numerical.dir/DependInfo.cmake"
   "CMakeFiles/non_uniform_explicit_constant.dir/DependInfo.cmake"
   "CMakeFiles/non_uniform_1D_constant.dir/DependInfo.cmake"

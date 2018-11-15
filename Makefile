@@ -137,6 +137,19 @@ analytical_piecewise/fast:
 .PHONY : analytical_piecewise/fast
 
 #=============================================================================
+# Target rules for targets named analytical_piecewise_new_approach
+
+# Build rule for target.
+analytical_piecewise_new_approach: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 analytical_piecewise_new_approach
+.PHONY : analytical_piecewise_new_approach
+
+# fast build rule for target.
+analytical_piecewise_new_approach/fast:
+	$(MAKE) -f CMakeFiles/analytical_piecewise_new_approach.dir/build.make CMakeFiles/analytical_piecewise_new_approach.dir/build
+.PHONY : analytical_piecewise_new_approach/fast
+
+#=============================================================================
 # Target rules for targets named analytical_vs_numerical
 
 # Build rule for target.
@@ -209,7 +222,6 @@ analytical_piecewise_constant_end.o: analytical_piecewise_constant_end.cpp.o
 # target to build an object file
 analytical_piecewise_constant_end.cpp.o:
 	$(MAKE) -f CMakeFiles/analytical_piecewise_constant_end.dir/build.make CMakeFiles/analytical_piecewise_constant_end.dir/analytical_piecewise_constant_end.cpp.o
-	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/analytical_piecewise_constant_end.cpp.o
 .PHONY : analytical_piecewise_constant_end.cpp.o
 
 analytical_piecewise_constant_end.i: analytical_piecewise_constant_end.cpp.i
@@ -219,7 +231,6 @@ analytical_piecewise_constant_end.i: analytical_piecewise_constant_end.cpp.i
 # target to preprocess a source file
 analytical_piecewise_constant_end.cpp.i:
 	$(MAKE) -f CMakeFiles/analytical_piecewise_constant_end.dir/build.make CMakeFiles/analytical_piecewise_constant_end.dir/analytical_piecewise_constant_end.cpp.i
-	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/analytical_piecewise_constant_end.cpp.i
 .PHONY : analytical_piecewise_constant_end.cpp.i
 
 analytical_piecewise_constant_end.s: analytical_piecewise_constant_end.cpp.s
@@ -229,8 +240,34 @@ analytical_piecewise_constant_end.s: analytical_piecewise_constant_end.cpp.s
 # target to generate assembly for a file
 analytical_piecewise_constant_end.cpp.s:
 	$(MAKE) -f CMakeFiles/analytical_piecewise_constant_end.dir/build.make CMakeFiles/analytical_piecewise_constant_end.dir/analytical_piecewise_constant_end.cpp.s
-	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/analytical_piecewise_constant_end.cpp.s
 .PHONY : analytical_piecewise_constant_end.cpp.s
+
+analytical_piecewise_new_approach.o: analytical_piecewise_new_approach.cpp.o
+
+.PHONY : analytical_piecewise_new_approach.o
+
+# target to build an object file
+analytical_piecewise_new_approach.cpp.o:
+	$(MAKE) -f CMakeFiles/analytical_piecewise_new_approach.dir/build.make CMakeFiles/analytical_piecewise_new_approach.dir/analytical_piecewise_new_approach.cpp.o
+.PHONY : analytical_piecewise_new_approach.cpp.o
+
+analytical_piecewise_new_approach.i: analytical_piecewise_new_approach.cpp.i
+
+.PHONY : analytical_piecewise_new_approach.i
+
+# target to preprocess a source file
+analytical_piecewise_new_approach.cpp.i:
+	$(MAKE) -f CMakeFiles/analytical_piecewise_new_approach.dir/build.make CMakeFiles/analytical_piecewise_new_approach.dir/analytical_piecewise_new_approach.cpp.i
+.PHONY : analytical_piecewise_new_approach.cpp.i
+
+analytical_piecewise_new_approach.s: analytical_piecewise_new_approach.cpp.s
+
+.PHONY : analytical_piecewise_new_approach.s
+
+# target to generate assembly for a file
+analytical_piecewise_new_approach.cpp.s:
+	$(MAKE) -f CMakeFiles/analytical_piecewise_new_approach.dir/build.make CMakeFiles/analytical_piecewise_new_approach.dir/analytical_piecewise_new_approach.cpp.s
+.PHONY : analytical_piecewise_new_approach.cpp.s
 
 analytical_vs_numerical.o: analytical_vs_numerical.cpp.o
 
@@ -323,6 +360,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... analytical_piecewise_constant_end"
 	@echo "... analytical_piecewise"
+	@echo "... analytical_piecewise_new_approach"
 	@echo "... analytical_vs_numerical"
 	@echo "... non_uniform_explicit_constant"
 	@echo "... non_uniform_1D_constant"
@@ -332,6 +370,9 @@ help:
 	@echo "... analytical_piecewise_constant_end.o"
 	@echo "... analytical_piecewise_constant_end.i"
 	@echo "... analytical_piecewise_constant_end.s"
+	@echo "... analytical_piecewise_new_approach.o"
+	@echo "... analytical_piecewise_new_approach.i"
+	@echo "... analytical_piecewise_new_approach.s"
 	@echo "... analytical_vs_numerical.o"
 	@echo "... analytical_vs_numerical.i"
 	@echo "... analytical_vs_numerical.s"

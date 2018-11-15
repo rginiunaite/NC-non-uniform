@@ -134,13 +134,50 @@ clean: CMakeFiles/analytical_piecewise.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/analytical_piecewise_new_approach.dir
+
+# All Build rule for target.
+CMakeFiles/analytical_piecewise_new_approach.dir/all:
+	$(MAKE) -f CMakeFiles/analytical_piecewise_new_approach.dir/build.make CMakeFiles/analytical_piecewise_new_approach.dir/depend
+	$(MAKE) -f CMakeFiles/analytical_piecewise_new_approach.dir/build.make CMakeFiles/analytical_piecewise_new_approach.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=5,6 "Built target analytical_piecewise_new_approach"
+.PHONY : CMakeFiles/analytical_piecewise_new_approach.dir/all
+
+# Include target in all.
+all: CMakeFiles/analytical_piecewise_new_approach.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/analytical_piecewise_new_approach.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/giniunaite/NC-non-uniform/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/analytical_piecewise_new_approach.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/giniunaite/NC-non-uniform/CMakeFiles 0
+.PHONY : CMakeFiles/analytical_piecewise_new_approach.dir/rule
+
+# Convenience name for target.
+analytical_piecewise_new_approach: CMakeFiles/analytical_piecewise_new_approach.dir/rule
+
+.PHONY : analytical_piecewise_new_approach
+
+# clean rule for target.
+CMakeFiles/analytical_piecewise_new_approach.dir/clean:
+	$(MAKE) -f CMakeFiles/analytical_piecewise_new_approach.dir/build.make CMakeFiles/analytical_piecewise_new_approach.dir/clean
+.PHONY : CMakeFiles/analytical_piecewise_new_approach.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/analytical_piecewise_new_approach.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/analytical_vs_numerical.dir
 
 # All Build rule for target.
 CMakeFiles/analytical_vs_numerical.dir/all:
 	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/depend
 	$(MAKE) -f CMakeFiles/analytical_vs_numerical.dir/build.make CMakeFiles/analytical_vs_numerical.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=5,6 "Built target analytical_vs_numerical"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=7,8 "Built target analytical_vs_numerical"
 .PHONY : CMakeFiles/analytical_vs_numerical.dir/all
 
 # Include target in all.
@@ -177,7 +214,7 @@ clean: CMakeFiles/analytical_vs_numerical.dir/clean
 CMakeFiles/non_uniform_explicit_constant.dir/all:
 	$(MAKE) -f CMakeFiles/non_uniform_explicit_constant.dir/build.make CMakeFiles/non_uniform_explicit_constant.dir/depend
 	$(MAKE) -f CMakeFiles/non_uniform_explicit_constant.dir/build.make CMakeFiles/non_uniform_explicit_constant.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=10,11 "Built target non_uniform_explicit_constant"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=11,12 "Built target non_uniform_explicit_constant"
 .PHONY : CMakeFiles/non_uniform_explicit_constant.dir/all
 
 # Include target in all.
@@ -214,7 +251,7 @@ clean: CMakeFiles/non_uniform_explicit_constant.dir/clean
 CMakeFiles/non_uniform_1D_constant.dir/all:
 	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/depend
 	$(MAKE) -f CMakeFiles/non_uniform_1D_constant.dir/build.make CMakeFiles/non_uniform_1D_constant.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=7,8,9 "Built target non_uniform_1D_constant"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/giniunaite/NC-non-uniform/CMakeFiles --progress-num=9,10 "Built target non_uniform_1D_constant"
 .PHONY : CMakeFiles/non_uniform_1D_constant.dir/all
 
 # Include target in all.
@@ -224,7 +261,7 @@ all: CMakeFiles/non_uniform_1D_constant.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/non_uniform_1D_constant.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/giniunaite/NC-non-uniform/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/giniunaite/NC-non-uniform/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/non_uniform_1D_constant.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/giniunaite/NC-non-uniform/CMakeFiles 0
 .PHONY : CMakeFiles/non_uniform_1D_constant.dir/rule

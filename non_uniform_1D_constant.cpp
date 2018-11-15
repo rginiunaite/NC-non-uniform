@@ -48,7 +48,7 @@ int main() {
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 0.01;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
+    double D = 0.0001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
     double dt = 0.001; // time step
     double dt_init = dt;
@@ -59,7 +59,7 @@ int main() {
 
 
     // reaction rate
-    double k_reac = 0.105;//.205; // reaction term
+    double k_reac = 0;//0.03;//0.105;//.205; // reaction term
 
 
     // domain growth parameters
@@ -73,7 +73,7 @@ int main() {
 
 
     // for comparison with analytical
-    double alpha = 0.1;
+    double alpha = 0.05;
 
 
     VectorXd strain = VectorXd::Zero(length_x);
@@ -84,6 +84,49 @@ int main() {
         strain(i) = alpha;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
     }
 
+//    //piecewise constant, two parts
+//
+//    int theta1 = int(0.5 * space_grid_controller);
+//    int theta2 = int(0.7 * space_grid_controller);
+
+    // first part it is linear growth
+//    for (int i = 0; i < theta1; i++) {
+//        strain(i) =0;//linear_par * double(theta1) /
+//        // double(space_grid_controller);//linear_par * (double(i) / double(space_grid_controller));
+//    }
+//
+//
+//    // second part is constant
+//    for (int i = theta1; i < length_x; i++) {
+//        strain(i) = alpha;// 0.002;//0.5 * linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
+//        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
+//    }
+
+
+
+
+    // three parts, including spatial linear growth
+
+//        int theta1 = int(0.4 * space_grid_controller);
+//    int theta2 = int(0.7 * space_grid_controller);
+//
+//    // first part it is linear growth
+//    for (int i = 0; i < theta1; i++) {
+//        strain(i) = alpha * (double(i) / double(space_grid_controller));
+//    }
+//
+//
+//    // second part is constant
+//    for (int i = theta1; i < theta2; i++) {
+//        strain(i) = alpha * double(theta1) / double(space_grid_controller); // constant to where it was
+//        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
+//    }
+//
+//    // third part no growth, constant
+//    for (int i = theta2; i < length_x; i++) {
+//        strain(i) = 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
+//    }
+
     // growth function
 
     // I will mainly use its first derivative with respect to x
@@ -93,6 +136,7 @@ int main() {
 
     for (int i = 0; i < length_x; i++) {
         Gamma_x(i) = exp(0 * strain(i));
+        Gamma(i) = i/space_grid_controller;
     }
 
 
@@ -112,7 +156,7 @@ int main() {
 //    }
 
     // non uniform initial conditions
-    double beta = 0.2; // up to here the initial chemo concentration is C_0
+    double beta = 1.0; // up to here the initial chemo concentration is C_0
     double C0 = 1.0; // initially non-zero, afterwards zero
 
     for (int i = 0; i < beta*space_grid_controller; i++) {
@@ -164,24 +208,63 @@ int main() {
         chemo_3col(i, 1) = chemo_3col_ind(i, 1);
     }
 
-    // save data to plot chemoattractant concentration
-    ofstream output("matrix_non_uniform" + to_string(0) + ".csv");
 
-    //output << "x, y, z, u" << "\n" << endl;
-
-
-    for (int i = 0; i < length_x * length_y; i++) {
-        for (int j = 0; j < 4; j++) {
-            output << chemo_3col(i, j) << ", ";
-        }
-        output << "\n" << endl;
-    }
 
 
     int counter = 0;
 
+
+
+
+
+
     //for each timestep
     while (t < final_time) {
+
+
+        if (counter % 1000 == 0) {
+
+            //if (t == 1 || t == 10 || t == 20 ) {
+            //cout << "heeere " << endl;
+            // save data to plot chemoattractant concentration
+            //ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
+
+            // output << "x, y, z, u" << "\n" << endl;
+
+            // save data to plot chemoattractant concentration
+            ofstream output("matrix_non_uniform" + to_string(0) + ".csv");
+
+            //output << "x, y, z, u" << "\n" << endl;
+
+
+            for (int i = 0; i < length_x * length_y; i++) {
+                for (int j = 0; j < 4; j++) {
+                    output << chemo_3col(i, j) << ", ";
+                }
+                output << "\n" << endl;
+            }
+
+
+            //ofstream output2("track_point" + to_string(t) + ".csv");
+
+            ofstream output2("track_point" + to_string(t) + ".csv");
+
+            output2 << Gamma(length_x / 2) << endl;
+
+            ofstream output3("track2_point" + to_string(t) + ".csv");
+
+            output3 << Gamma(int(length_x / 4)) << endl;
+
+            ofstream output4("track3_point" + to_string(t) + ".csv");
+
+            output4 << Gamma(3 * int(length_x / 4)) << endl;
+
+
+
+
+
+        }
+
 
         t = t + dt;
 
@@ -374,7 +457,7 @@ int main() {
 
 
         /*
-         * Constant growth
+         * Constant growth, for presentation
          *
          * */
 
@@ -386,10 +469,12 @@ int main() {
         }
 
 
-//        /*
-//         * Piecewise constant
-//         * */
-//
+
+
+        /*
+         * Piecewise constant, three parts
+         * */
+
 //
 //        for (int i = 0; i < theta1; i++) {
 //            for (int j = 0; j < length_y; j++) {
@@ -409,8 +494,8 @@ int main() {
 //            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
 //
 //        }
-//
-//
+
+
 //        // third part no growth, constant
 //        for (int i = theta2; i < length_x; i++) {
 //            for (int j = 0; j < length_y; j++) {
@@ -422,6 +507,39 @@ int main() {
 //                                                 Gamma_x(i);
 //            }
 //        }
+
+
+
+
+        /*
+         * Piecewise constant // all linear, for presentation
+         * */
+
+
+//        for (int i = 0; i < theta1; i++) {
+//            for (int j = 0; j < length_y; j++) {
+//                Gamma(i) = (double(i) / double(space_grid_controller)) * Gamma_x(i); // linearly increasing
+//
+//            }
+//        }
+//
+//
+//        // second part is constant
+//        for (int i = theta1; i < length_x; i++) {
+//
+//            Gamma(i) = (double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta1 - 1) +
+//                       (double(i) / double(space_grid_controller) - double(theta1 - 1) /
+//                                                                    double(space_grid_controller)) * Gamma_x(i);
+//
+//            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
+//
+//        }
+
+
+
+
+
+
 
 
 
@@ -439,6 +557,9 @@ int main() {
                 chemo_3col(k, 0) = Gamma(a);
             }
         }
+
+
+
 
         //cout << " hello " << endl;
 
@@ -466,24 +587,7 @@ int main() {
 //        }
 
 
-        if (counter % 1000 == 0) {
 
-            //if (t == 1 || t == 10 || t == 20 ) {
-            //cout << "heeere " << endl;
-            // save data to plot chemoattractant concentration
-            ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
-
-            // output << "x, y, z, u" << "\n" << endl;
-
-
-            for (int i = 0; i < length_x * length_y; i++) {
-                for (int j = 0; j < 4; j++) {
-                    output << chemo_3col(i, j) << ", ";
-                }
-                output << "\n" << endl;
-            }
-
-        }
  //   cout << "t " << t << endl;
 //        cout << "domain length " << Gamma_x(length_x-1) << endl;
     }

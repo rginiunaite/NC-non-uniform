@@ -163,7 +163,7 @@ int main() {
             for (int xL = 0; xL < solution_grid - int(non_growing_final * double(solution_grid)); xL++) {
                 cn(i, xL + int(non_growing_final * double(solution_grid))) = exp(
                         -(D * i * i * M_PI * M_PI * (1.0 - exp(-2.0 * alpha * t))) /
-                        (2.0 * alpha * length_constant_initial * length_constant_initial) + t * (k_reac - alpha));
+                        (2.0 * alpha * length_growing_initial * length_growing_initial) + t * (k_reac - alpha));
                 x = length_x_growing_part * double(xL) / solution_grid;
                 bn(i, xL + int(non_growing_final * double(solution_grid))) = cos(i * M_PI * x / length_x_growing_part);
             }
