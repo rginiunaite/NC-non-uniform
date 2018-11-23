@@ -3,7 +3,7 @@
 
 
 % extract relevant dat
-sim1 = 'matrix_non_uniform0.csv';
+sim1 = 'matrix_non_uniform1.000000.csv';
 M1 = csvread(sim1);
 distance1 = M1(:,1)*100;
 concentration1 = M1(:,4);
@@ -116,7 +116,7 @@ box on
 
 
 % extract relevant dat
-point1 = 'track_point0.000000.csv';
+point1 = 'track_point1.000000.csv';
 Mi1 = csvread(point1);
 pointdistance(1) = Mi1(:,1)*100;
 
@@ -129,7 +129,7 @@ Mi3 = csvread(point3);
 pointdistance(3) = Mi3(:,1)*100;
 
 % extract relevant dat
-pointmiddle1 = 'track2_point0.000000.csv';
+pointmiddle1 = 'track2_point1.000000.csv';
 Mi1 = csvread(pointmiddle1);
 pointMiddledistance(1) = Mi1(:,1)*100;
 
@@ -142,7 +142,7 @@ Mi3 = csvread(pointmiddle3);
 pointMiddledistance(3) = Mi3(:,1)*100;
 
 % extract relevant dat
-pointlast1 = 'track3_point0.000000.csv';
+pointlast1 = 'track3_point1.000000.csv';
 Mi1 = csvread(pointlast1);
 pointlastdistance(1) = Mi1(:,1)*100;
 
@@ -160,36 +160,36 @@ figure
 
 c = linspace(1,3,1);
 
-sz =50;
+sz =100;
 
 scatter (pointdistance(1),0,'b','filled')
 hold on
-scatter (pointdistance(2),1,'r','filled')
+scatter (pointdistance(2),10,'r','filled')
 
-scatter (pointdistance(3),2,'g','filled')
+scatter (pointdistance(3),20,'g','filled')
 
 
 
 scatter (pointMiddledistance(1),0,'b','filled')
 hold on
-scatter (pointMiddledistance(2),1,'r','filled')
+scatter (pointMiddledistance(2),10,'r','filled')
 
-scatter (pointMiddledistance(3),2,'g','filled')
+scatter (pointMiddledistance(3),20,'g','filled')
 
 
 scatter (pointlastdistance(1),0,'b','filled')
 hold on
-scatter (pointlastdistance(2),1,'r','filled')
+scatter (pointlastdistance(2),10,'r','filled')
 
-scatter (pointlastdistance(3),2,'g','filled')
+scatter (pointlastdistance(3),20,'g','filled')
 
 
-xlabel('Distance, x')
+xlabel('x')
 ylabel('Time,t')
 %legend('t = 0','t = 10','t = 20')
 set(gca,'FontSize',36)
 ax = gca;
-
+%xlim([0,110])
 
 
 box on

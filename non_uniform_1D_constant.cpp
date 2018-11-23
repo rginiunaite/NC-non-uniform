@@ -2,7 +2,7 @@
 // Created by Rasa on 18.10.8.
 //
 /*
- * Reaction-diffusion equation on a non-uniformly growing domain, 1D, implicit method, uniform growth
+ * Reaction-diffusion equation on a non-uniformly growing domain, 1D, implicit method, uniform growth, piecewise two parts, piecewise three parts with one linear
  * Initially there will be no cell dynamics
  * */
 
@@ -43,7 +43,7 @@ int main() {
     int length_x = int(domain_length) * int(space_grid_controller); // length in x direction of the chemoattractant matrix
     double initial_domain_length = domain_length;
     const int length_y = 1; // length in y direction of the chemoattractant matrix
-    const double final_time = 20.0; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
+    const double final_time = 100.0; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
 
 
 // parameters for the dynamics of chemoattractant concentration
@@ -59,7 +59,7 @@ int main() {
 
 
     // reaction rate
-    double k_reac = 0;//0.03;//0.105;//.205; // reaction term
+    double k_reac = 0;//0.105;//0.03;//0.105;//.205; // reaction term
 
 
     // domain growth parameters
@@ -73,34 +73,34 @@ int main() {
 
 
     // for comparison with analytical
-    double alpha = 0.05;
+    double alpha = 0.1;
 
 
     VectorXd strain = VectorXd::Zero(length_x);
 
 
     // constant
-    for (int i = 0; i < length_x; i++) {
-        strain(i) = alpha;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
+//    for (int i = 0; i < length_x; i++) {
+//        strain(i) = alpha;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
+//    }
+
+    //piecewise constant, two parts
+
+    int theta1 = int(0.5 * space_grid_controller);
+    //int theta2 = int(0.7 * space_grid_controller);
+
+     // first part it is linear growth
+    for (int i = 0; i < theta1; i++) {
+        strain(i) = alpha;//linear_par * double(theta1) /
+        // double(space_grid_controller);//linear_par * (double(i) / double(space_grid_controller));
     }
 
-//    //piecewise constant, two parts
-//
-//    int theta1 = int(0.5 * space_grid_controller);
-//    int theta2 = int(0.7 * space_grid_controller);
 
-    // first part it is linear growth
-//    for (int i = 0; i < theta1; i++) {
-//        strain(i) =0;//linear_par * double(theta1) /
-//        // double(space_grid_controller);//linear_par * (double(i) / double(space_grid_controller));
-//    }
-//
-//
-//    // second part is constant
-//    for (int i = theta1; i < length_x; i++) {
-//        strain(i) = alpha;// 0.002;//0.5 * linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
-//        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
-//    }
+    // second part is constant
+    for (int i = theta1; i < length_x; i++) {
+        strain(i) = 0;// 0.002;//0.5 * linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
+        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
+    }
 
 
 
@@ -158,10 +158,11 @@ int main() {
     // non uniform initial conditions
     double beta = 1.0; // up to here the initial chemo concentration is C_0
     double C0 = 1.0; // initially non-zero, afterwards zero
+    double n = 100.0; // for 1 - 0.5 cos(n \pi x)
 
     for (int i = 0; i < beta*space_grid_controller; i++) {
         for (int j = 0; j < length_y; j++) {
-            chemo(i, j) = C0;
+            chemo(i, j) = C0 - 0.5 * cos( M_PI * i/space_grid_controller * n);
         }
     }
 
@@ -214,7 +215,33 @@ int main() {
     int counter = 0;
 
 
+    // save data to plot chemoattractant concentration
+    ofstream outputinit("matrix_non_uniform0.csv");
 
+    //output << "x, y, z, u" << "\n" << endl;
+
+
+    for (int i = 0; i < length_x * length_y; i++) {
+        for (int j = 0; j < 4; j++) {
+            outputinit << chemo_3col(i, j) << ", ";
+        }
+        outputinit << "\n" << endl;
+    }
+
+
+    //ofstream output2("track_point" + to_string(t) + ".csv");
+
+    ofstream output2in("track_point0.csv");
+
+    output2in << Gamma(length_x / 2) << endl;
+
+    ofstream output3in("track2_point0.csv");
+
+    output3in << Gamma(int(length_x / 4)) << endl;
+
+    ofstream output4in("track3_point.csv");
+
+    output4in << Gamma(3 * int(length_x / 4)) << endl;
 
 
 
@@ -222,48 +249,7 @@ int main() {
     while (t < final_time) {
 
 
-        if (counter % 1000 == 0) {
 
-            //if (t == 1 || t == 10 || t == 20 ) {
-            //cout << "heeere " << endl;
-            // save data to plot chemoattractant concentration
-            //ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
-
-            // output << "x, y, z, u" << "\n" << endl;
-
-            // save data to plot chemoattractant concentration
-            ofstream output("matrix_non_uniform" + to_string(0) + ".csv");
-
-            //output << "x, y, z, u" << "\n" << endl;
-
-
-            for (int i = 0; i < length_x * length_y; i++) {
-                for (int j = 0; j < 4; j++) {
-                    output << chemo_3col(i, j) << ", ";
-                }
-                output << "\n" << endl;
-            }
-
-
-            //ofstream output2("track_point" + to_string(t) + ".csv");
-
-            ofstream output2("track_point" + to_string(t) + ".csv");
-
-            output2 << Gamma(length_x / 2) << endl;
-
-            ofstream output3("track2_point" + to_string(t) + ".csv");
-
-            output3 << Gamma(int(length_x / 4)) << endl;
-
-            ofstream output4("track3_point" + to_string(t) + ".csv");
-
-            output4 << Gamma(3 * int(length_x / 4)) << endl;
-
-
-
-
-
-        }
 
 
         t = t + dt;
@@ -424,10 +410,10 @@ int main() {
          * three different regions
          * */
 
-
+//
 //        for (int i = 0; i < theta1; i++) {
 //            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = 1.0 / (t * linear_par) * (Gamma_x(i) - 1); // linearly increasing
+//                Gamma(i) = 1.0 / (t * alpha) * (Gamma_x(i) - 1); // linearly increasing
 //
 //            }
 //        }
@@ -435,7 +421,7 @@ int main() {
 //
 //        // second part is constant
 //        for (int i = theta1; i < theta2; i++) {
-//            Gamma(i) = 1.0 / (t * linear_par) * (Gamma_x(theta1 - 1) - 1) + (double(i) / double(space_grid_controller) -
+//            Gamma(i) = 1.0 / (t * alpha) * (Gamma_x(theta1 - 1) - 1) + (double(i) / double(space_grid_controller) -
 //                                                                             double(theta1 - 1) /
 //                                                                             double(space_grid_controller)) *
 //                                                                            Gamma_x(i); // first was linear, this constant
@@ -447,7 +433,7 @@ int main() {
 //        // third part no growth, constant
 //        for (int i = theta2; i < length_x; i++) {
 //            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = 1.0 / (t * linear_par) * (Gamma_x(theta1 - 1) - 1) +
+//                Gamma(i) = 1.0 / (t * alpha) * (Gamma_x(theta1 - 1) - 1) +
 //                           (double(theta2 - 1) / double(space_grid_controller) -
 //                            double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta2 - 1) +
 //                           double(i) / double(space_grid_controller) -
@@ -462,82 +448,43 @@ int main() {
          * */
 
 
-        for (int i = 0; i < length_x; i++) {
-            for (int j = 0; j < length_y; j++) {
-                Gamma(i) = (double(i) / double(space_grid_controller)) * Gamma_x(i);
-            }
+//        for (int i = 0; i < length_x; i++) {
+//            for (int j = 0; j < length_y; j++) {
+//                Gamma(i) = (double(i) / double(space_grid_controller)) * Gamma_x(i);
+//            }
+//        }
+
+
+
+
+
+
+
+
+//        /*
+//         * Piecewise constant // all linear, for presentation
+//         * */
+//
+//
+        for (int i = 0; i < theta1; i++) {
+                Gamma(i) = (double(i) / double(space_grid_controller)) * (Gamma_x(i)); // linearly increasing
+
         }
 
 
+        // second part is constant
+        for (int i = theta1; i < length_x; i++) {
 
-
-        /*
-         * Piecewise constant, three parts
-         * */
-
+            Gamma(i) = Gamma(theta1-1) +
+                       (double(i) / double(space_grid_controller) - double(theta1 - 1) /
+                                                                    double(space_grid_controller)) * Gamma_x(i);
 //
-//        for (int i = 0; i < theta1; i++) {
-//            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = (double(i) / double(space_grid_controller)) * Gamma_x(i); // linearly increasing
-//
+//            if(t>15) {
+//                cout << "Gamma i" << Gamma(i) << endl;
 //            }
-//        }
-//
-//
-//        // second part is constant
-//        for (int i = theta1; i < theta2; i++) {
-//
-//            Gamma(i) = (double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta1 - 1) +
-//                       (double(i) / double(space_grid_controller) - double(theta1 - 1) /
-//                                                                    double(space_grid_controller)) * Gamma_x(i);
-//
-//            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
-//
-//        }
+            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
 
-
-//        // third part no growth, constant
-//        for (int i = theta2; i < length_x; i++) {
-//            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = (double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta1 - 1) +
-//                           (double(theta2 - 1) / double(space_grid_controller) - double(theta1 - 1) /
-//                                                                                 double(space_grid_controller)) *
-//                           Gamma_x(theta2 - 1) + (double(i) / double(space_grid_controller) - double(theta2 - 1) /
-//                                                                                              double(space_grid_controller)) *
-//                                                 Gamma_x(i);
-//            }
-//        }
-
-
-
-
-        /*
-         * Piecewise constant // all linear, for presentation
-         * */
-
-
-//        for (int i = 0; i < theta1; i++) {
-//            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = (double(i) / double(space_grid_controller)) * Gamma_x(i); // linearly increasing
-//
-//            }
-//        }
-//
-//
-//        // second part is constant
-//        for (int i = theta1; i < length_x; i++) {
-//
-//            Gamma(i) = (double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta1 - 1) +
-//                       (double(i) / double(space_grid_controller) - double(theta1 - 1) /
-//                                                                    double(space_grid_controller)) * Gamma_x(i);
-//
-//            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
-//
-//        }
-
-
-
-
+        }
 
 
 
@@ -586,6 +533,48 @@ int main() {
 //
 //        }
 
+        if (counter % 1000 == 0) {
+
+            //if (t == 1 || t == 10 || t == 20 ) {
+            //cout << "heeere " << endl;
+            // save data to plot chemoattractant concentration
+            //ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
+
+            // output << "x, y, z, u" << "\n" << endl;
+
+            // save data to plot chemoattractant concentration
+            ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
+
+            //output << "x, y, z, u" << "\n" << endl;
+
+
+            for (int i = 0; i < length_x * length_y; i++) {
+                for (int j = 0; j < 4; j++) {
+                    output << chemo_3col(i, j) << ", ";
+                }
+                output << "\n" << endl;
+            }
+
+
+            //ofstream output2("track_point" + to_string(t) + ".csv");
+
+            ofstream output2("track_point" + to_string(t) + ".csv");
+
+            output2 << Gamma(length_x / 2) << endl;
+
+            ofstream output3("track2_point" + to_string(t) + ".csv");
+
+            output3 << Gamma(int(length_x / 4)) << endl;
+
+            ofstream output4("track3_point" + to_string(t) + ".csv");
+
+            output4 << Gamma(3 * int(length_x / 4)) << endl;
+
+
+
+
+
+        }
 
 
  //   cout << "t " << t << endl;

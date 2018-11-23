@@ -11,11 +11,11 @@ figure
 
 plot(0,0)
 
-%plot (real_grid(:,1), sol(:,1),'LineWidth',2); % corresponds to time 0
+plot (real_grid(:,1), sol(:,1),'LineWidth',2); % corresponds to time 0
 hold on
-%plot (real_grid(:,11),sol(:,11),'LineWidth',2); %% corresponds to time 10
+plot (real_grid(:,11),sol(:,11),'LineWidth',2); %% corresponds to time 10
 
-%plot(real_grid(:,21),sol(:,21),'LineWidth',2);
+plot(real_grid(:,21),sol(:,21),'LineWidth',2);
 xlim([0,800])
 xticks([0.0, 200.0, 400.0, 600.0, 800.0])
 xticklabels({'0', '2', '4', '6', '8'});
