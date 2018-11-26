@@ -43,14 +43,14 @@ int main() {
     int length_x = int(domain_length) * int(space_grid_controller); // length in x direction of the chemoattractant matrix
     double initial_domain_length = domain_length;
     const int length_y = 1; // length in y direction of the chemoattractant matrix
-    const double final_time = 100.0; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
+    const double final_time = 1000.0; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
 
 
 // parameters for the dynamics of chemoattractant concentration
 
     double D = 0.0001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
-    double dt = 0.001; // time step
+    double dt = 0.1; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx = 1.0 / double(space_grid_controller); // space step in x direction, double to be consistent with other types
@@ -73,7 +73,7 @@ int main() {
 
 
     // for comparison with analytical
-    double alpha = 0.1;
+    double alpha = 0.001;//before 0.1
 
 
     VectorXd strain = VectorXd::Zero(length_x);
@@ -153,12 +153,12 @@ int main() {
 //            chemo(i, j) = 1; // uniform concentration initially
 //            chemo_new(i, j) = 1; // this is for later updates
 //        }
-//    }
+//    }e
 
     // non uniform initial conditions
     double beta = 1.0; // up to here the initial chemo concentration is C_0
     double C0 = 1.0; // initially non-zero, afterwards zero
-    double n = 100.0; // for 1 - 0.5 cos(n \pi x)
+    double n = 10.0; // for 1 - 0.5 cos(n \pi x)
 
     for (int i = 0; i < beta*space_grid_controller; i++) {
         for (int j = 0; j < length_y; j++) {
@@ -533,7 +533,7 @@ int main() {
 //
 //        }
 
-        if (counter % 1000 == 0) {
+        if (counter % 10 == 0) {
 
             //if (t == 1 || t == 10 || t == 20 ) {
             //cout << "heeere " << endl;
