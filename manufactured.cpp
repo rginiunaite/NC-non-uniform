@@ -49,9 +49,9 @@ int main() {
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 0.0001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
+    double D = 0.01;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
-    double dt = 1.0; // time step
+    double dt = 0.1; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx =
@@ -312,7 +312,7 @@ int main() {
                                       k_reac * cos(M_PI * (i/space_grid_controller) / Lt)) +
                             D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1)) +
                             D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1)));
-                cout << " bi " << bi << endl;
+                //cout << " bi " << bi << endl;
             }
         }
 
@@ -547,7 +547,7 @@ int main() {
 //
 //        }
 
-        if (counter % 1 == 0) {
+        if (counter % 10 == 0) {
 
             //if (t == 1 || t == 10 || t == 20 ) {
             //cout << "heeere " << endl;
