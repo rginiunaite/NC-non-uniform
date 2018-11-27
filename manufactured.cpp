@@ -40,7 +40,8 @@ int main() {
     double space_grid_controller = 1000;
 
     double domain_length = 1.0; //this variable is for the actual domain length, since it will be increasing
-    int length_x = int(domain_length) * int(space_grid_controller); // length in x direction of the chemoattractant matrix
+    int length_x =
+            int(domain_length) * int(space_grid_controller); // length in x direction of the chemoattractant matrix
     double initial_domain_length = domain_length;
     const int length_y = 1; // length in y direction of the chemoattractant matrix
     const double final_time = 20.0; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
@@ -53,7 +54,8 @@ int main() {
     double dt = 1.0; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
-    double dx = 1.0 / double(space_grid_controller); // space step in x direction, double to be consistent with other types
+    double dx =
+            1.0 / double(space_grid_controller); // space step in x direction, double to be consistent with other types
     double dy = 1; // space step in y direction
     double kai = 0.00001;//0;//0.1 // to 1 /h production rate of chemoattractant
 
@@ -137,7 +139,7 @@ int main() {
 
     for (int i = 0; i < length_x; i++) {
         Gamma_x(i) = exp(0 * strain(i));
-        Gamma(i) = i/space_grid_controller;
+        Gamma(i) = i / space_grid_controller;
     }
 
     // for total length
@@ -164,9 +166,10 @@ int main() {
     double C0 = 1.0; // initially non-zero, afterwards zero
     double n = 10.0; // for 1 - 0.5 cos(n \pi x)
 
-    for (int i = 0; i < beta*space_grid_controller; i++) {
+    for (int i = 0; i < beta * space_grid_controller; i++) {
         for (int j = 0; j < length_y; j++) {
-            chemo(i, j) = cos(M_PI*i/space_grid_controller);//1;//C0 - 0.5 * cos( M_PI * i/space_grid_controller * n);
+            chemo(i, j) = cos(
+                    M_PI * i / space_grid_controller);//1;//C0 - 0.5 * cos( M_PI * i/space_grid_controller * n);
         }
     }
 
@@ -214,8 +217,6 @@ int main() {
     }
 
 
-
-
     int counter = 0;
 
 
@@ -253,12 +254,9 @@ int main() {
     while (t < final_time) {
 
 
-
-
-
         t = t + dt;
 
-        counter = counter +1;
+        counter = counter + 1;
 
         // update the strain rate
         for (int i = 0; i < length_x; i++) {
@@ -286,8 +284,8 @@ int main() {
          * Domain growth
          * */
 
-        Lt = thetasmall + thetasmall* exp(alpha*t);
-        Ltdot = alpha * thetasmall *exp(alpha*t);
+        Lt = thetasmall + thetasmall * exp(alpha * t);
+        Ltdot = alpha * thetasmall * exp(alpha * t);
 
         // coefficient of tridiagonal matrix which is contained in the linear system
 
@@ -307,15 +305,16 @@ int main() {
             }
         }
 
-        for (int i = 1; i < length_x-1; i++) {
+        for (int i = 1; i < length_x - 1; i++) {
             for (int j = 0; j < length_y; j++) {
-                bi(i, j) = (1 + dt *( strain(i) - k_reac + Ltdot/(Lt*Lt)*sin(M_PI*i/Lt) + D *cos(M_PI*i/Lt)*(M_PI*i/Lt)*(M_PI*i/Lt) - k_reac* cos(M_PI*i/Lt) ) +
+                bi(i, j) = (1 + dt * (strain(i) - k_reac + Ltdot / (Lt * Lt) * sin(M_PI * (i/space_grid_controller) / Lt) +
+                                      D * cos(M_PI * (i/space_grid_controller) / Lt) * (M_PI * (i/space_grid_controller) / Lt) * (M_PI * (i/space_grid_controller) / Lt) -
+                                      k_reac * cos(M_PI * (i/space_grid_controller) / Lt)) +
                             D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1)) +
                             D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1)));
                 cout << " bi " << bi << endl;
             }
         }
-
 
 
         for (int i = 1; i < length_x - 1; i++) {
@@ -337,14 +336,22 @@ int main() {
         // new implementation of zero flux boundary,same at -1
 
         for (int j = 0; j < length_y; j++) {
-            ai(length_x-1, j) = -2*D * dt / (2.0 * Gamma_x(length_x-1) * dx * dx) * (1.0 / Gamma_x(length_x-1) + 1.0 / Gamma_x(length_x - 2));
-            bi(0, j) = (1 + dt *( strain(0) - k_reac+ Ltdot/(Lt*Lt)*sin(M_PI*0/Lt) + D *cos(M_PI*0/Lt)*(M_PI*0/Lt)*(M_PI*0/Lt) - k_reac* cos(M_PI*0/Lt) ) +
+            ai(length_x - 1, j) = -2 * D * dt / (2.0 * Gamma_x(length_x - 1) * dx * dx) *
+                                  (1.0 / Gamma_x(length_x - 1) + 1.0 / Gamma_x(length_x - 2));
+            bi(0, j) = (1 + dt * (strain(0) - k_reac + Ltdot / (Lt * Lt) * sin(M_PI * 0 / Lt) +
+                                  D * cos(M_PI * 0 / Lt) * (M_PI * 0 / Lt) * (M_PI * 0 / Lt) -
+                                  k_reac * cos(M_PI * 0 / Lt)) +
                         D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1)) +
                         D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1)));
-            bi(length_x-1, j) = (1 + dt *( strain(length_x-1) - k_reac+ Ltdot/(Lt*Lt)*sin(M_PI*(length_x-1)/Lt) + D *cos(M_PI*(length_x-1)/Lt)*(M_PI*(length_x-1)/Lt)*(M_PI*(length_x-1)/Lt) - k_reac* cos(M_PI*(length_x-1)/Lt) ) +
-                                 D * dt / (2.0 * Gamma_x(length_x-1) * dx * dx) * (1.0 / Gamma_x(length_x-1) + 1.0 / Gamma_x(length_x-2)) +
-                                 D * dt / (2.0 * Gamma_x(length_x-1) * dx * dx) * (1.0 / Gamma_x(length_x-1) + 1.0 / Gamma_x(length_x-2)));
-            gi(0, j) = -2*D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1));
+            bi(length_x - 1, j) = (1 + dt * (strain(length_x - 1) - k_reac +
+                                             Ltdot / (Lt * Lt) * sin(M_PI * ((length_x - 1)/space_grid_controller) / Lt) +
+                                             D * cos(M_PI * ((length_x - 1)/space_grid_controller) / Lt) * (M_PI * ((length_x - 1)/space_grid_controller) / Lt) *
+                                             (M_PI * ((length_x - 1)/space_grid_controller) / Lt) - k_reac * cos(M_PI * ((length_x - 1)/space_grid_controller) / Lt)) +
+                                   D * dt / (2.0 * Gamma_x(length_x - 1) * dx * dx) *
+                                   (1.0 / Gamma_x(length_x - 1) + 1.0 / Gamma_x(length_x - 2)) +
+                                   D * dt / (2.0 * Gamma_x(length_x - 1) * dx * dx) *
+                                   (1.0 / Gamma_x(length_x - 1) + 1.0 / Gamma_x(length_x - 2)));
+            gi(0, j) = -2 * D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1));
         }
 
 
@@ -407,7 +414,6 @@ int main() {
                 chemo_new(k, j) = didash(k, j) - cidash(k, j) * chemo_new(k + 1, j);
             }
         }
-
 
 
         chemo = chemo_new; // update chemo concentration
@@ -483,7 +489,7 @@ int main() {
         // second part is constant
         for (int i = theta1; i < length_x; i++) {
 
-            Gamma(i) = Gamma(theta1-1) +
+            Gamma(i) = Gamma(theta1 - 1) +
                        (double(i) / double(space_grid_controller) - double(theta1 - 1) /
                                                                     double(space_grid_controller)) * Gamma_x(i);
 //
@@ -577,9 +583,6 @@ int main() {
             ofstream output4("track3_point" + to_string(t) + ".csv");
 
             output4 << Gamma(3 * int(length_x / 4)) << endl;
-
-
-
 
 
         }
