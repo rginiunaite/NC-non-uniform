@@ -287,6 +287,37 @@ int main() {
         Lt = thetasmall + thetasmall * exp(alpha * t);
         Ltdot = alpha * thetasmall * exp(alpha * t);
 
+
+
+//        /*
+//         * Piecewise constant // all linear, for presentation
+//         * */
+//
+//
+        for (int i = 0; i < theta1; i++) {
+            Gamma(i) = (double(i) / double(space_grid_controller)) * (Gamma_x(i)); // linearly increasing
+
+        }
+
+
+
+        // second part is constant
+        for (int i = theta1; i < length_x; i++) {
+
+            Gamma(i) = Gamma(theta1 - 1) +
+                       (double(i) / double(space_grid_controller) - double(theta1 - 1) /
+                                                                    double(space_grid_controller)) * Gamma_x(i);
+//
+//            if(t>15) {
+//                cout << "Gamma i" << Gamma(i) << endl;
+//            }
+            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
+
+        }
+
+      
+
+
         // coefficient of tridiagonal matrix which is contained in the linear system
 
         // only works if y = 1
@@ -307,11 +338,9 @@ int main() {
 
         for (int i = 1; i < length_x - 1; i++) {
             for (int j = 0; j < length_y; j++) {
-                bi(i, j) = (1 + dt * (strain(i) - k_reac + Ltdot / (Lt * Lt) * sin(M_PI * (i/space_grid_controller) / Lt) +
-                                      D * cos(M_PI * (i/space_grid_controller) / Lt) * (M_PI * (i/space_grid_controller) / Lt) * (M_PI * (i/space_grid_controller) / Lt) -
-                                      k_reac * cos(M_PI * (i/space_grid_controller) / Lt)) +
-                            D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1)) +
-                            D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1)));
+                bi(i, j) =  (1 + dt *( strain(i) - k_reac) +
+                 D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1)) +
+                 D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1)));
                 //cout << " bi " << bi << endl;
             }
         }
@@ -338,19 +367,12 @@ int main() {
         for (int j = 0; j < length_y; j++) {
             ai(length_x - 1, j) = -2 * D * dt / (2.0 * Gamma_x(length_x - 1) * dx * dx) *
                                   (1.0 / Gamma_x(length_x - 1) + 1.0 / Gamma_x(length_x - 2));
-            bi(0, j) = (1 + dt * (strain(0) - k_reac + Ltdot / (Lt * Lt) * sin(M_PI * 0 / Lt) +
-                                  D * cos(M_PI * 0 / Lt) * (M_PI * 0 / Lt) * (M_PI * 0 / Lt) -
-                                  k_reac * cos(M_PI * 0 / Lt)) +
+            bi(0, j) = (1 + dt *( strain(0) - k_reac) +
                         D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1)) +
                         D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1)));
-            bi(length_x - 1, j) = (1 + dt * (strain(length_x - 1) - k_reac +
-                                             Ltdot / (Lt * Lt) * sin(M_PI * ((length_x - 1)/space_grid_controller) / Lt) +
-                                             D * cos(M_PI * ((length_x - 1)/space_grid_controller) / Lt) * (M_PI * ((length_x - 1)/space_grid_controller) / Lt) *
-                                             (M_PI * ((length_x - 1)/space_grid_controller) / Lt) - k_reac * cos(M_PI * ((length_x - 1)/space_grid_controller) / Lt)) +
-                                   D * dt / (2.0 * Gamma_x(length_x - 1) * dx * dx) *
-                                   (1.0 / Gamma_x(length_x - 1) + 1.0 / Gamma_x(length_x - 2)) +
-                                   D * dt / (2.0 * Gamma_x(length_x - 1) * dx * dx) *
-                                   (1.0 / Gamma_x(length_x - 1) + 1.0 / Gamma_x(length_x - 2)));
+            bi(length_x-1, j) = (1 + dt *( strain(length_x-1) - k_reac) +
+                                   D * dt / (2.0 * Gamma_x(length_x-1) * dx * dx) * (1.0 / Gamma_x(length_x-1) + 1.0 / Gamma_x(length_x-2)) +
+                                   D * dt / (2.0 * Gamma_x(length_x-1) * dx * dx) * (1.0 / Gamma_x(length_x-1) + 1.0 / Gamma_x(length_x-2)));
             gi(0, j) = -2 * D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1));
         }
 
@@ -370,7 +392,10 @@ int main() {
         // new implementation of zero flux
 
         for (int i = 0; i < length_x; i++) {
-            di(i, 0) = chemo(i, 0);
+            di(i, 0) = chemo(i, 0) -  Ltdot / (Lt * Lt) * sin(M_PI * Gamma(i) / Lt) +
+                                      D * cos(M_PI * Gamma(i) / Lt) *
+                                      (M_PI * Gamma(i) / Lt) * (M_PI * Gamma(i) / Lt) +
+                                      k_reac * cos(M_PI * Gamma(i) / Lt) ;
         }
 
 
@@ -472,33 +497,6 @@ int main() {
 
 
 
-
-
-
-//        /*
-//         * Piecewise constant // all linear, for presentation
-//         * */
-//
-//
-        for (int i = 0; i < theta1; i++) {
-            Gamma(i) = (double(i) / double(space_grid_controller)) * (Gamma_x(i)); // linearly increasing
-
-        }
-
-
-        // second part is constant
-        for (int i = theta1; i < length_x; i++) {
-
-            Gamma(i) = Gamma(theta1 - 1) +
-                       (double(i) / double(space_grid_controller) - double(theta1 - 1) /
-                                                                    double(space_grid_controller)) * Gamma_x(i);
-//
-//            if(t>15) {
-//                cout << "Gamma i" << Gamma(i) << endl;
-//            }
-            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
-
-        }
 
 
 
