@@ -51,7 +51,7 @@ int main() {
 
     double D = 0.01;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
-    double dt = 0.1; // time step
+    double dt = 0.001; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx =
@@ -315,7 +315,7 @@ int main() {
 
         }
 
-      
+
 
 
         // coefficient of tridiagonal matrix which is contained in the linear system
@@ -392,10 +392,10 @@ int main() {
         // new implementation of zero flux
 
         for (int i = 0; i < length_x; i++) {
-            di(i, 0) = chemo(i, 0) -  Ltdot / (Lt * Lt) * sin(M_PI * Gamma(i) / Lt) +
+            di(i, 0) = chemo(i, 0) - dt*( Ltdot / (Lt * Lt) * sin(M_PI * Gamma(i) / Lt) +
                                       D * cos(M_PI * Gamma(i) / Lt) *
                                       (M_PI * Gamma(i) / Lt) * (M_PI * Gamma(i) / Lt) +
-                                      k_reac * cos(M_PI * Gamma(i) / Lt) ;
+                    (k_reac-strain(i)) * cos(M_PI * Gamma(i) / Lt) );
         }
 
 
@@ -545,7 +545,7 @@ int main() {
 //
 //        }
 
-        if (counter % 10 == 0) {
+        if (counter % 1000 == 0) {
 
             //if (t == 1 || t == 10 || t == 20 ) {
             //cout << "heeere " << endl;
