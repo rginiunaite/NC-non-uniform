@@ -49,7 +49,7 @@ int main() {
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 0.01;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
+    double D = 1.0;//0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
     double dt = 0.001; // time step
     double dt_init = dt;
@@ -61,7 +61,7 @@ int main() {
 
 
     // reaction rate
-    double k_reac = 0;//0.105;//0.03;//0.105;//.205; // reaction term
+    double k_reac = 0;//0.1;//0.105;//0.105;//0.03;//0.105;//.205; // reaction term
 
 
     // domain growth parameters
@@ -279,13 +279,18 @@ int main() {
 //        }
 
 
-
         /*
-         * Domain growth
-         * */
+ * Constant growth, for presentation
+ *
+ * */
 
-        Lt = thetasmall + thetasmall * exp(alpha * t);
-        Ltdot = alpha * thetasmall * exp(alpha * t);
+
+//        for (int i = 0; i < length_x; i++) {
+//            for (int j = 0; j < length_y; j++) {
+//                Gamma(i) = (double(i) / double(space_grid_controller)) * Gamma_x(i);
+//            }
+//        }
+//
 
 
 
@@ -314,6 +319,15 @@ int main() {
             //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
 
         }
+
+        /*
+         * Domain growth
+         * */
+
+        Lt = thetasmall + thetasmall * exp(alpha * t);
+        Lt = Gamma(length_x-1);
+
+        Ltdot = alpha * thetasmall * exp(alpha * t);
 
 
 
@@ -392,10 +406,10 @@ int main() {
         // new implementation of zero flux
 
         for (int i = 0; i < length_x; i++) {
-            di(i, 0) = chemo(i, 0) - dt*( Ltdot / (Lt * Lt) * sin(M_PI * Gamma(i) / Lt) +
+            di(i, 0) = chemo(i, 0) + dt*( ( (alpha *Gamma(i))/Lt - Gamma(i)*Ltdot/(Lt*Lt) )  *M_PI  * sin(M_PI * Gamma(i) / Lt) +
                                       D * cos(M_PI * Gamma(i) / Lt) *
-                                      (M_PI * Gamma(i) / Lt) * (M_PI * Gamma(i) / Lt) +
-                    (k_reac-strain(i)) * cos(M_PI * Gamma(i) / Lt) );
+                                      (M_PI  / Lt) * (M_PI  / Lt) -
+                    (k_reac-strain(i)) * cos(M_PI * Gamma(i) / Lt) );//dt*(strain(i)-k_reac)*1;//
         }
 
 
@@ -481,17 +495,6 @@ int main() {
 //        }
 
 
-        /*
-         * Constant growth, for presentation
-         *
-         * */
-
-
-//        for (int i = 0; i < length_x; i++) {
-//            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = (double(i) / double(space_grid_controller)) * Gamma_x(i);
-//            }
-//        }
 
 
 
