@@ -110,8 +110,8 @@ int main() {
 
     // three parts, including spatial linear growth
 
-//        int theta1 = int(0.4 * space_grid_controller);
-//    int theta2 = int(0.7 * space_grid_controller);
+////        int theta1 = int(0.4 * space_grid_controller);
+////    int theta2 = int(0.7 * space_grid_controller);
 //
 //    // first part it is linear growth
 //    for (int i = 0; i < theta1; i++) {
@@ -120,15 +120,15 @@ int main() {
 //
 //
 //    // second part is constant
-//    for (int i = theta1; i < theta2; i++) {
+//    for (int i = theta1; i < length_x; i++) {
 //        strain(i) = alpha * double(theta1) / double(space_grid_controller); // constant to where it was
 //        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
 //    }
 //
-//    // third part no growth, constant
-//    for (int i = theta2; i < length_x; i++) {
-//        strain(i) = 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
-//    }
+////    // third part no growth, constant
+////    for (int i = theta2; i < length_x; i++) {
+////        strain(i) = 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
+////    }
 
     // growth function
 
@@ -294,11 +294,11 @@ int main() {
 
 
 
-//        /*
-//         * Piecewise constant // all linear, for presentation
-//         * */
-//
-//
+        /*
+         * Piecewise constant // all linear, for presentation
+         * */
+
+
         for (int i = 0; i < theta1; i++) {
             Gamma(i) = (double(i) / double(space_grid_controller)) * (Gamma_x(i)); // linearly increasing
 
@@ -320,6 +320,56 @@ int main() {
 
         }
 
+
+
+
+
+
+
+
+
+
+
+        /*
+ * three different regions
+ * */
+
+
+//        for (int i = 0; i < theta1; i++) {
+//            for (int j = 0; j < length_y; j++) {
+//                Gamma(i) = 1.0 / (t * alpha) * (Gamma_x(i) - 1); // linearly increasing
+//
+//            }
+//        }
+//
+//
+//        // second part is constant
+//        for (int i = theta1; i < length_x; i++) {
+//            Gamma(i) = 1.0 / (t * alpha) * (Gamma_x(theta1 - 1) - 1) + (double(i) / double(space_grid_controller) -
+//                                                                             double(theta1 - 1) /
+//                                                                             double(space_grid_controller)) *
+//                                                                            Gamma_x(i); // first was linear, this constant
+//            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
+//
+//        }
+//
+//
+////        // third part no growth, constant
+////        for (int i = theta2; i < length_x; i++) {
+////            for (int j = 0; j < length_y; j++) {
+////                Gamma(i) = 1.0 / (t * alpha) * (Gamma_x(theta1 - 1) - 1) +
+////                           (double(theta2 - 1) / double(space_grid_controller) -
+////                            double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta2 - 1) +
+////                           double(i) / double(space_grid_controller) -
+////                           (double(theta2 - 1) / double(space_grid_controller)); // linear, constant, zero
+////            }
+////        }
+//
+
+
+
+
+
         /*
          * Domain growth
          * */
@@ -327,7 +377,11 @@ int main() {
         Lt = thetasmall + thetasmall * exp(alpha * t);
         Lt = Gamma(length_x-1);
 
-        Ltdot = alpha * thetasmall * exp(alpha * t);
+        Ltdot = alpha * thetasmall * exp(alpha * t); // piecewise
+        //Ltdot = -1.0/(t*t *alpha) * (Gamma_x(theta1-1) -1) +thetasmall*alpha *Gamma_x(length_x-1);
+        //Ltdot =  (Gamma_x(theta1-1) - 1)+ thetasmall*alpha * Gamma_x(length_x-1);
+        //Ltdot = 0.1*(Gamma(length_x-1)-Gamma(length_x -2 ));
+
 
 
 
@@ -339,6 +393,11 @@ int main() {
         MatrixXd bi = MatrixXd::Zero(length_x, length_y);
         MatrixXd gi = MatrixXd::Zero(length_x, length_y);
         MatrixXd di = MatrixXd::Zero(length_x, length_y);
+
+
+        /*
+         * UNIFORM COEFFICIENTS
+         * */
 
 
         // inner coefficients
@@ -413,6 +472,171 @@ int main() {
         }
 
 
+
+        /*
+         * NON-UNIFORM TWO PARTS
+         * */
+
+
+
+//        // inner coefficients
+//
+//        //first part
+//
+//        for (int i = 1; i < theta1-1; i++) {
+//            for (int j = 0; j < length_y; j++) {
+//                ai(i, j) = -D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1));
+//
+//            }
+//        }
+//
+//        for (int i = 1; i < theta1 - 1; i++) {
+//            for (int j = 0; j < length_y; j++) {
+//                bi(i, j) =  (1 + dt *( strain(i) - k_reac) +
+//                             D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1)) +
+//                             D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1)));
+//                //cout << " bi " << bi << endl;
+//            }
+//        }
+//
+//
+//        for (int i = 1; i < theta1 - 1; i++) {
+//            for (int j = 0; j < length_y; j++) {
+//                gi(i, j) = -D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1));
+//
+//            }
+//        }
+//
+//
+//        // zero flux boundary
+////        for (int j = 0; j < length_y; j++) {
+////            bi(0, j) = 1;
+////            gi(0, j) = -1;
+////            ai(length_x - 1, j) = -1;
+////            bi(length_x - 1, j) = 1;
+////        }
+//
+//        // new implementation of zero flux boundary,same at -1
+//
+//        for (int j = 0; j < length_y; j++) {
+//            ai(theta1 - 1, j) = -1;
+//            bi(0, j) = (1 + dt *( strain(0) - k_reac) +
+//                        D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1)) +
+//                        D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1)));
+//            bi(theta1-1, j) = 1;
+//            gi(0, j) = -2 * D * dt / (2.0 * Gamma_x(0) * dx * dx) * (1.0 / Gamma_x(0) + 1.0 / Gamma_x(1));
+//        }
+//
+//
+//
+//        //  RHS of linear system Ax = d //   THIS IS LIKELY TO BE WRONG
+//
+////        for (int i = 1; i < length_x - 1; i++) {
+////            di(i, 0) = chemo(i, 0);
+////        }
+//
+//
+//        // new implementation of zero flux
+//
+//        for (int i = 0; i < theta1-1; i++) {
+//            di(i, 0) = chemo(i, 0) + dt*( ( (alpha *Gamma(i))/Lt - Gamma(i)*Ltdot/(Lt*Lt) )  *M_PI  * sin(M_PI * Gamma(i) / Lt) +
+//                                          D * cos(M_PI * Gamma(i) / Lt) *
+//                                          (M_PI  / Lt) * (M_PI  / Lt) -
+//                                          (k_reac-strain(i)) * cos(M_PI * Gamma(i) / Lt) );//dt*(strain(i)-k_reac)*1;//
+//        }
+//
+//        di(theta1-1,0) = chemo(theta1+1,0) -chemo(theta1,0)+ dt*( ( (alpha *Gamma(theta1-1))/Lt - Gamma(theta1-1)*Ltdot/(Lt*Lt) )  *M_PI  * sin(M_PI * Gamma(theta1-1) / Lt) +
+//                                                                  D * cos(M_PI * Gamma(theta1-1) / Lt) *
+//                                                                  (M_PI  / Lt) * (M_PI  / Lt) -
+//                                                                  (k_reac-strain(theta1-1)) * cos(M_PI * Gamma(theta1-1) / Lt) ); //same flux
+//
+//
+//
+//        //second part
+//
+//
+//
+//        // inner coefficients
+//
+//        for (int i = theta1+1; i <length_x-1; i++) {
+//            for (int j = 0; j < length_y; j++) {
+//                ai(i, j) = -D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1));
+//
+//            }
+//        }
+//
+//        for (int i = theta1 + 1; i < length_x - 1; i++) {
+//            for (int j = 0; j < length_y; j++) {
+//                bi(i, j) =  (1 + dt *( strain(i) - k_reac) +
+//                             D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1)) +
+//                             D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1)));
+//                //cout << " bi " << bi << endl;
+//            }
+//        }
+//
+//
+//        for (int i = theta1 + 1; i < length_x - 1; i++) {
+//            for (int j = 0; j < length_y; j++) {
+//                gi(i, j) = -D * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1));
+//
+//            }
+//        }
+//
+//
+//        // zero flux boundary
+////        for (int j = 0; j < length_y; j++) {
+////            bi(0, j) = 1;
+////            gi(0, j) = -1;
+////            ai(length_x - 1, j) = -1;
+////            bi(length_x - 1, j) = 1;
+////        }
+//
+//        // new implementation of zero flux boundary,same at -1
+//
+//        for (int j = 0; j < length_y; j++) {
+//            ai(length_x - 1, j) = -2 * D * dt / (2.0 * Gamma_x(length_x - 1) * dx * dx) *
+//                                  (1.0 / Gamma_x(length_x - 1) + 1.0 / Gamma_x(length_x - 2));
+//            bi(theta1, j) = -1;
+//            bi(length_x-1, j) = (1 + dt *( strain(length_x-1) - k_reac) + D * dt / (2.0 * Gamma_x(length_x-1) * dx * dx) * (1.0 / Gamma_x(length_x-1) + 1.0 / Gamma_x(length_x-2)) +
+//                                                                   D * dt / (2.0 * Gamma_x(length_x-1) * dx * dx) * (1.0 / Gamma_x(length_x-1) + 1.0 / Gamma_x(length_x-2)));
+//            gi(theta1, j) = 1;
+//        }
+//
+//        //  RHS of linear system Ax = d //   THIS IS LIKELY TO BE WRONG
+//
+////        for (int i = 1; i < length_x - 1; i++) {
+////            di(i, 0) = chemo(i, 0);
+////        }
+//
+//
+//        // new implementation of zero flux
+//
+//        for (int i = theta1+1; i < length_x; i++) {
+//            di(i, 0) = chemo(i, 0) + dt*( ( (alpha *Gamma(i))/Lt - Gamma(i)*Ltdot/(Lt*Lt) )  *M_PI  * sin(M_PI * Gamma(i) / Lt) +
+//                                          D * cos(M_PI * Gamma(i) / Lt) *
+//                                          (M_PI  / Lt) * (M_PI  / Lt) -
+//                                          (k_reac-strain(i)) * cos(M_PI * Gamma(i) / Lt) );//dt*(strain(i)-k_reac)*1;//
+//        }
+//
+//        di(theta1,0) = chemo(theta1-1,0) -chemo(theta1-2,0)+ dt*( ( (alpha *Gamma(theta1))/Lt - Gamma(theta1)*Ltdot/(Lt*Lt) )  *M_PI  * sin(M_PI * Gamma(theta1) / Lt) +
+//                                                                  D * cos(M_PI * Gamma(theta1) / Lt) *
+//                                                                  (M_PI  / Lt) * (M_PI  / Lt) -
+//                                                                  (k_reac-strain(theta1)) * cos(M_PI * Gamma(theta1) / Lt) ); //same flux
+//
+//
+//
+
+
+
+
+
+
+
+
+
+
+
+
         // for Thomas algorithm I reformulate the linear matrix by doing appropriate changes
 
         // new matrix coefficients
@@ -457,51 +681,6 @@ int main() {
 
         chemo = chemo_new; // update chemo concentration
         //}
-
-
-        /*
-         * three different regions
-         * */
-
-//
-//        for (int i = 0; i < theta1; i++) {
-//            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = 1.0 / (t * alpha) * (Gamma_x(i) - 1); // linearly increasing
-//
-//            }
-//        }
-//
-//
-//        // second part is constant
-//        for (int i = theta1; i < theta2; i++) {
-//            Gamma(i) = 1.0 / (t * alpha) * (Gamma_x(theta1 - 1) - 1) + (double(i) / double(space_grid_controller) -
-//                                                                             double(theta1 - 1) /
-//                                                                             double(space_grid_controller)) *
-//                                                                            Gamma_x(i); // first was linear, this constant
-//            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
-//
-//        }
-//
-//
-//        // third part no growth, constant
-//        for (int i = theta2; i < length_x; i++) {
-//            for (int j = 0; j < length_y; j++) {
-//                Gamma(i) = 1.0 / (t * alpha) * (Gamma_x(theta1 - 1) - 1) +
-//                           (double(theta2 - 1) / double(space_grid_controller) -
-//                            double(theta1 - 1) / double(space_grid_controller)) * Gamma_x(theta2 - 1) +
-//                           double(i) / double(space_grid_controller) -
-//                           (double(theta2 - 1) / double(space_grid_controller)); // linear, constant, zero
-//            }
-//        }
-
-
-
-
-
-
-
-
-
 
 
 
