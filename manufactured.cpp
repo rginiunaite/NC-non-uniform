@@ -40,6 +40,7 @@ int main() {
     double space_grid_controller = 1000;
 
     double domain_length = 1.0; //this variable is for the actual domain length, since it will be increasing
+    double Lt_old =domain_length;
     int length_x =
             int(domain_length) * int(space_grid_controller); // length in x direction of the chemoattractant matrix
     double initial_domain_length = domain_length;
@@ -51,7 +52,7 @@ int main() {
 
     double D = 1.0;//0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
-    double dt = 0.001; // time step
+    double dt = 0.1; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx =
@@ -92,6 +93,7 @@ int main() {
     double thetasmall = 0.5;
     //int theta2 = int(0.7 * space_grid_controller);
 
+
     // first part it is linear growth
     for (int i = 0; i < theta1; i++) {
         strain(i) = 0;//linear_par * double(theta1) /
@@ -113,7 +115,7 @@ int main() {
 ////        int theta1 = int(0.4 * space_grid_controller);
 ////    int theta2 = int(0.7 * space_grid_controller);
 //
-//    // first part it is linear growth
+    // first part it is linear growth
 //    for (int i = 0; i < theta1; i++) {
 //        strain(i) = alpha * (double(i) / double(space_grid_controller));
 //    }
@@ -124,7 +126,7 @@ int main() {
 //        strain(i) = alpha * double(theta1) / double(space_grid_controller); // constant to where it was
 //        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
 //    }
-//
+
 ////    // third part no growth, constant
 ////    for (int i = theta2; i < length_x; i++) {
 ////        strain(i) = 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
@@ -136,10 +138,13 @@ int main() {
 
     VectorXd Gamma_x = VectorXd::Zero(length_x);
     VectorXd Gamma = VectorXd::Zero(length_x);
+    VectorXd Gamma_t = VectorXd::Zero(length_x);
+    VectorXd Gamma_old = VectorXd::Zero(length_x);
 
     for (int i = 0; i < length_x; i++) {
         Gamma_x(i) = exp(0 * strain(i));
         Gamma(i) = i / space_grid_controller;
+        Gamma_old(i) = Gamma(i);
     }
 
     // for total length
@@ -313,9 +318,7 @@ int main() {
                        (double(i) / double(space_grid_controller) - double(theta1 - 1) /
                                                                     double(space_grid_controller)) * Gamma_x(i);
 //
-//            if(t>15) {
-//                cout << "Gamma i" << Gamma(i) << endl;
-//            }
+
             //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
 
         }
@@ -352,7 +355,7 @@ int main() {
 //            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
 //
 //        }
-//
+
 //
 ////        // third part no growth, constant
 ////        for (int i = theta2; i < length_x; i++) {
@@ -377,11 +380,27 @@ int main() {
         Lt = thetasmall + thetasmall * exp(alpha * t);
         Lt = Gamma(length_x-1);
 
-        Ltdot = alpha * thetasmall * exp(alpha * t); // piecewise
-        //Ltdot = -1.0/(t*t *alpha) * (Gamma_x(theta1-1) -1) +thetasmall*alpha *Gamma_x(length_x-1);
-        //Ltdot =  (Gamma_x(theta1-1) - 1)+ thetasmall*alpha * Gamma_x(length_x-1);
-        //Ltdot = 0.1*(Gamma(length_x-1)-Gamma(length_x -2 ));
 
+         //   Ltdot = alpha * thetasmall * exp(alpha * t); // piecewise, exact
+
+        Ltdot = (Lt - Lt_old)/dt; //could be used for both, especially should be used if derivative is unknown
+        //    cout << "diff dot " << Ltdot << endl;
+
+        Lt_old = Lt;
+
+
+        // I need Gamma_t for cos verification as well
+
+        for (int i= 0;i < length_x;++i){
+            Gamma_t(i) = strain(i)*Gamma(i);//(Gamma(i)-Gamma_old(i))/dt;
+            if (t<2){
+                cout << "Gamma_t " << Gamma_t(i) << endl;
+                cout << "strain gamma " << strain(i)*Gamma(i) << endl;
+
+            }
+        }
+
+            Gamma_old = Gamma;
 
 
 
@@ -465,7 +484,7 @@ int main() {
         // new implementation of zero flux
 
         for (int i = 0; i < length_x; i++) {
-            di(i, 0) = chemo(i, 0) + dt*( ( (alpha *Gamma(i))/Lt - Gamma(i)*Ltdot/(Lt*Lt) )  *M_PI  * sin(M_PI * Gamma(i) / Lt) +
+            di(i, 0) = chemo(i, 0) + dt*( ( (Gamma_t(i))/Lt - Gamma(i)*Ltdot/(Lt*Lt) )  *M_PI  * sin(M_PI * Gamma(i) / Lt) +
                                       D * cos(M_PI * Gamma(i) / Lt) *
                                       (M_PI  / Lt) * (M_PI  / Lt) -
                     (k_reac-strain(i)) * cos(M_PI * Gamma(i) / Lt) );//dt*(strain(i)-k_reac)*1;//
@@ -630,13 +649,6 @@ int main() {
 
 
 
-
-
-
-
-
-
-
         // for Thomas algorithm I reformulate the linear matrix by doing appropriate changes
 
         // new matrix coefficients
@@ -727,7 +739,7 @@ int main() {
 //
 //        }
 
-        if (counter % 1000 == 0) {
+        if (counter % 10 == 0) {
 
             //if (t == 1 || t == 10 || t == 20 ) {
             //cout << "heeere " << endl;
