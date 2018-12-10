@@ -50,9 +50,9 @@ int main() {
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 1.0;//0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
+    double D = 0.1;//0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
-    double dt = 0.1; // time step
+    double dt = 0.0001; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx =
@@ -62,7 +62,7 @@ int main() {
 
 
     // reaction rate
-    double k_reac = 0;//0.1;//0.105;//0.105;//0.03;//0.105;//.205; // reaction term
+    double k_reac = 0.2;//0.1;//0.105;//0.105;//0.03;//0.105;//.205; // reaction term
 
 
     // domain growth parameters
@@ -392,14 +392,9 @@ int main() {
         // I need Gamma_t for cos verification as well
 
         for (int i= 0;i < length_x;++i){
-            Gamma_t(i) = strain(i)*Gamma(i);//(Gamma(i)-Gamma_old(i))/dt;
 
             Gamma_t(i) = (Gamma(i)-Gamma_old(i))/dt;
-            if (t<2){
-                cout << "Gamma_t " << Gamma_t(i) << endl;
-                cout << "strain gamma " << strain(i)*Gamma(i) << endl;
 
-            }
         }
 
             Gamma_old = Gamma;
@@ -741,7 +736,7 @@ int main() {
 //
 //        }
 
-        if (counter % 10 == 0) {
+        if (counter % 10000 == 0) {
 
             //if (t == 1 || t == 10 || t == 20 ) {
             //cout << "heeere " << endl;
@@ -765,18 +760,18 @@ int main() {
 
 
             //ofstream output2("track_point" + to_string(t) + ".csv");
-
-            ofstream output2("track_point" + to_string(t) + ".csv");
-
-            output2 << Gamma(length_x / 2) << endl;
-
-            ofstream output3("track2_point" + to_string(t) + ".csv");
-
-            output3 << Gamma(int(length_x / 4)) << endl;
-
-            ofstream output4("track3_point" + to_string(t) + ".csv");
-
-            output4 << Gamma(3 * int(length_x / 4)) << endl;
+//
+//            ofstream output2("track_point" + to_string(t) + ".csv");
+//
+//            output2 << Gamma(length_x / 2) << endl;
+//
+//            ofstream output3("track2_point" + to_string(t) + ".csv");
+//
+//            output3 << Gamma(int(length_x / 4)) << endl;
+//
+//            ofstream output4("track3_point" + to_string(t) + ".csv");
+//
+//            output4 << Gamma(3 * int(length_x / 4)) << endl;
 
 
         }
