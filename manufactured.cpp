@@ -393,6 +393,8 @@ int main() {
 
         for (int i= 0;i < length_x;++i){
             Gamma_t(i) = strain(i)*Gamma(i);//(Gamma(i)-Gamma_old(i))/dt;
+
+            Gamma_t(i) = (Gamma(i)-Gamma_old(i))/dt;
             if (t<2){
                 cout << "Gamma_t " << Gamma_t(i) << endl;
                 cout << "strain gamma " << strain(i)*Gamma(i) << endl;
@@ -484,7 +486,7 @@ int main() {
         // new implementation of zero flux
 
         for (int i = 0; i < length_x; i++) {
-            di(i, 0) = chemo(i, 0) + dt*( ( (Gamma_t(i))/Lt - Gamma(i)*Ltdot/(Lt*Lt) )  *M_PI  * sin(M_PI * Gamma(i) / Lt) +
+            di(i, 0) = chemo(i, 0) + dt*( -( (Gamma_t(i))/Lt - Gamma(i)*Ltdot/(Lt*Lt) )  *M_PI  * sin(M_PI * Gamma(i) / Lt) +
                                       D * cos(M_PI * Gamma(i) / Lt) *
                                       (M_PI  / Lt) * (M_PI  / Lt) -
                     (k_reac-strain(i)) * cos(M_PI * Gamma(i) / Lt) );//dt*(strain(i)-k_reac)*1;//
