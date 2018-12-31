@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/giniunaite/NC-non-uniform/analytical_piecewise.cpp" "/home/giniunaite/NC-non-uniform/CMakeFiles/analytical_piecewise.dir/analytical_piecewise.cpp.o"
+  "/home/rasa/NC-non-uniform/analytical_piecewise.cpp" "/home/rasa/NC-non-uniform/CMakeFiles/analytical_piecewise.dir/analytical_piecewise.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,17 +17,17 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "src"
-  "/usr/include/vtk-7.1"
+  "/usr/include/vtk-6.3"
   "/usr/include/freetype2"
-  "/usr/include/x86_64-linux-gnu"
   "/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"
   "/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"
   "/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"
   "/usr/lib/x86_64-linux-gnu/openmpi/include"
-  "/usr/include/python3.6m"
+  "/usr/include/python2.7"
+  "/usr/include/x86_64-linux-gnu"
   "/usr/include/hdf5/openmpi"
-  "/usr/include/jsoncpp"
   "/usr/include/libxml2"
+  "/usr/include/jsoncpp"
   "/usr/include/tcl"
   "/usr/include/eigen3"
   "Aboria/src"

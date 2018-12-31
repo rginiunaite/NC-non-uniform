@@ -1,4 +1,4 @@
-/home/giniunaite/clion-2017.3.3/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/giniunaite/NC-non-uniform
+/snap/clion/57/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/rasa/NC-non-uniform
 -- Boost version: 1.65.1
 -- Found the following Boost libraries:
 --   python
@@ -8,7 +8,7 @@ but this file does not exist.  Possible reasons include:
 * The file was deleted, renamed, or moved to another location.
 * An install or uninstall procedure did not complete successfully.
 * The installation package was faulty and contained
-   "/usr/lib/cmake/vtk-7.1/VTKTargets.cmake"
+   "/usr/lib/cmake/vtk-6.3/VTKTargets.cmake"
 but not all the files it references.
 
 -- The imported target "vtk" references the file
@@ -17,9 +17,9 @@ but this file does not exist.  Possible reasons include:
 * The file was deleted, renamed, or moved to another location.
 * An install or uninstall procedure did not complete successfully.
 * The installation package was faulty and contained
-   "/usr/lib/cmake/vtk-7.1/VTKTargets.cmake"
+   "/usr/lib/cmake/vtk-6.3/VTKTargets.cmake"
 but not all the files it references.
 
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/giniunaite/NC-non-uniform
+-- Build files have been written to: /home/rasa/NC-non-uniform

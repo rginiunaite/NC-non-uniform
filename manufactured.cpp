@@ -52,7 +52,7 @@ int main() {
 
     double D = 0.1;//0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
-    double dt = 0.0001; // time step
+    double dt = 0.001; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx =
@@ -62,7 +62,7 @@ int main() {
 
 
     // reaction rate
-    double k_reac = 0.2;//0.1;//0.105;//0.105;//0.03;//0.105;//.205; // reaction term
+    double k_reac = 0;//0.1;//0.105;//0.105;//0.03;//0.105;//.205; // reaction term
 
 
     // domain growth parameters
@@ -736,7 +736,7 @@ int main() {
 //
 //        }
 
-        if (counter % 10000 == 0) {
+        if (counter % 1000 == 0) {
 
             //if (t == 1 || t == 10 || t == 20 ) {
             //cout << "heeere " << endl;

@@ -5,1039 +5,606 @@
 		<Option title="Project"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\usr\;CMake Files\..\..\..\usr\lib\;CMake Files\..\..\..\usr\lib\cmake\;CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\;CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\;CMake Files\Aboria\;CMake Files\Aboria\cmake\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\usr\;CMake Files\..\..\..\usr\lib\;CMake Files\..\..\..\usr\lib\cmake\;CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\;CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\;CMake Files\Aboria\;CMake Files\Aboria\cmake\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
+				<Option working_dir="/home/rasa/NC-non-uniform"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
+				<Option working_dir="/home/rasa/NC-non-uniform"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="manufactured_explicit">
+				<Option output="/home/rasa/NC-non-uniform/manufactured_explicit" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/rasa/NC-non-uniform"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAVE_VTK"/>
+					<Add option="-DABORIA_LOG_LEVEL=1"/>
+					<Add directory="/home/rasa/NC-non-uniform/src"/>
+					<Add directory="/usr/include/vtk-6.3"/>
+					<Add directory="/usr/include/freetype2"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
+					<Add directory="/usr/include/python2.7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include/hdf5/openmpi"/>
+					<Add directory="/usr/include/libxml2"/>
+					<Add directory="/usr/include/jsoncpp"/>
+					<Add directory="/usr/include/tcl"/>
+					<Add directory="/usr/include/eigen3"/>
+					<Add directory="/home/rasa/NC-non-uniform/Aboria/src"/>
+					<Add directory="/home/rasa/NC-non-uniform/Aboria/third-party"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 manufactured_explicit"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="manufactured_explicit/fast">
+				<Option output="/home/rasa/NC-non-uniform/manufactured_explicit" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/rasa/NC-non-uniform"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAVE_VTK"/>
+					<Add option="-DABORIA_LOG_LEVEL=1"/>
+					<Add directory="/home/rasa/NC-non-uniform/src"/>
+					<Add directory="/usr/include/vtk-6.3"/>
+					<Add directory="/usr/include/freetype2"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
+					<Add directory="/usr/include/python2.7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include/hdf5/openmpi"/>
+					<Add directory="/usr/include/libxml2"/>
+					<Add directory="/usr/include/jsoncpp"/>
+					<Add directory="/usr/include/tcl"/>
+					<Add directory="/usr/include/eigen3"/>
+					<Add directory="/home/rasa/NC-non-uniform/Aboria/src"/>
+					<Add directory="/home/rasa/NC-non-uniform/Aboria/third-party"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 manufactured_explicit/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
+				<Option working_dir="/home/rasa/NC-non-uniform"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="analytical_piecewise_constant_end">
-				<Option output="/home/giniunaite/NC-non-uniform/analytical_piecewise_constant_end" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 analytical_piecewise_constant_end"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="analytical_piecewise_constant_end/fast">
-				<Option output="/home/giniunaite/NC-non-uniform/analytical_piecewise_constant_end" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 analytical_piecewise_constant_end/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="analytical_piecewise">
-				<Option output="/home/giniunaite/NC-non-uniform/analytical_piecewise" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 analytical_piecewise"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="analytical_piecewise/fast">
-				<Option output="/home/giniunaite/NC-non-uniform/analytical_piecewise" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 analytical_piecewise/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="analytical_piecewise_new_approach">
-				<Option output="/home/giniunaite/NC-non-uniform/analytical_piecewise_new_approach" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 analytical_piecewise_new_approach"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="analytical_piecewise_new_approach/fast">
-				<Option output="/home/giniunaite/NC-non-uniform/analytical_piecewise_new_approach" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 analytical_piecewise_new_approach/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="analytical_vs_numerical">
-				<Option output="/home/giniunaite/NC-non-uniform/analytical_vs_numerical" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 analytical_vs_numerical"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="analytical_vs_numerical/fast">
-				<Option output="/home/giniunaite/NC-non-uniform/analytical_vs_numerical" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 analytical_vs_numerical/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="non_uniform_explicit_constant">
-				<Option output="/home/giniunaite/NC-non-uniform/non_uniform_explicit_constant" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 non_uniform_explicit_constant"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="non_uniform_explicit_constant/fast">
-				<Option output="/home/giniunaite/NC-non-uniform/non_uniform_explicit_constant" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 non_uniform_explicit_constant/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="non_uniform_1D_constant">
-				<Option output="/home/giniunaite/NC-non-uniform/non_uniform_1D_constant" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 non_uniform_1D_constant"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="non_uniform_1D_constant/fast">
-				<Option output="/home/giniunaite/NC-non-uniform/non_uniform_1D_constant" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/giniunaite/NC-non-uniform"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAVE_VTK"/>
-					<Add option="-DABORIA_LOG_LEVEL=1"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/src"/>
-					<Add directory="/usr/include/vtk-7.1"/>
-					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include"/>
-					<Add directory="/usr/lib/x86_64-linux-gnu/openmpi/include"/>
-					<Add directory="/usr/include/python3.6m"/>
-					<Add directory="/usr/include/hdf5/openmpi"/>
-					<Add directory="/usr/include/jsoncpp"/>
-					<Add directory="/usr/include/libxml2"/>
-					<Add directory="/usr/include/tcl"/>
-					<Add directory="/usr/include/eigen3"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/src"/>
-					<Add directory="/home/giniunaite/NC-non-uniform/Aboria/third-party"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 non_uniform_1D_constant/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/giniunaite/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/rasa/NC-non-uniform/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/giniunaite/NC-non-uniform/analytical_piecewise.cpp">
-			<Option target="analytical_piecewise"/>
+		<Unit filename="/home/rasa/NC-non-uniform/manufactured_explicit.cpp">
+			<Option target="manufactured_explicit"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/analytical_piecewise_constant_end.cpp">
-			<Option target="analytical_piecewise_constant_end"/>
-		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/analytical_piecewise_new_approach.cpp">
-			<Option target="analytical_piecewise_new_approach"/>
-		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/analytical_vs_numerical.cpp">
-			<Option target="analytical_vs_numerical"/>
-		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/non_uniform_1D_constant.cpp">
-			<Option target="non_uniform_1D_constant"/>
-		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/non_uniform_explicit_constant.cpp">
-			<Option target="non_uniform_explicit_constant"/>
-		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/CMakeLists.txt">
+		<Unit filename="/home/rasa/NC-non-uniform/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/VTKConfigVersion.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/VTKConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/VTKConfig.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/VTKConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/VTKTargets.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/VTKTargets-none.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/VTKTargets-none.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/VTKTargets.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/vtkModuleAPI.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/vtkModuleAPI.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkChartsCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkChartsCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkCommonColor.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkCommonColor.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkCommonCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkCommonComputationalGeometry.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkkwiml.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkCommonCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtksys.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkCommonDataModel.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkCommonDataModel.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkCommonExecutionModel.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkCommonMath.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkCommonMath.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkCommonMisc.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkCommonMisc.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkCommonSystem.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkCommonSystem.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkCommonTransforms.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkCommonTransforms.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkCommonExecutionModel.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkDICOMParser.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersGeneral.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkDomainsChemistry.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkCommonComputationalGeometry.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersAMR.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkInfovisCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersExtraction.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersExtraction.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersFlowPaths.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersStatistics.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersGeneral.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkImagingFourier.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersGeneric.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkImagingCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersGeometry.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkalglib.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersHybrid.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingContext2D.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersHyperTree.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersImaging.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersGeometry.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersModeling.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersSources.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersParallel.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingFreeType.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersParallelFlowPaths.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkfreetype.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersParallelGeometry.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkzlib.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersParallelImaging.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkDICOMParser.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersParallelMPI.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkDomainsChemistry.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersParallelStatistics.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOLegacy.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersProgrammable.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersPython.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOXMLParser.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersReebGraph.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkexpat.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersSMP.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkDomainsChemistryOpenGL2.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersSelection.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingOpenGL2.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersSources.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOImage.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersStatistics.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkMetaIO.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersTexture.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkjpeg.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkFiltersVerdict.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkpng.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkGeovisCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtktiff.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOAMR.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkUtilitiesEncodeString.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkglew.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOEnSight.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersAMR.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOExodus.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOXML.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOExport.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkParallelCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOFFMPEG.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkUtilitiesHashSource.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOGDAL.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersFlowPaths.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOGeoJSON.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersGeneric.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOGeometry.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersHybrid.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOImage.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkImagingSources.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOImport.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersHyperTree.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOInfovis.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersImaging.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOLSDyna.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkImagingGeneral.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOLegacy.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersModeling.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOMINC.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersParallel.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOMPIImage.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersParallelDIY2.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOMPIParallel.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkParallelMPI.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOMovie.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkdiy2.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOMySQL.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersParallelFlowPaths.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIONetCDF.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersParallelGeometry.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOODBC.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersParallelImaging.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOPLY.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersParallelMPI.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOParallel.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersParallelStatistics.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOParallelExodus.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersPoints.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOParallelLSDyna.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersProgrammable.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOParallelNetCDF.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersPython.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOParallelXML.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkPython.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOPostgreSQL.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkWrappingPythonCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOSQL.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkWrappingTools.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOVPIC.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersReebGraph.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOVideo.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersSMP.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOXML.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersSelection.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOXMLParser.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersTexture.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkIOXdmf2.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkFiltersVerdict.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkImagingColor.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkverdict.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkImagingCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkGeovisCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkImagingFourier.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkInfovisLayout.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkImagingGeneral.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkImagingHybrid.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkImagingHybrid.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkInteractionStyle.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkImagingMath.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkInteractionWidgets.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkImagingMorphological.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkImagingColor.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkImagingSources.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingAnnotation.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkImagingStatistics.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingVolume.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkImagingStencil.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkViewsCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkInfovisBoost.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtklibproj4.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkInfovisBoostGraphAlgorithms.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOAMR.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkInfovisCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkhdf5.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkInfovisLayout.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOEnSight.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkInteractionImage.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOExodus.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkInteractionStyle.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkexodusII.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkInteractionWidgets.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtknetcdf.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkLocalExample.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOExport.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkMetaIO.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingGL2PSOpenGL2.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkParallelCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkgl2ps.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkParallelMPI.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOFFMPEG.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkParallelMPI4Py.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOMovie.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkParseOGLExt.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkoggtheora.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkPython.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOGDAL.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkPythonInterpreter.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOGeoJSON.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingAnnotation.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkjsoncpp.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingContext2D.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOGeometry.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingContextOpenGL.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOImport.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOInfovis.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingExternal.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtklibxml2.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingFreeType.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOLSDyna.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingFreeTypeFontConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOMINC.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingGL2PS.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOMPIImage.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingImage.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOMPIParallel.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingLIC.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOParallel.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingLOD.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIONetCDF.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingLabel.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOMySQL.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingMatplotlib.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOSQL.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingOpenGL.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtksqlite.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingParallel.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOODBC.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingParallelLIC.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOPLY.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingTk.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOParallelExodus.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingVolume.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOParallelLSDyna.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingVolumeAMR.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOParallelNetCDF.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkRenderingVolumeOpenGL.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOParallelXML.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkTclTk.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOPostgreSQL.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkTestingCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOTecplotTable.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkTestingGenericBridge.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOVPIC.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkTestingIOSQL.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkVPIC.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkTestingRendering.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOVideo.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkUtilitiesEncodeString.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkIOXdmf2.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkUtilitiesHashSource.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkxdmf2.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkVPIC.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkImagingMath.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkViewsContext2D.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkImagingMorphological.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkViewsCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkImagingStatistics.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkViewsGeovis.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkImagingStencil.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkViewsInfovis.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkInfovisBoost.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkWrappingJava.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkInfovisBoostGraphAlgorithms.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkWrappingPythonCore.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkInteractionImage.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkWrappingTcl.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkLocalExample.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkWrappingTools.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkParallelMPI4Py.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkalglib.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkParseOGLExt.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkexodusII.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkPythonInterpreter.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkexpat.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingContextOpenGL2.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkfreetype.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingExternal.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkftgl.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingFreeTypeFontConfig.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkgl2ps.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingImage.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkglew.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingLICOpenGL2.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkhdf5.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingLOD.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkjpeg.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingLabel.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkjsoncpp.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingMatplotlib.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtklibproj4.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingParallel.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtklibxml2.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingParallelLIC.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtknetcdf.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingSceneGraph.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkoggtheora.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingTk.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkpng.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkTclTk.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtksqlite.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingVolumeAMR.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtksys.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkRenderingVolumeOpenGL2.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtktiff.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkTestingCore.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkverdict.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkTestingGenericBridge.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkxdmf2.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkTestingIOSQL.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
+		<Unit filename="/home/rasa/NC-non-uniform/../../../usr/lib/cmake/vtk-6.3/Modules/vtkzlib.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-6.3\Modules\"/>
 		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkTestingRendering.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
-		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkViewsContext2D.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
-		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkViewsGeovis.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
-		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkViewsInfovis.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
-		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkWrappingJava.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
-		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/../../../usr/lib/cmake/vtk-7.1/Modules/vtkWrappingTcl.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\usr\lib\cmake\vtk-7.1\Modules\"/>
-		</Unit>
-		<Unit filename="/home/giniunaite/NC-non-uniform/Aboria/cmake/FindEigen3.cmake">
+		<Unit filename="/home/rasa/NC-non-uniform/Aboria/cmake/FindEigen3.cmake">
 			<Option virtualFolder="CMake Files\Aboria\cmake\"/>
 		</Unit>
 	</Project>

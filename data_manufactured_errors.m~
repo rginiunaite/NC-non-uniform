@@ -1,0 +1,89 @@
+%% data, alpha = 0.1, k_reac = 0.2, dx = 1/1000, dt = 1.0
+
+average(1) = 6.8367e-08
+
+
+average(2) =  0.0547
+
+
+average(3) = 0.2876
+
+%% data, alpha = 0.1, k_reac = 0.2, dx = 1/1000, dt = 0.1
+average2 =
+
+    0.0000    0.0020    0.0071    0.0167    0.0341
+average2(1) = 6.8367e-08;
+
+
+average2(2) =  0.0071;
+
+
+average2(3) = 0.0341; 
+
+
+
+%% data, alpha = 0.1, k_reac = 0.2, dx = 1/1000, dt = 0.01
+
+average3(1) = 6.8367e-08;
+
+
+average3(2) = 7.3239e-04;
+
+
+average3(3) = 0.0028;
+
+
+average3(4) =0.0066;
+
+
+average3(5) = 0.0128;
+
+%% data, alpha = 0.1, k_reac = 0.2, dx = 1/1000, dt = 0.001
+
+
+average0 = 6.8367e-08;
+
+
+average5 = 6.0372e-04;
+
+
+average10 = 0.0024;
+
+
+average15 = 0.0056;
+
+
+average20 = 0.0108;
+
+
+t = [0 5 10 15 20]
+
+figure
+box on
+plot(t,average,'--', 'Linewidth',3)
+
+hold on 
+
+
+plot(t,average2,'--', 'Linewidth',3)
+
+
+plot(t,average3,'--', 'Linewidth',3)
+
+plot(t,average4,'--', 'Linewidth',3)
+
+
+ylabel('Average relative error')
+
+legend ('dt = 1.000','dt = 0.100','dt = 0.010','dt = 0.001')
+
+xlabel('Time, t')
+
+set(gca,'FontSize',30)
+ax = gca;
+box on
+ax.BoxStyle = 'full';
+
+
+ 
+
