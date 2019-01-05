@@ -45,11 +45,11 @@ int main() {
             int(domain_length) * int(space_grid_controller); // length in x direction of the chemoattractant matrix
     double initial_domain_length = domain_length;
     const int length_y = 1*int(space_grid_controller); // length in y direction of the chemoattractant matrix
-    const double final_time = 20.0; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
+    const double final_time = 100; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 0.00001;//0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
+    double D = 0.01;//0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
     double dt = 0.01; // time step
     double dt_init = dt;
@@ -58,8 +58,8 @@ int main() {
             1.0 / double(space_grid_controller); // space step in x direction, double to be consistent with other types
     double dy = 1; // space step in y direction
     double kai = 0.00001;//0;//0.1 // to 1 /h production rate of chemoattractant
-    double Gamma_initial = 1.0;
-    double y_init = 1.0;
+    double Gamma_initial = 300.0;
+    double y_init = 120.0;
 
     // reaction rate
     double k_reac = 0;//0.1;//0.105;//0.03;//.205; // reaction term
@@ -76,7 +76,7 @@ int main() {
 
 
     // for comparison with analytical
-    double alpha = 0.1;//before 0.1
+    double alpha = 0.02;//before 0.1
 
 
     VectorXd strain = VectorXd::Zero(length_x);
