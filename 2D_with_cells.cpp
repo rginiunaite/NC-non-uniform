@@ -46,18 +46,17 @@ int  main(){
             int(domain_length) * int(space_grid_controller); // length in x direction of the chemoattractant matrix
     double initial_domain_length = domain_length;
     const int length_y = int(1.2*space_grid_controller); // length in y direction of the chemoattractant matrix
-    const double final_time = 10; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
+    const double final_time = 100; // number of timesteps, 1min - 1timestep, from 6h tp 24hours.
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 0.001;//0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
+    double D = 0.0001;//0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
-    double dt = 0.01; // time step
+    double dt = 0.05; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
-    double dx =
-            1.0 / double(space_grid_controller); // space step in x direction, double to be consistent with other types
-    double dy = 1.0 / double(space_grid_controller); // space step in y direction
+    double dx = 1.0/space_grid_controller; // space step in x direction, double to be consistent with other types
+    double dy = 1.0/space_grid_controller; // space step in y direction
     double kai = 0.00001;//0;//0.1 // to 1 /h production rate of chemoattractant
 //    double Gamma_initial = 300.0;
 //    double y_init = 120.0;
@@ -68,18 +67,18 @@ int  main(){
 
     // cell parameters
 
-    double cell_radius = 0.75;//0.5; // radius of a cell
+    double cell_radius = 7.5;//0.5; // radius of a cell
     const double diameter =
             2 * cell_radius; // diameter of a cell
     const size_t N = 5; // initial number of cells
-    double l_filo_y = 2.75;//2; // sensing radius, filopodia + cell radius
-    double l_filo_x = 2.75; // sensing radius, it will have to be rescaled when domain grows
+    double l_filo_y = 27.5;//2; // sensing radius, filopodia + cell radius
+    double l_filo_x = 27.5; // sensing radius, it will have to be rescaled when domain grows
     double l_filo_x_in = l_filo_x; // this value is used for rescaling when domain grows based on initial value
-    double l_filo_max = 4.5; // this is the length when two cells which were previously in a chain become dettached
+    double l_filo_max = 45; // this is the length when two cells which were previously in a chain become dettached
     //double diff_conc = 0.1; // sensing threshold, i.e. how much concentration has to be bigger, so that the cell moves in that direction
     int freq_growth = 1; // determines how frequently domain grows (actually not relevant because it will go every timestep)
     int insertion_freq = 1; // determines how frequently new cells are inserted, regulates the density of population
-    double speed_l = 0.14;// 0.05;//1;//0.05; // speed of a leader cell
+    double speed_l = 0.5;// 0.05;//1;//0.05; // speed of a leader cell
     double increase_fol_speed = 1.3;
     double speed_f = increase_fol_speed * speed_l;//0.05;//0.1;//0.08; // speed of a follower cell
     double dettach_prob = 0.5; // probability that a follower cell which is on trail looses the trail
@@ -89,7 +88,7 @@ int  main(){
     int same_dir = 0; // number of steps in the same direction +1, because if 0, then only one step in the same direction
     bool random_pers = true; // persistent movement also when the cell moves randomly
     int count_dir = 0; // this is to count the number of times the cell moved the same direction, up to same_dir for each cell
-    double lam = 0.00035;//(100)/10; // to 1000 /h chemoattractant internalisation
+    double lam = 1.0;//(100)/10; // to 1000 /h chemoattractant internalisation
 
 
     // distance to the track parameters
@@ -127,7 +126,7 @@ int  main(){
 
     //piecewise constant, two parts
 
-    int theta1 = int(0.5 * space_grid_controller);
+    int theta1 = int(0.5 * length_x);
     double thetasmall = 0.5;
     //int theta2 = int(0.7 * space_grid_controller);
 
@@ -210,7 +209,7 @@ int  main(){
     double C0 = 1.0; // initially non-zero, afterwards zero
     double n = 10.0; // for 1 - 0.5 cos(n \pi x)
 
-    for (int i = 0; i < beta * space_grid_controller; i++) {
+    for (int i = 0; i < length_x; i++) {
         for (int j = 0; j < length_y; j++) {
             chemo(i, j) = 1;//cos(
             // M_PI * i / space_grid_controller);//1;//C0 - 0.5 * cos( M_PI * i/space_grid_controller * n);
@@ -373,47 +372,45 @@ int  main(){
 
 
 
-
     //for each timestep
     while (t < final_time) {
 
 
 
 
-//        if (t % insertion_freq == 0) {
-//            bool free_position = false;
-//            particle_type::value_type f;
-//            //get<radius>(f) = cell_radius;
-//
-//
-//            get<position>(f) = vdouble2(cell_radius, uniform(gen)); // x=2, uniformly in y
-//            free_position = true;
-//            /*
-//             * loop over all neighbouring leaders within "dem_diameter" distance
-//             */
-//            for (auto tpl = euclidean_search(particles.get_query(), get<position>(f), diameter); tpl != false; ++tpl) {
-//
-//                vdouble2 diffx = tpl.dx();
-//
-//                if (diffx.norm() < diameter) {
-//                    free_position = false;
-//                    break;
-//                }
-//            }
-//
-//            // our assumption that all new cells are followers
-//            get<type>(f) = 0;
-//
-//
-//            if (free_position) {
-//                get<chain>(f) = 0;
-//                get<chain_type>(f) = -1;
-//                get<attached_to_id>(f) = -1;
-//                particles.push_back(f);
-//            }
-//
-//        }
-//        particles.update_positions();
+            bool free_position = false;
+            particle_type::value_type f;
+            //get<radius>(f) = cell_radius;
+
+
+            get<position>(f) = vdouble2(cell_radius, uniform(gen)); // x=2, uniformly in y
+            free_position = true;
+            /*
+             * loop over all neighbouring leaders within "dem_diameter" distance
+             */
+            for (auto tpl = euclidean_search(particles.get_query(), get<position>(f), diameter); tpl != false; ++tpl) {
+
+                vdouble2 diffx = tpl.dx();
+
+                if (diffx.norm() < diameter) {
+                    free_position = false;
+                    break;
+                }
+            }
+
+            // our assumption that all new cells are followers
+            get<type>(f) = 0;
+
+
+            if (free_position) {
+                get<chain>(f) = 0;
+                get<chain_type>(f) = -1;
+                get<attached_to_id>(f) = -1;
+                particles.push_back(f);
+            }
+
+
+        particles.update_positions();
 
 
 
@@ -465,7 +462,7 @@ int  main(){
         for (int i = 0; i < theta1; i++) {
 //            Gamma(i) =
 //                    Gamma_initial * (double(i) / double(space_grid_controller)) * (Gamma_x(i)); // linearly increasing
-            Gamma(i) = (double(i) / double(space_grid_controller)) * (Gamma_x(i)); // linearly increasing
+            Gamma(i) = (double(i)) * (Gamma_x(i)); // linearly increasing
 
         }
 
@@ -479,9 +476,7 @@ int  main(){
 //                                                                                    double(space_grid_controller)) *
 //                       Gamma_x(i);
 
-            Gamma(i) = Gamma(theta1 - 1) + (double(i) / double(space_grid_controller) - double(theta1 - 1) /
-                                                                                    double(space_grid_controller)) *
-                       Gamma_x(i);
+            Gamma(i) = Gamma(theta1 - 1) + (double(i)- double(theta1 - 1)) * Gamma_x(i);
 //
 
             //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
@@ -489,6 +484,7 @@ int  main(){
         }
 
 
+        domain_length = Gamma(length_x-1);
 
         /*
  * three different regions
@@ -589,7 +585,7 @@ int  main(){
                 chemo_new(i, j) = dt * (D * 1.0 / (2.0 * dx * dx * Gamma_x(i)) *
                                         ((1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1)) * (chemo(i + 1) - chemo(i)) -
                                          (chemo(i, j) - chemo(i - 1, j)) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1))) +
-                                        D * (chemo(i, j + 1) - 2 * chemo(i, j) + chemo(i, j - 1)) / (dy * dy) +
+                                        D * (chemo(i, j + 1) - 2 * chemo(i, j) + chemo(i, j - 1)) / (dy * dy) -
                                         (chemo(i, j) * lam / (2 * M_PI * cell_radius * cell_radius)) * intern(i, j) +
                                         chemo(i, j) * k_reac - strain(i) * chemo(i, j)) + chemo(i, j);
 
@@ -1211,10 +1207,6 @@ int  main(){
         particles.update_positions();
 
 
-        // save at every time step
-#ifdef HAVE_VTK
-        vtkWriteGrid("particles", t, particles.get_grid(true));
-#endif
 
 
 
@@ -1242,7 +1234,7 @@ int  main(){
 //
 //        }
 
-        if (counter % 100 == 0) {
+        if (counter % 10 == 0) {
 
             //if (t == 1 || t == 10 || t == 20 ) {
             //cout << "heeere " << endl;
@@ -1252,6 +1244,12 @@ int  main(){
             // output << "x, y, z, u" << "\n" << endl;
 
             // save data to plot chemoattractant concentration
+
+            // save at every time step
+            #ifdef HAVE_VTK
+                        vtkWriteGrid("particles", t, particles.get_grid(true));
+            #endif
+
 
 
             ofstream output("matrix_non_uniform" + to_string(int(t)) + ".csv");
