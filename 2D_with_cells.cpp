@@ -60,7 +60,6 @@ int  main(){
     double dx = 1.0/space_grid_controller; // space step in x direction, double to be consistent with other types
     double dy = 1.0/space_grid_controller; // space step in y direction
     double kai = 0.00001;//0;//0.1 // to 1 /h production rate of chemoattractant
-//    double Gamma_initial = 300.0;
 //    double y_init = 120.0;
 
     // reaction rate
@@ -90,7 +89,7 @@ int  main(){
     int same_dir = 0; // number of steps in the same direction +1, because if 0, then only one step in the same direction
     bool random_pers = true; // persistent movement also when the cell moves randomly
     int count_dir = 0; // this is to count the number of times the cell moved the same direction, up to same_dir for each cell
-    double lam = 1.0;//(100)/10; // to 1000 /h chemoattractant internalisation
+    double lam = 2.0;//72/(100)/10; // to 1000 /h chemoattractant internalisation
 
 
     // distance to the track parameters
@@ -115,7 +114,8 @@ int  main(){
 
 
     // for comparison with analytical
-    double alpha = 0.0256;//before 0.1
+    double alpha = 0.0256;//for 0.05 time step and 72 final time
+    //double alpha = 0.0128; // for 0.1 time step 144
 
 
     VectorXd strain = VectorXd::Zero(length_x);
@@ -186,6 +186,9 @@ int  main(){
         Gamma(i) = i;
         Gamma_old(i) = Gamma(i);
     }
+
+    double Gamma_initial = Gamma(length_x-1);
+
 
     // for total length
     double Lt = 0;
@@ -382,39 +385,39 @@ int  main(){
 //              insert new cells
 
 
-//            bool free_position = false;
-//            particle_type::value_type f;
-//            //get<radius>(f) = cell_radius;
-//
-//
-//            get<position>(f) = vdouble2(cell_radius, uniform(gen)); // x=2, uniformly in y
-//            free_position = true;
-//            /*
-//             * loop over all neighbouring leaders within "dem_diameter" distance
-//             */
-//            for (auto tpl = euclidean_search(particles.get_query(), get<position>(f), diameter); tpl != false; ++tpl) {
-//
-//                vdouble2 diffx = tpl.dx();
-//
-//                if (diffx.norm() < diameter) {
-//                    free_position = false;
-//                    break;
-//                }
-//            }
-//
-//            // our assumption that all new cells are followers
-//            get<type>(f) = 0;
-//
-//
-//            if (free_position) {
-//                get<chain>(f) = 0;
-//                get<chain_type>(f) = -1;
-//                get<attached_to_id>(f) = -1;
-//                particles.push_back(f);
-//            }
-//
-//
-//        particles.update_positions();
+            bool free_position = false;
+            particle_type::value_type f;
+            //get<radius>(f) = cell_radius;
+
+
+            get<position>(f) = vdouble2(cell_radius, uniform(gen)); // x=2, uniformly in y
+            free_position = true;
+            /*
+             * loop over all neighbouring leaders within "dem_diameter" distance
+             */
+            for (auto tpl = euclidean_search(particles.get_query(), get<position>(f), diameter); tpl != false; ++tpl) {
+
+                vdouble2 diffx = tpl.dx();
+
+                if (diffx.norm() < diameter) {
+                    free_position = false;
+                    break;
+                }
+            }
+
+            // our assumption that all new cells are followers
+            get<type>(f) = 0;
+
+
+            if (free_position) {
+                get<chain>(f) = 0;
+                get<chain_type>(f) = -1;
+                get<attached_to_id>(f) = -1;
+                particles.push_back(f);
+            }
+
+
+        particles.update_positions();
 
 
 
@@ -554,6 +557,7 @@ int  main(){
         }
 
 
+
         /// update positions uniformly based on the domain growth
 
         vdouble2 x; // use variable x for the position of cells
@@ -562,18 +566,32 @@ int  main(){
         for (int i = 0; i < particles.size(); i++) {
 
             x = get<position>(particles[i]);
+// wrong!!!!
+//            for(Index j=0; j<Gamma_old.size(); ++j){
+//                if (x[0] > Gamma_old(j)){
+//                    pos = j;
+//                }
+//                else{
+//                    break;
+//                }
+//            }
+//
+//            cout << "x pos " << x[0] << endl;
+//            cout << " gamma_old(j) " << Gamma_old(pos) << endl;
+//            cout << "gamma(j) " << Gamma(pos) << endl;
 
-            for(Index j=0; j<Gamma.size(); ++j){
-                if(abs(Gamma_old(j)- round(x[0])) < 0.5){pos = j;}
-            }
+// since I do not know how to do it for general case, I will do it for my specific
 
-            get<position>(particles)[i] = vdouble2(Gamma(pos)+(x[0]-round(x[0])), x[1]); // update position based on changes in Gamma
+        if (x[0] > theta1){
+            get<position>(particles)[i] *= vdouble2((Gamma(length_x-1)- theta1)/(Gamma_old(length_x-1) - theta1) , 1); // update position based on changes in Gamma
+        }
+
         }
 
 
-
-
         Gamma_old = Gamma;
+
+
 
 
         // internalisation rate
@@ -611,7 +629,6 @@ int  main(){
                                         D * (chemo(i, j + 1) - 2 * chemo(i, j) + chemo(i, j - 1)) / (dy * dy) -
                                         (chemo(i, j) * lam / (2 * M_PI * cell_radius * cell_radius)) * intern(i, j) +
                                         chemo(i, j) * k_reac - strain(i) * chemo(i, j)) + chemo(i, j);
-
             }
         }
         // i = 0, will have to loop over all y when I will move to two dimensions
@@ -730,17 +747,27 @@ int  main(){
 //                get<type>(particles[particle_id(j)]) = 1;
 //            }
 
+
             // if a particle is a leader
-            if (get<type>(particles[particle_id(j)]) == 1) {
+
+
+            vdouble2 x; // use variable x for the position of cells
+            x = get<position>(particles[particle_id(j)]);
+
+            if (get<type>(particles[particle_id(j)]) == 0) {
 
                 vdouble2 x; // use variable x for the position of cells
                 x = get<position>(particles[particle_id(j)]);
 
-                for(Index i=0; i<Gamma.size(); ++i){ if(Gamma(i) == round(x[0])) pos = i; }
 
                 double x_in; // x coordinate in initial domain length scale
-                x_in = x[0]/Gamma_x(pos);
-                l_filo_x =  l_filo_x_in/Gamma_x(pos); // rescale the length of filopodia as well
+                if (x[0] < theta1){
+                    x_in = x[0];
+                }
+                else{
+                    x_in = x[0]* (Gamma_initial -theta1)/(Gamma(length_x-1)- theta1) ;
+                    l_filo_x = l_filo_x_in * (Gamma_initial -theta1)/(Gamma(length_x-1)- theta1) ; // rescale the length of filopodia as well
+                }
 
 
 
@@ -751,9 +778,13 @@ int  main(){
 
                     x += get<direction>(particles[particle_id(j)]);
 
-                    for(Index i=0; i<Gamma.size(); ++i){ if(Gamma(i) == round(x[0])) pos = i; }
+                    if (x[0] < theta1){
+                        x_in = x[0];
+                    }
+                    else{
+                        x_in = x[0]* (Gamma_initial -theta1)/(Gamma(length_x-1)- theta1) ;
+                    }
 
-                    x_in =  x[0]/Gamma_x(pos);// scale to initial coordinates
 
                     bool free_position = true; // check if the neighbouring position is free
 
@@ -840,11 +871,14 @@ int  main(){
                         x += speed_l *
                              vdouble2(sin(random_angle[chemo_max_number]), cos(random_angle[chemo_max_number]));
 
-                        for(Index i=0; i<Gamma.size(); ++i){ if(Gamma(i) == round(x[0])) pos = i; }
 
 
-                        x_in =  x[0]/Gamma_x(pos);// scale to initial coordinates
-
+                        if (x[0] < theta1){
+                            x_in = x[0];
+                        }
+                        else{
+                            x_in = x[0]* (Gamma_initial -theta1)/(Gamma(length_x-1)- theta1) ;
+                        }
 
                         bool free_position = true; // check if the neighbouring position is free
 
@@ -886,11 +920,14 @@ int  main(){
 
                         x += speed_l * vdouble2(sin(random_angle[filo_number]), cos(random_angle[filo_number]));
 
-                        for(Index i=0; i<Gamma.size(); ++i){ if(Gamma(i) == round(x[0])) pos = i; }
 
 
-                        x_in =  x[0]/Gamma_x(pos);// scale to initial coordinates
-
+                        if (x[0] < theta1){
+                            x_in = x[0];
+                        }
+                        else{
+                            x_in = x[0]* (Gamma_initial -theta1)/(Gamma(length_x-1)- theta1) ;
+                        }
 
 
                         bool free_position = true; // check if the neighbouring position is free
@@ -948,10 +985,13 @@ int  main(){
 
                 double x_in; // x coordinate in initial domain length scale
 
-                for(Index i=0; i<Gamma.size(); ++i){ if(Gamma(i) == round(x[0])) pos = i; }
 
-                x_in =  x[0]/Gamma_x(pos);// scale to initial coordinates
-
+                if (x[0] < theta1){
+                    x_in = x[0];
+                }
+                else{
+                    x_in = x[0]* (Gamma_initial -theta1)/(Gamma(length_x-1)- theta1) ;
+                }
                 // if the particle is part of the chain
                 if (get<chain>(particles[particle_id(j)]) > 0) {
 
@@ -987,10 +1027,12 @@ int  main(){
 
                     double x_in_chain; // scaled coordinate
 
-                    for(Index i=0; i<Gamma.size(); ++i){ if(Gamma(i) == round(x_chain[0])) pos = i; }
-
-                    x_in_chain =
-                             x_chain[0]/Gamma_x(pos);//uniform growth in the first part of the domain
+                    if (x[0] < theta1){
+                        x_in_chain = x_chain[0];
+                    }
+                    else{
+                        x_in_chain = x_chain[0]* (Gamma_initial -theta1)/(Gamma(length_x-1)- theta1) ;
+                    }
 
 
                     bool free_position = true;
@@ -1094,9 +1136,12 @@ int  main(){
                         // Non-uniform domain growth
                         double x_in_chain;
 
-                        for(Index i=0; i<Gamma.size(); ++i){ if(Gamma(i) == round(x_chain[0])) pos = i; }
-
-                        x_in_chain =  x[0]/Gamma_x(pos);// scale to initial coordinates
+                        if (x[0] < theta1){
+                            x_in_chain = x[0];
+                        }
+                        else{
+                            x_in_chain = x_chain[0]* (Gamma_initial -theta1)/(Gamma(length_x-1)- theta1) ;
+                        }
 
                         bool free_position = true;
 
@@ -1150,9 +1195,12 @@ int  main(){
                         x += speed_f * vdouble2(sin(random_angle), cos(random_angle));
 
 
-                        for(Index i=0; i<Gamma.size(); ++i){ if(Gamma(i) == round(x[0])) pos = i; }
-
-                        x_in =  x[0]/Gamma_x(pos);// scale to initial coordinates
+                        if (x[0] < theta1){
+                            x_in = x[0];
+                        }
+                        else{
+                            x_in = x[0]* (Gamma_initial -theta1)/(Gamma(length_x-1)- theta1) ;
+                        }
 
 
                         bool free_position = true; // check if the neighbouring position is free
