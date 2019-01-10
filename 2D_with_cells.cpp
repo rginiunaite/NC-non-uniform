@@ -79,7 +79,7 @@ int  main(){
     //double diff_conc = 0.1; // sensing threshold, i.e. how much concentration has to be bigger, so that the cell moves in that direction
     int freq_growth = 1; // determines how frequently domain grows (actually not relevant because it will go every timestep)
     int insertion_freq = 1; // determines how frequently new cells are inserted, regulates the density of population
-    double speed_l = 1.0;// 0.05;//1;//0.05; // speed of a leader cell
+    double speed_l = 0.5;// 0.05;//1;//0.05; // speed of a leader cell
     double increase_fol_speed = 1.3;
     double speed_f = increase_fol_speed * speed_l;//0.05;//0.1;//0.08; // speed of a follower cell
     double dettach_prob = 0.5; // probability that a follower cell which is on trail looses the trail
@@ -114,8 +114,9 @@ int  main(){
 
 
     // for comparison with analytical
-    double alpha = 0.0256;//for 0.05 time step and 72 final time
-    //double alpha = 0.0128; // for 0.1 time step 144
+    //double alpha = 0.02563;//for 0.05 time step and 72 final time, theta1 = 0.5
+    double alpha = 0.03412; // for 0.05 time step, theta1 = 0.75
+
 
 
     VectorXd strain = VectorXd::Zero(length_x);
@@ -128,8 +129,8 @@ int  main(){
 
     //piecewise constant, two parts
 
-    int theta1 = int(0.5 * length_x);
-    double thetasmall = 0.5;
+    int theta1 = int(0.75 * length_x);
+    double thetasmall = 0.75;
     //int theta2 = int(0.7 * space_grid_controller);
 
 
@@ -796,7 +797,7 @@ int  main(){
                     }
 
                     // check that the position they want to move to is free and not out of bounds
-                    if (free_position && (x_in) > 0 && (x_in) < length_x - 1 && (x[1]) > cell_radius &&
+                    if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) && (x[1]) > cell_radius &&
                         (x[1]) < length_y - cell_radius) {
                         // if that is the case, move into that position
                         get<position>(particles)[particle_id(j)] +=
@@ -893,7 +894,7 @@ int  main(){
 
 
                         // if the position they want to move to is free and not out of bounds, move that direction
-                        if (free_position && (x_in) > 0 && (x_in) < length_x - 1 && (x[1]) > cell_radius &&
+                        if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) && (x[1]) > cell_radius &&
                             (x[1]) < length_y - cell_radius) {
                             get<position>(particles)[particle_id(j)] +=
                                     speed_l * vdouble2(sin(random_angle[chemo_max_number]),
@@ -943,7 +944,7 @@ int  main(){
 
 
                         // update the position if the place they want to move to is free and not out of bounds
-                        if (free_position && (x_in) > 0 && (x_in) < length_x - 1 && (x[1]) > cell_radius &&
+                        if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) && (x[1]) > cell_radius &&
                             (x[1]) < length_y - cell_radius) {
                             get<position>(particles)[particle_id(j)] +=
                                     speed_l * vdouble2(sin(random_angle[filo_number]),
@@ -1027,7 +1028,7 @@ int  main(){
 
                     double x_in_chain; // scaled coordinate
 
-                    if (x[0] < theta1){
+                    if (x_chain[0] < theta1){
                         x_in_chain = x_chain[0];
                     }
                     else{
@@ -1048,7 +1049,7 @@ int  main(){
 
 
                     // update the position if the place they want to move to is free and not out of bounds
-                    if (free_position && (x_in_chain) > 0 && (x_in_chain) < length_x - 1 && (x_chain[1]) > cell_radius &&
+                    if (free_position && x_chain[0] > cell_radius && x_chain[0] < Gamma(length_x - 1) && (x_chain[1]) > cell_radius &&
                         (x_chain[1]) < length_y - cell_radius) {
                         get<position>(particles)[particle_id(j)] +=
                                 increase_fol_speed * get<direction>(particles[particle_id(j)]);
@@ -1136,8 +1137,8 @@ int  main(){
                         // Non-uniform domain growth
                         double x_in_chain;
 
-                        if (x[0] < theta1){
-                            x_in_chain = x[0];
+                        if (x_chain[0] < theta1){
+                            x_in_chain = x_chain[0];
                         }
                         else{
                             x_in_chain = x_chain[0]* (Gamma_initial -theta1)/(Gamma(length_x-1)- theta1) ;
@@ -1159,8 +1160,8 @@ int  main(){
 
                         // if the position is free and not out of bounds, move that direction
                         if (free_position &&
-                            (x_in_chain) > 0 &&
-                            (x_in_chain) < length_x - 1 && (x_chain[1]) > cell_radius &&
+                            x_chain[0] > cell_radius &&
+                           x_chain[0] < length_x - 1 && (x_chain[1]) > cell_radius &&
                             (x_chain[1]) < length_y - cell_radius) {
                             //cout << "direction " << get<direction>(particles[particle_id(j)]) << endl;
                             get<position>(particles)[particle_id(j)] +=
@@ -1215,7 +1216,7 @@ int  main(){
                         }
 
                         // if the position they want to move to is free and not out of bounds, move to that position
-                        if (free_position && (x_in) > 0 && (x_in) < length_x - 1 && (x[1]) > cell_radius &&
+                        if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) && (x[1]) > cell_radius &&
                             (x[1]) < length_y - cell_radius) {
                             get<position>(particles)[particle_id(j)] += speed_f * vdouble2(sin(random_angle),
                                                                                            cos(random_angle)); // update if nothing is in the next position
@@ -1334,12 +1335,12 @@ int  main(){
 
             // save at every time step
             #ifdef HAVE_VTK
-                        vtkWriteGrid("particles", t, particles.get_grid(true));
+                        vtkWriteGrid("particlesQuat", t, particles.get_grid(true));
             #endif
 
 
 
-            ofstream output("matrix_non_uniform" + to_string(int(t)) + ".csv");
+            ofstream output("matrix_quater_non_uniform" + to_string(int(t)) + ".csv");
 
 
             output << "x, y, z, u" << "\n" << endl;
