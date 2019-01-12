@@ -52,9 +52,9 @@ int  main(){
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D = 0.0001;//0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
+    double D = 0.00001;//0.00001;//0.05; // to 10^5 \nu m^2/h diffusion coefficient
     double t = 0.0; // initialise time
-    double dt = 0.05; // time step
+    double dt = 0.05;//before was 0.05 // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx = 1.0/space_grid_controller; // space step in x direction, double to be consistent with other types
@@ -63,7 +63,7 @@ int  main(){
 //    double y_init = 120.0;
 
     // reaction rate
-    double k_reac = 0.00001;//0.1;//0.105;//0.03;//.205; // reaction term
+    double k_reac = 0;//0.00001;//0.1;//0.105;//0.03;//.205; // reaction term
 
 
     // cell parameters
@@ -114,9 +114,9 @@ int  main(){
 
 
     // for comparison with analytical
-    //double alpha = 0.02563;//for 0.05 time step and 72 final time, theta1 = 0.5
-    double alpha = 0.03412; // for 0.05 time step, theta1 = 0.75
-
+    double alpha = 0.02563;//for 0.05 time step and 72 final time, theta1 = 0.5
+    //double alpha = 0.03412; // for 0.05 time step, theta1 = 0.75
+    //double alpha = 1.706;// dt = 0.001, 0.75
 
 
     VectorXd strain = VectorXd::Zero(length_x);
@@ -129,8 +129,8 @@ int  main(){
 
     //piecewise constant, two parts
 
-    int theta1 = int(0.75 * length_x);
-    double thetasmall = 0.75;
+    int theta1 = int(0.5 * length_x);
+    double thetasmall = 0.5;
     //int theta2 = int(0.7 * space_grid_controller);
 
 
@@ -329,7 +329,7 @@ int  main(){
     typedef particle_type::position position;
 
     // initialise the number of particles
-    particle_type particles(N);
+    particle_type particles(2*N);
 
     // initialise random number generator for particles entering the domain, appearing at the start in x and uniformly in y
     std::default_random_engine gen;
@@ -347,11 +347,26 @@ int  main(){
         get<type>(particles[i]) = 0; // initially all cells are leaders
 
         //get<position>(p) = vdouble2(cell_radius,(i+1)*diameter); // x=2, uniformly in y
-        get<position>(particles[i]) = vdouble2(cell_radius, (i + 1) * double(length_y - 1) / double(N) -
+        get<position>(particles[i]) = vdouble2(cell_radius + theta1, (i + 1) * double(length_y - 1) / double(N) -
                                                             0.5 * double(length_y - 1) /
                                                             double(N)); // x=2, uniformly in y
         get<persistence_extent>(particles[i]) = 0;
         get<same_dir_step>(particles[i]) = 0;
+
+    }
+
+    for (int i = 0; i < N; ++i) {
+
+
+        get<radius>(particles[i+N]) = cell_radius;
+        get<type>(particles[i+N]) = 0; // initially all cells are leaders
+
+        //get<position>(p) = vdouble2(cell_radius,(i+1)*diameter); // x=2, uniformly in y
+        get<position>(particles[i+N]) = vdouble2(theta1-cell_radius, (i + 1) * double(length_y - 1) / double(N) -
+                                                                     0.5 * double(length_y - 1) /
+                                                                     double(N)); // x=2, uniformly in y
+        get<persistence_extent>(particles[i+N]) = 0;
+        get<same_dir_step>(particles[i+N]) = 0;
 
     }
 
@@ -386,39 +401,39 @@ int  main(){
 //              insert new cells
 
 
-            bool free_position = false;
-            particle_type::value_type f;
-            //get<radius>(f) = cell_radius;
-
-
-            get<position>(f) = vdouble2(cell_radius, uniform(gen)); // x=2, uniformly in y
-            free_position = true;
-            /*
-             * loop over all neighbouring leaders within "dem_diameter" distance
-             */
-            for (auto tpl = euclidean_search(particles.get_query(), get<position>(f), diameter); tpl != false; ++tpl) {
-
-                vdouble2 diffx = tpl.dx();
-
-                if (diffx.norm() < diameter) {
-                    free_position = false;
-                    break;
-                }
-            }
-
-            // our assumption that all new cells are followers
-            get<type>(f) = 0;
-
-
-            if (free_position) {
-                get<chain>(f) = 0;
-                get<chain_type>(f) = -1;
-                get<attached_to_id>(f) = -1;
-                particles.push_back(f);
-            }
-
-
-        particles.update_positions();
+//            bool free_position = false;
+//            particle_type::value_type f;
+//            //get<radius>(f) = cell_radius;
+//
+//
+//            get<position>(f) = vdouble2(cell_radius, uniform(gen)); // x=2, uniformly in y
+//            free_position = true;
+//            /*
+//             * loop over all neighbouring leaders within "dem_diameter" distance
+//             */
+//            for (auto tpl = euclidean_search(particles.get_query(), get<position>(f), diameter); tpl != false; ++tpl) {
+//
+//                vdouble2 diffx = tpl.dx();
+//
+//                if (diffx.norm() < diameter) {
+//                    free_position = false;
+//                    break;
+//                }
+//            }
+//
+//            // our assumption that all new cells are followers
+//            get<type>(f) = 0;
+//
+//
+//            if (free_position) {
+//                get<chain>(f) = 0;
+//                get<chain_type>(f) = -1;
+//                get<attached_to_id>(f) = -1;
+//                particles.push_back(f);
+//            }
+//
+//
+//        particles.update_positions();
 
 
 
