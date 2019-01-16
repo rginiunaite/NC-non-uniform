@@ -40,7 +40,7 @@ int main() {
 
     double space_grid_controller = 1000;
 
-    double domain_length = 1000.0; //this variable is for the actual domain length, since it will be increasing
+    double domain_length = 1.0; //this variable is for the actual domain length, since it will be increasing
     double Lt_old =domain_length;
     int length_x =
             int(domain_length) * int(space_grid_controller); // length in x direction of the chemoattractant matrix
@@ -51,10 +51,10 @@ int main() {
 
 // parameters for the dynamics of chemoattractant concentration
 
-    double D_1 = 0.1; //diffusion in the first half
-    double D_2 = 0.2; // diffusion in second half
+    double D_1 = 0.5; //diffusion in the first half
+    double D_2 = 0; // diffusion in second half
     double t = 0.0; // initialise time
-    double dt = 0.001; // time step
+    double dt = 0.01; // time step
     double dt_init = dt;
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx =
@@ -513,10 +513,10 @@ int main() {
         // new implementation of zero flux
 
         for (int i = 0; i < length_x; i++) {
-            di(i, 0) = chemo(i, 0) + dt*( -( (Gamma_t(i))/Lt - Gamma(i)*Ltdot/(Lt*Lt) )  *M_PI  * sin(M_PI * Gamma(i) / Lt) +
-                                      D * cos(M_PI * Gamma(i) / Lt) *
-                                      (M_PI  / Lt) * (M_PI  / Lt) -
-                    (k_reac-strain(i)) * cos(M_PI * Gamma(i) / Lt) );//dt*(strain(i)-k_reac)*1;//
+            di(i, 0) = chemo(i, 0);// + dt*( -( (Gamma_t(i))/Lt - Gamma(i)*Ltdot/(Lt*Lt) )  *M_PI  * sin(M_PI * Gamma(i) / Lt) +
+//                                      D * cos(M_PI * Gamma(i) / Lt) *
+//                                      (M_PI  / Lt) * (M_PI  / Lt) -
+//                    (k_reac-strain(i)) * cos(M_PI * Gamma(i) / Lt) );//dt*(strain(i)-k_reac)*1;//
         }
 
 
@@ -617,7 +617,7 @@ int main() {
 //
 //        }
 
-        if (counter % 1000 == 0) {
+        if (counter % 100 == 0) {
 
             //if (t == 1 || t == 10 || t == 20 ) {
             //cout << "heeere " << endl;
@@ -627,7 +627,7 @@ int main() {
             // output << "x, y, z, u" << "\n" << endl;
 
             // save data to plot chemoattractant concentration
-            ofstream output("matrix_non_uniform" + to_string(t) + ".csv");
+            ofstream output("infinite" + to_string(t) + ".csv");
 
             //output << "x, y, z, u" << "\n" << endl;
 
