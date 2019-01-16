@@ -50,9 +50,9 @@ int main() {
 
 
 // parameters for the dynamics of chemoattractant concentration
+    double D_2 = 0.0001; // diffusion for the first half
+    double D_1 = D_2;//4*D_2; //diffusion in the second
 
-    double D_1 = 0.5; //diffusion in the first half
-    double D_2 = 0; // diffusion in second half
     double t = 0.0; // initialise time
     double dt = 0.01; // time step
     double dt_init = dt;
@@ -78,7 +78,7 @@ int main() {
 
 
     // for comparison with analytical
-    double alpha = 0;//before 0.1
+    double alpha = 0.1;//before 0.1
 
 
     VectorXd strain = VectorXd::Zero(length_x);
@@ -173,13 +173,13 @@ int main() {
     double C0 = 1.0; // initially non-zero, afterwards zero
     double n = 10.0; // for 1 - 0.5 cos(n \pi x)
 
-    for (int i = 0; i < theta1 -1; i++) {
+    for (int i = 0; i < theta1 ; i++) {
         for (int j = 0; j < length_y; j++) {
             chemo(i, j) = 0;//1;//C0 - 0.5 * cos( M_PI * i/space_grid_controller * n);
         }
     }
 
-    for (int i = theta1 -1; i < length_x -1; i++) {
+    for (int i = theta1 ; i < length_x ; i++) {
         for (int j = 0; j < length_y; j++) {
             chemo(i, j) = 1;//1;//C0 - 0.5 * cos( M_PI * i/space_grid_controller * n);
         }
@@ -453,6 +453,10 @@ int main() {
         }
 
 
+
+
+
+
         // second half
 
         for (int i = theta1 -1; i < length_x - 1; i++) {
@@ -474,7 +478,7 @@ int main() {
 
         for (int i = theta1 -1; i < length_x - 1; i++) {
             for (int j = 0; j < length_y; j++) {
-                gi(i, j) = -D_1 * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1));
+                gi(i, j) = -D_2 * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1));
 
             }
         }
@@ -518,9 +522,6 @@ int main() {
 //                                      (M_PI  / Lt) * (M_PI  / Lt) -
 //                    (k_reac-strain(i)) * cos(M_PI * Gamma(i) / Lt) );//dt*(strain(i)-k_reac)*1;//
         }
-
-
-
 
 
 
