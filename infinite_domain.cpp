@@ -51,7 +51,7 @@ int main() {
 
 // parameters for the dynamics of chemoattractant concentration
     double D_2 = 0.0001; // diffusion for the first half
-    double D_1 = D_2;//4*D_2; //diffusion in the second
+    double D_1 = 10*D_2;//4*D_2; //diffusion in the second
 
     double t = 0.0; // initialise time
     double dt = 0.01; // time step
@@ -78,7 +78,7 @@ int main() {
 
 
     // for comparison with analytical
-    double alpha = 0.1;//before 0.1
+    double alpha = 0;//before 0.1
 
 
     VectorXd strain = VectorXd::Zero(length_x);
@@ -91,7 +91,7 @@ int main() {
 
     //piecewise constant, two parts
 
-    int theta1 = int(0.5 * space_grid_controller);
+    int theta1 = int(0.5 * length_x);
     double thetasmall = 0.5;
     //int theta2 = int(0.7 * space_grid_controller);
 
@@ -454,19 +454,36 @@ int main() {
 
 
 
+        //middle ones with mixed diffusion
+
+        ai(theta1-1,0) = -D_1 * dt / (2.0 * Gamma_x(theta1-1) * dx * dx) * (1.0 / Gamma_x(theta1-1) + 1.0 / Gamma_x(theta1-2));
+        bi(theta1-1,0) = (1 + dt *( strain(theta1-1) - k_reac) +
+                          D_2 * dt / (2.0 * Gamma_x(theta1-1) * dx * dx) * (1.0 / Gamma_x(theta1-1) + 1.0 / Gamma_x(theta1)) +
+                          D_1 * dt / (2.0 * Gamma_x(theta1-1) * dx * dx) * (1.0 / Gamma_x(theta1-1) + 1.0 / Gamma_x(theta1-2)));
+        gi(theta1-1,0) = -D_2 * dt / (2.0 * Gamma_x(theta1-1) * dx * dx) * (1.0 / Gamma_x(theta1-1) + 1.0 / Gamma_x(theta1 ));
+
+
+
+        ai(theta1, 0) = -D_1 * dt / (2.0 * Gamma_x(theta1) * dx * dx) * (1.0 / Gamma_x(theta1) + 1.0 / Gamma_x(theta1-1));
+
+        bi(theta1, 0) =  (1 + dt *( strain(theta1) - k_reac) +
+                             D_2 * dt / (2.0 * Gamma_x(theta1) * dx * dx) * (1.0 / Gamma_x(theta1) + 1.0 / Gamma_x(theta1+1)) +
+                             D_1 * dt / (2.0 * Gamma_x(theta1) * dx * dx) * (1.0 / Gamma_x(theta1) + 1.0 / Gamma_x(theta1-1)));
+
+        gi(theta1, 0) = -D_2 * dt / (2.0 * Gamma_x(theta1) * dx * dx) * (1.0 / Gamma_x(theta1) + 1.0 / Gamma_x(theta1+1));
 
 
 
         // second half
 
-        for (int i = theta1 -1; i < length_x - 1; i++) {
+        for (int i = theta1 ; i < length_x - 1; i++) {
             for (int j = 0; j < length_y; j++) {
                 ai(i, j) = -D_2 * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i - 1));
 
             }
         }
 
-        for (int i = theta1 -1; i < length_x - 1; i++) {
+        for (int i = theta1 ; i < length_x - 1; i++) {
             for (int j = 0; j < length_y; j++) {
                 bi(i, j) =  (1 + dt *( strain(i) - k_reac) +
                              D_2 * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1)) +
@@ -476,7 +493,7 @@ int main() {
         }
 
 
-        for (int i = theta1 -1; i < length_x - 1; i++) {
+        for (int i = theta1 ; i < length_x - 1; i++) {
             for (int j = 0; j < length_y; j++) {
                 gi(i, j) = -D_2 * dt / (2.0 * Gamma_x(i) * dx * dx) * (1.0 / Gamma_x(i) + 1.0 / Gamma_x(i + 1));
 
