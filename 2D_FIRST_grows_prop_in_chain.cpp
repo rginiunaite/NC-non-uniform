@@ -1,4 +1,8 @@
 //
+// Created by giniunaite on 29/01/19.
+//
+
+//
 // Created by rasa on 10/01/19.
 //
 
@@ -30,7 +34,7 @@ using namespace Eigen; // objects VectorXd, MatrixXd
 
 
 
-VectorXi proportions(double diff_conc, int n_seed) {
+double prop_break(double diff_conc, int n_seed) {
 //int  main(){
 
 
@@ -103,7 +107,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
     // int n_seed = 0;
-   // double diff_conc = 0.05;
+    // double diff_conc = 0.05;
 
 
     // domain growth parameters
@@ -602,7 +606,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //            cout << " gamma_old(j) " << Gamma_old(pos) << endl;
 //            cout << "gamma(j) " << Gamma(pos) << endl;
 
-                // since I do not know how to do it for general case, I will do it for my specific
+            // since I do not know how to do it for general case, I will do it for my specific
 
             if (x[0] > Gamma(theta1 -1)){
                 get<position>(particles)[i] += vdouble2(Gamma(theta1-1) - Gamma_old(theta1-1),0);
@@ -1418,54 +1422,43 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //        cout << "domain length " << Gamma_x(length_x-1) << endl;
     }
 
-//    /*
-// * return the density of cells in domain_partition parts of the domain
-// */
-    const int domain_partition = int(Gamma(length_x-1) / double(55));; // number of intervals of 50 \mu m
+/*
+ * Proportion that break
+ *
+ */
 
-    VectorXi proportions = VectorXi::Zero(domain_partition); // integer with number of cells in particular part
+double pro_break = 0.0; // the stream did not break
 
-    double one_part = Gamma(length_x-1) / double(domain_partition);
+int followers_not_in_chain = 0;
 
+for (int i = 0; i < particles.size(); ++i){
+if (get<chain>(particles[i]) == 0){
+if (get<type>(particles[i]) == 1){
+followers_not_in_chain += 1; // add to coung
+}
+}
+}
 
-    for (int i = 0; i < domain_partition; i++) {
+pro_break = double(followers_not_in_chain)/(double(particles.size()-N));
 
-        for (int j = 0; j < particles.size(); j++) {
-            vdouble2 x = get<position>(particles[j]);
-            if (i * one_part < x[0] && x[0] < (i + 1) * one_part) {
-                proportions(i) += 1;
-            }
-        }
-
-    }
-
-    return proportions;
-
-
-
-
+return pro_break;
 }
 
 
 
-
-/*
- * main for proportions in different sections
- */
-
-
 // parameter analysis
-int main() {
+int main(){
 
     const int number_parameters = 1; // parameter range
     const int sim_num = 10;
 
-    VectorXi vector_check_length = proportions(0.05, 2); //just to know what the length is
+    //VectorXi vector_check_length = prop_break(0.05, 2); //just to know what the length is
+    //cout << "prop " << vector_check_length << endl;
+    //int num_parts = vector_check_length.size(); // number of parts that I partition my domain
+    int num_parts = 1; // for 1800 timesteps
+    //MatrixXd sum_of_all = MatrixXd::Zero(num_parts,number_parameters); // sum of the values over all simulations
 
-    int num_parts = vector_check_length.size(); // number of parts that I partition my domain
-    cout << "length " << vector_check_length.size() << endl;
-    //int num_parts2 = 20; // for 1800 timesteps
-    MatrixXf sum_of_all = MatrixXf::Zero(num_parts, number_parameters); // sum of the values over all simulations
+    VectorXd store_values = VectorXd::Zero(sim_num);
 
     // n would correspond to different seeds
     // parallel programming
@@ -1486,49 +1479,36 @@ int main() {
         }
 
         //initialise the matrix to store the values
-        MatrixXi numbers = MatrixXi::Zero(num_parts, number_parameters);
+        //MatrixXd numbers = MatrixXd::Zero(num_parts,number_parameters);
+
 
         //#pragma omp parallel for
         //        for (int i = 0; i < number_parameters; i++) {
 
         //for (int j = 0; j < 1; j++) {
 
-        numbers.block(0, 0, num_parts, 1) = proportions(threshold[0], n);
+        //numbers.block(0,0,num_parts,1) = prop_break(threshold[0], n);
 
         //}
         // }
+        store_values(n) = prop_break(threshold[0], n);
 
-
-        // This is what I am using for MATLAB
-        ofstream output2("control_case.csv");
-
-        for (int i = 0; i < numbers.rows(); i++) {
-
-            for (int j = 0; j < numbers.cols(); j++) {
-
-                output2 << numbers(i, j) << ", ";
-
-                sum_of_all(i, j) += numbers(i, j);
-
-            }
-            output2 << "\n" << endl;
-        }
 
     }
     /*
     * will store everything in one matrix, the entries will be summed over all simulations
     */
 
-    ofstream output3("FIRST025.csv");
+    ofstream output3("chain-FIRST-025.csv");
 
-    for (int i = 0; i < num_parts; i++) {
 
-        for (int j = 0; j < number_parameters; j++) {
 
-            output3 << sum_of_all(i, j) << ", ";
+    for (int j = 0; j < sim_num; j++) {
 
-        }
+        output3 << store_values(j) << ", ";
         output3 << "\n" << endl;
+
+
     }
 
 
