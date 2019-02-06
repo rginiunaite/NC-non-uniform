@@ -23,7 +23,7 @@ concentration3 = M3(:,4);
 
 sim4 = 'infinite20.000000.csv'; % was 1200
 M4 = csvread(sim4);
-distance4 = M4(:,1)*100;
+distance4 = M4(:,1)*100-50;
 concentration4 = M4(:,4);
 
 % 
@@ -31,7 +31,7 @@ concentration4 = M4(:,4);
 % M5 = csvread(sim5);
 % distance5 = M5(:,1);
 % concentration5 = M5(:,4);
-figure
+%figure
 plot(distance1,concentration1, 'Linewidth',2)
 
 hold on
@@ -42,9 +42,11 @@ hold on
 % 
  plot(distance4,concentration4, 'Linewidth',2)
  
-xlim([0,400])
-xticks([0.0,100, 200.0,300, 400.0])
-xticklabels({'0','1', '2','3', '4'});
+%xlim([0,100])
+% xticks([0.0,100, 200.0,300, 400.0])
+% xticklabels({'0','1', '2','3', '4'});
+ %xticks([0.0,20, 40,60, 80])
+ %xticklabels({'0','20', '40','60', '80'});
 
 
 xlabel('x')
@@ -52,7 +54,7 @@ ylabel('C(x,t)')
 legend('t = 0','t = 10','t = 20')
 set(gca,'FontSize',36)
 ax = gca;
-ylim([0,2])
+ylim([0,1])
 yticks([0.0, 0.5, 1.0,1.5,2.0]);
 %yticklabels({'0.0', '0.2', '0.4', '0.6', '0.8','1.0','1.2'});
 yticklabels({'0.0', '0.5', '1.0','1.5','2.0'});
@@ -114,83 +116,83 @@ box on
 %%% track where a point moves
 
 
-
-% extract relevant dat
-point1 = 'track_point1.000000.csv';
-M1 = csvread(point1);
-pointdistance(1) = Mi1(:,1)*100;
-
-point2 = 'track_point10.000000.csv';
-Mi2 = csvread(point2);
-pointdistance(2) = Mi2(:,1)*100;
-
-point3 = 'track_point19.000000.csv';
-Mi3 = csvread(point3);
-pointdistance(3) = Mi3(:,1)*100;
-
-% extract relevant dat
-pointmiddle1 = 'track2_point1.000000.csv';
-Mi1 = csvread(pointmiddle1);
-pointMiddledistance(1) = Mi1(:,1)*100;
-
-pointmiddle2 = 'track2_point10.000000.csv';
-Mi2 = csvread(pointmiddle2);
-pointMiddledistance(2) = Mi2(:,1)*100;
-
-pointmiddle3 = 'track2_point19.000000.csv';
-Mi3 = csvread(pointmiddle3);
-pointMiddledistance(3) = Mi3(:,1)*100;
-
-% extract relevant dat
-pointlast1 = 'track3_point1.000000.csv';
-Mi1 = csvread(pointlast1);
-pointlastdistance(1) = Mi1(:,1)*100;
-
-pointlast2 = 'track3_point10.000000.csv';
-Mi2 = csvread(pointlast2);
-pointlastdistance(2) = Mi2(:,1)*100;
-
-pointlast3 = 'track3_point19.000000.csv';
-Mi3 = csvread(pointlast3);
-pointlastdistance(3) = Mi3(:,1)*100;
-
-time = [0,0,0]
-
-figure
-
-c = linspace(1,3,1);
-
-sz =100;
-
-scatter (pointdistance(1),0,'b','filled')
-hold on
-scatter (pointdistance(2),10,'r','filled')
-
-scatter (pointdistance(3),20,'g','filled')
-
-
-
-scatter (pointMiddledistance(1),0,'b','filled')
-hold on
-scatter (pointMiddledistance(2),10,'r','filled')
-
-scatter (pointMiddledistance(3),20,'g','filled')
-
-
-scatter (pointlastdistance(1),0,'b','filled')
-hold on
-scatter (pointlastdistance(2),10,'r','filled')
-
-scatter (pointlastdistance(3),20,'g','filled')
-
-
-xlabel('x')
-ylabel('Time,t')
-%legend('t = 0','t = 10','t = 20')
-set(gca,'FontSize',36)
-ax = gca;
-%xlim([0,110])
-
-
-box on
-
+% 
+% % extract relevant dat
+% point1 = 'track_point1.000000.csv';
+% M1 = csvread(point1);
+% pointdistance(1) = Mi1(:,1)*100;
+% 
+% point2 = 'track_point10.000000.csv';
+% Mi2 = csvread(point2);
+% pointdistance(2) = Mi2(:,1)*100;
+% 
+% point3 = 'track_point19.000000.csv';
+% Mi3 = csvread(point3);
+% pointdistance(3) = Mi3(:,1)*100;
+% 
+% % extract relevant dat
+% pointmiddle1 = 'track2_point1.000000.csv';
+% Mi1 = csvread(pointmiddle1);
+% pointMiddledistance(1) = Mi1(:,1)*100;
+% 
+% pointmiddle2 = 'track2_point10.000000.csv';
+% Mi2 = csvread(pointmiddle2);
+% pointMiddledistance(2) = Mi2(:,1)*100;
+% 
+% pointmiddle3 = 'track2_point19.000000.csv';
+% Mi3 = csvread(pointmiddle3);
+% pointMiddledistance(3) = Mi3(:,1)*100;
+% 
+% % extract relevant dat
+% pointlast1 = 'track3_point1.000000.csv';
+% Mi1 = csvread(pointlast1);
+% pointlastdistance(1) = Mi1(:,1)*100;
+% 
+% pointlast2 = 'track3_point10.000000.csv';
+% Mi2 = csvread(pointlast2);
+% pointlastdistance(2) = Mi2(:,1)*100;
+% 
+% pointlast3 = 'track3_point19.000000.csv';
+% Mi3 = csvread(pointlast3);
+% pointlastdistance(3) = Mi3(:,1)*100;
+% 
+% time = [0,0,0]
+% 
+% figure
+% 
+% c = linspace(1,3,1);
+% 
+% sz =100;
+% 
+% scatter (pointdistance(1),0,'b','filled')
+% hold on
+% scatter (pointdistance(2),10,'r','filled')
+% 
+% scatter (pointdistance(3),20,'g','filled')
+% 
+% 
+% 
+% scatter (pointMiddledistance(1),0,'b','filled')
+% hold on
+% scatter (pointMiddledistance(2),10,'r','filled')
+% 
+% scatter (pointMiddledistance(3),20,'g','filled')
+% 
+% 
+% scatter (pointlastdistance(1),0,'b','filled')
+% hold on
+% scatter (pointlastdistance(2),10,'r','filled')
+% 
+% scatter (pointlastdistance(3),20,'g','filled')
+% 
+% 
+% xlabel('x')
+% ylabel('Time,t')
+% %legend('t = 0','t = 10','t = 20')
+% set(gca,'FontSize',36)
+% ax = gca;
+% %xlim([0,110])
+% 
+% 
+% box on
+% 

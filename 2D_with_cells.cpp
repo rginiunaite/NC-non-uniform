@@ -26,8 +26,8 @@ using namespace Eigen; // objects VectorXd, MatrixXd
 
 
 
-//VectorXi proportions(double diff_conc, int n_seed) {
-int  main(){
+VectorXi proportions(double diff_conc, int n_seed) {
+//int  main(){
 
 
 // parameters
@@ -78,7 +78,7 @@ int  main(){
     //double diff_conc = 0.1; // sensing threshold, i.e. how much concentration has to be bigger, so that the cell moves in that direction
     int freq_growth = 1; // determines how frequently domain grows (actually not relevant because it will go every timestep)
     int insertion_freq = 1; // determines how frequently new cells are inserted, regulates the density of population
-    double speed_l = 0.05;// 0.05;//1;//0.05; // speed of a leader cell
+    double speed_l = 2*0.05;// 0.05;//1;//0.05; // speed of a leader cell
     double increase_fol_speed = 1.3;
     double speed_f = increase_fol_speed * speed_l;//0.05;//0.1;//0.08; // speed of a follower cell
     double dettach_prob = 0.5; // probability that a follower cell which is on trail looses the trail
@@ -98,8 +98,8 @@ int  main(){
 
 
 
-    int n_seed = 0;
-    double diff_conc = 0.05;
+//    int n_seed = 0;
+//    double diff_conc = 0.05;
 
 
     // domain growth parameters
@@ -110,7 +110,7 @@ int  main(){
     * */
 
     //piecewise constant, two parts
-    double thetasmall = 0.25; // first thetasmall is non-growing
+    double thetasmall = 0.75; // first thetasmall is non-growing
     int theta1 = int(thetasmall * length_x);
 
     //int theta2 = int(0.7 * space_grid_controller);
@@ -1349,13 +1349,13 @@ int  main(){
 
             // save at every time step
             #ifdef HAVE_VTK
-                        vtkWriteGrid("particles025theta", t, particles.get_grid(true));
+                        vtkWriteGrid("particles075theta", t, particles.get_grid(true));
             #endif
 
 
 
 
-            ofstream output("matrix_025theta" + to_string(int(round(t))) + ".csv");
+            ofstream output("matrix_075theta" + to_string(int(round(t))) + ".csv");
 
 
             output << "x, y, z, u" << "\n" << endl;
@@ -1398,25 +1398,25 @@ int  main(){
 //    /*
 // * return the density of cells in domain_partition parts of the domain
 // */
-//    const int domain_partition = int(domain_length / double(5));; // number of intervalas of 50 \mu m
-//
-//    VectorXi proportions = VectorXi::Zero(domain_partition); // integer with number of cells in particular part
-//
-//    double one_part = domain_length / double(domain_partition);
-//
-//
-//    for (int i = 0; i < domain_partition; i++) {
-//
-//        for (int j = 0; j < particles.size(); j++) {
-//            vdouble2 x = get<position>(particles[j]);
-//            if (i * one_part < x[0] && x[0] < (i + 1) * one_part) {
-//                proportions(i) += 1;
-//            }
-//        }
-//
-//    }
-//
-//    return proportions;
+    const int domain_partition = int(Gamma(length_x-1) / double(55));; // number of intervals of 50 \mu m
+
+    VectorXi proportions = VectorXi::Zero(domain_partition); // integer with number of cells in particular part
+
+    double one_part = Gamma(length_x-1) / double(domain_partition);
+
+
+    for (int i = 0; i < domain_partition; i++) {
+
+        for (int j = 0; j < particles.size(); j++) {
+            vdouble2 x = get<position>(particles[j]);
+            if (i * one_part < x[0] && x[0] < (i + 1) * one_part) {
+                proportions(i) += 1;
+            }
+        }
+
+    }
+
+    return proportions;
 
 
 }
@@ -1429,81 +1429,83 @@ int  main(){
  */
 
 
-//// parameter analysis
-//int main() {
-//
-//    const int number_parameters = 1; // parameter range
-//    const int sim_num = 1;
-//
-//    //VectorXi vector_check_length = proportions(0.05, 2); //just to know what the length is
-//    //cout << "prop " << vector_check_length << endl;
-//    //int num_parts = vector_check_length.size(); // number of parts that I partition my domain
-//    int num_parts = 21; // for 1800 timesteps
-//    MatrixXf sum_of_all = MatrixXf::Zero(num_parts, number_parameters); // sum of the values over all simulations
-//
-//    // n would correspond to different seeds
-//    // parallel programming
-//#pragma omp parallel for
-//    for (int n = 0; n < sim_num; n++) {
-//
-//        // define parameters that I will change
-//
-//        array<double, number_parameters> threshold;
-//        array<double, 1> slope;
-//
-//        // set the parameters
-//        for (int i = 0; i < number_parameters; i++) {
-//            threshold[i] = 0.1;
-//            //threshold[i] = 0.005 * (i + 1);// 0.01;
-//            //cout << "slope " << slope[i] << endl;
-//
-//        }
-//
-//        //initialise the matrix to store the values
-//        MatrixXi numbers = MatrixXi::Zero(num_parts, number_parameters);
-//
-//        //#pragma omp parallel for
-//        //        for (int i = 0; i < number_parameters; i++) {
-//
-//        //for (int j = 0; j < 1; j++) {
-//
-//        numbers.block(0, 0, num_parts, 1) = proportions(threshold[0], 0);
-//
-//        //}
-//        // }
-//
-//
-//        // This is what I am using for MATLAB
-//        ofstream output2("control_case.csv");
-//
-//        for (int i = 0; i < numbers.rows(); i++) {
-//
-//            for (int j = 0; j < numbers.cols(); j++) {
-//
-//                output2 << numbers(i, j) << ", ";
-//
-//                sum_of_all(i, j) += numbers(i, j);
-//
-//            }
-//            output2 << "\n" << endl;
-//        }
-//
-//    }
-//    /*
-//    * will store everything in one matrix, the entries will be summed over all simulations
-//    */
-//
-//    ofstream output3("aqp_M9.csv");
-//
-//    for (int i = 0; i < num_parts; i++) {
-//
-//        for (int j = 0; j < number_parameters; j++) {
-//
-//            output3 << sum_of_all(i, j) << ", ";
-//
-//        }
-//        output3 << "\n" << endl;
-//    }
-//
-//
-//}
+// parameter analysis
+int main() {
+
+    const int number_parameters = 1; // parameter range
+    const int sim_num = 10;
+
+    VectorXi vector_check_length = proportions(0.05, 2); //just to know what the length is
+    //cout << "prop " << vector_check_length << endl;
+    //int num_parts = vector_check_length.size(); // number of parts that I partition my domain
+    //int num_parts = vector_check_length.size(); // number of parts that I partition my domain
+    //cout << "length " << vector_check_length.size() << endl;
+    int num_parts = 19; // for 1800 timesteps
+    MatrixXf sum_of_all = MatrixXf::Zero(num_parts, number_parameters); // sum of the values over all simulations
+
+    // n would correspond to different seeds
+    // parallel programming
+#pragma omp parallel for
+    for (int n = 0; n < sim_num; n++) {
+
+        // define parameters that I will change
+
+        array<double, number_parameters> threshold;
+        array<double, 1> slope;
+
+        // set the parameters
+        for (int i = 0; i < number_parameters; i++) {
+            threshold[i] = 0.05;
+            //threshold[i] = 0.005 * (i + 1);// 0.01;
+            //cout << "slope " << slope[i] << endl;
+
+        }
+
+        //initialise the matrix to store the values
+        MatrixXi numbers = MatrixXi::Zero(num_parts, number_parameters);
+
+        //#pragma omp parallel for
+        //        for (int i = 0; i < number_parameters; i++) {
+
+        //for (int j = 0; j < 1; j++) {
+
+        numbers.block(0, 0, num_parts, 1) = proportions(threshold[0], n);
+
+        //}
+        // }
+
+
+        // This is what I am using for MATLAB
+        ofstream output2("control_case.csv");
+
+        for (int i = 0; i < numbers.rows(); i++) {
+
+            for (int j = 0; j < numbers.cols(); j++) {
+
+                output2 << numbers(i, j) << ", ";
+
+                sum_of_all(i, j) += numbers(i, j);
+
+            }
+            output2 << "\n" << endl;
+        }
+
+    }
+    /*
+    * will store everything in one matrix, the entries will be summed over all simulations
+    */
+
+    ofstream output3("final075_twice_speed.csv");
+
+    for (int i = 0; i < num_parts; i++) {
+
+        for (int j = 0; j < number_parameters; j++) {
+
+            output3 << sum_of_all(i, j) << ", ";
+
+        }
+        output3 << "\n" << endl;
+    }
+
+
+}

@@ -1,0 +1,1 @@
+/usr/bin/c++   -fopenmp -std=c++14 -g    CMakeFiles/2D_with_cells.dir/2D_with_cells.cpp.o  -o 2D_with_cells 

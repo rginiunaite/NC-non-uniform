@@ -1,0 +1,1 @@
+/usr/bin/c++   -fopenmp -std=c++14 -g    CMakeFiles/infinite.dir/manufactured_explicit.cpp.o  -o infinite 

@@ -1,3 +1,5 @@
+%% Comparison of manufactured solution with the numerical solution
+
 %% time zero
 
 space_grid_controller = 1000;

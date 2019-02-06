@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<VTKFile type="UnstructuredGrid" version="0.1" byte_order="LittleEndian" header_type="UInt32" compressor="vtkZLibDataCompressor">
+  <UnstructuredGrid>
+    <Piece NumberOfPoints="38" NumberOfCells="38">
+      <PointData>
+        <DataArray type="Float32" Name="id" format="binary" RangeMin="0" RangeMax="4">
+          AQAAAACAAACYAAAAXwAAAA==eJwVxKEZgmAYhdEvGAgGggMwAhsITOAIjMAIfyQSiUQikUg0Go1EotHI4T7vuRHX0tNVIjGxsRN1RE5BScWLlo5Ez8DIxMzCysabD192Dn78iSbiRsadnEdzAoiUGqA=
+        </DataArray>
+        <DataArray type="Float32" Name="is_alive" format="binary" RangeMin="1" RangeMax="1">
+          AQAAAACAAACYAAAADwAAAA==eJxjYGiwZxiEGABibhxb
+        </DataArray>
+        <DataArray type="Float32" Name="random_generator_seed" format="binary" RangeMin="1548781440" RangeMax="1548781440">
+          AQAAAACAAACYAAAAEgAAAA==eJzjX7jDjx8LFhhgDABn60El
+        </DataArray>
+        <DataArray type="Float32" Name="radius" format="binary" RangeMin="7.5" RangeMax="7.5">
+          AQAAAACAAACYAAAAEQAAAA==eJxjYPjgwICBBx4AAEqlBfE=
+        </DataArray>
+        <DataArray type="Float32" Name="type" format="binary" RangeMin="0" RangeMax="0">
+          AQAAAACAAACYAAAAEAAAAA==eJxjYMAGGuwHGgMAUdEYoA==
+        </DataArray>
+        <DataArray type="Float32" Name="attached_to_id" format="binary" RangeMin="0" RangeMax="0">
+          AQAAAACAAACYAAAAVgAAAA==eJxjYMAKHBgYGuwhzAYg28EBIe4AlWuAii0A0gqODAwCQGwAxAlA/ACkDkgXAHEDVCwAiCcAcQcQLwDiFUC8AYhPAPEBIL4BxDuA+AUQX3AEAIayFhM=
+        </DataArray>
+        <DataArray type="Float32" Name="direction" NumberOfComponents="2" format="binary" RangeMin="0" RangeMax="0">
+          AQAAAACAAAAwAQAAlwAAAA==eJw7V3DKZhOnke1tSzPbBx927YkVdrPlMgrY8y7a2bbidqnNtxP2tlIb+m1eCgvbZrfwwdV52r+zCZ2uthcmD1MPE4eph4nD9MHUn4PaC1MH08cqbWg7Zf1ZuH0w9TB5XPYsfWNua6e1xYZvnZPt2ZC6PTBzYOpg8ujmwMR5tZRt7Xq/2+w56WPrcpjXCl0fzFwATFSCpw==
+        </DataArray>
+        <DataArray type="Float32" Name="chain" format="binary" RangeMin="0" RangeMax="0">
+          AQAAAACAAACYAAAAHQAAAA==eJxjYMAGGuyJxwwO+LEDGhsbboBiBzgNAMTlEXY=
+        </DataArray>
+        <DataArray type="Float32" Name="chain_type" format="binary" RangeMin="0" RangeMax="0">
+          AQAAAACAAACYAAAANQAAAA==eJxtjMkRADAIAulMSqP0XDrwiB9hEYHvEFA9qa1Jc3amYHexe+lhdjrD8kb038lUCz05DT0=
+        </DataArray>
+        <DataArray type="Float32" Name="persistence extent" format="binary" RangeMin="0" RangeMax="0">
+          AQAAAACAAACYAAAADAAAAA==eJxjYBicAAAAmAAB
+        </DataArray>
+        <DataArray type="Float32" Name="same dir step" format="binary" RangeMin="0" RangeMax="0">
+          AQAAAACAAACYAAAADAAAAA==eJxjYBicAAAAmAAB
+        </DataArray>
+      </PointData>
+      <CellData>
+      </CellData>
+      <Points>
+        <DataArray type="Float32" Name="Points" NumberOfComponents="3" format="binary" RangeMin="14.066271394" RangeMax="107.36228236">
+          AQAAAACAAADIAQAAZgEAAA==eJxr/TbZKZt9oiMDEBx5t8bpDt8VMPvZns1OIZdTnUDs+PtLnWa1rACz98ya71T19iiY7Ri+0CnmTBeY/ffDfKfDkQpgtvjTNqc9jn/B5uTz9Tul/7oHFjd81e60O3YzmH3dutrpxdR/DiC22NqpThEWcWDxp9ubnA6dmwpm+6cHOT25yQ9mB8TkOq3+cxrMVrCNc5r6YSXYfOPwWCf39Dqw+Mz/dk75hxjA4kuOBDgxHtwAFv/eZ+902cQLzFa8ae30R/QumH1lqbjTubv/wOrVFIyc5k2fBhbfq8rndEO7AyyeeonfaemVYrD4wZdSTpwHDoLZLMGPHLWv6oLZeZtfOfptWw5mF5btduyJgbjhuvUVx9sxELtUF653FFZ4Bxb3Pbbe8UNHK1h8VUK/487EQ2D249tZjkbZ7mD2jq9Wjnud5oPZr36pO3aHQtwT/kfa0Y0HEp5JKsyOnywEwGwA/euN2w==
+        </DataArray>
+      </Points>
+      <Cells>
+        <DataArray type="Int64" Name="connectivity" format="binary" RangeMin="0" RangeMax="37">
+          AQAAAACAAAAwAQAATAAAAA==eJwtxUkCgQAAAMBKSpEWCi2i5f9fdDBzmSD4Cx354NhHJ059cubcZ19c+OrSlWs3vvnu1p0ffvrl3oNHT3579sdfL169efcPHtcCwA==
+        </DataArray>
+        <DataArray type="Int64" Name="offsets" format="binary" RangeMin="1" RangeMax="38">
+          AQAAAACAAAAwAQAATAAAAA==eJwtxUkCQgAAAMBkSSJRqUQI/f+JHcxcJtht9g4dOXbig1Mfnfnk3IXPLn1x5dpX33x344effrn12517fzx49OSvZy9e/fMfNf8C5g==
+        </DataArray>
+        <DataArray type="UInt8" Name="types" format="binary" RangeMin="1" RangeMax="1">
+          AQAAAACAAAAmAAAADAAAAA==eJxjZCQGAAADCwAn
+        </DataArray>
+      </Cells>
+    </Piece>
+  </UnstructuredGrid>
+</VTKFile>
