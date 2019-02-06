@@ -78,7 +78,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     //double diff_conc = 0.1; // sensing threshold, i.e. how much concentration has to be bigger, so that the cell moves in that direction
     int freq_growth = 1; // determines how frequently domain grows (actually not relevant because it will go every timestep)
     int insertion_freq = 1; // determines how frequently new cells are inserted, regulates the density of population
-    double speed_l = 0.05;// 0.05;//1;//0.05; // speed of a leader cell
+    double speed_l = 2*0.05;// 0.05;//1;//0.05; // speed of a leader cell
     double increase_fol_speed = 1.3;
     double speed_f = increase_fol_speed * speed_l;//0.05;//0.1;//0.08; // speed of a follower cell
     double dettach_prob = 0.5; // probability that a follower cell which is on trail looses the trail
@@ -1438,9 +1438,9 @@ int main() {
     VectorXi vector_check_length = proportions(0.05, 2); //just to know what the length is
     //cout << "prop " << vector_check_length << endl;
     //int num_parts = vector_check_length.size(); // number of parts that I partition my domain
-    int num_parts = vector_check_length.size(); // number of parts that I partition my domain
-    cout << "length " << vector_check_length.size() << endl;
-    //int num_parts = 19; // for 1800 timesteps
+    //int num_parts = vector_check_length.size(); // number of parts that I partition my domain
+    //cout << "length " << vector_check_length.size() << endl;
+    int num_parts = 19; // for 1800 timesteps
     MatrixXf sum_of_all = MatrixXf::Zero(num_parts, number_parameters); // sum of the values over all simulations
 
     // n would correspond to different seeds
@@ -1495,7 +1495,7 @@ int main() {
     * will store everything in one matrix, the entries will be summed over all simulations
     */
 
-    ofstream output3("final075.csv");
+    ofstream output3("final075_twice_speed.csv");
 
     for (int i = 0; i < num_parts; i++) {
 

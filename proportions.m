@@ -1,30 +1,67 @@
 %% plot average of ten simulations
 
-sim1 = 'final025.csv';
+sim1 = 'FIRST075.csv';
 M1 = csvread(sim1);
 M1 = M1(:,1)/10;
 
-sim2 = 'FIRST075.csv';
+sim2 = 'FIRST075_twice_speed.csv';
 M2 = csvread(sim2);
 M2 = M2(:,1)/10;
+
+sim3 = 'final075.csv';
+M3 = csvread(sim3);
+M3 = M3(:,1)/10;
+
+sim4 = 'FIRST025.csv';
+M4 = csvread(sim4);
+M4 = M4(:,1)/10;
+
+sim5 = 'FIRST05.csv';
+M5 = csvread(sim5);
+M5 = M5(:,1)/10;
+
+sim6 = 'FIRST075.csv';
+M6 = csvread(sim6);
+M6 = M6(:,1)/10;
+
+
 
 x = [0:58:1100];
 
 figure 
-
-h1 = plot(x,M1,'blue')
+% 
+h1 = plot(x,M1,'--')
 hold on
-h2 = plot(x,M2,'red')
+h2 = plot(x,M2,':')
+%h3 = plot(x,M3,'-')
+% h4 = plot(x,M4,'--')
+% hold on
+% h5 = plot(x,M5,':')
+% h6 = plot(x,M6,'-')
 
-h1.LineWidth =3;
-h2.LineWidth =3;
+h1.LineWidth =6;
+h2.LineWidth =6;
+ h3.LineWidth =6;
+% h4.LineWidth =6;
+% h5.LineWidth =6;
+% h6.LineWidth =6;
 
 xlabel('Distance from the neural tube, \mu m','FontSize',14)
 set(gca,'linewidth',2)
 ylabel('Number of cells','FontSize',14)
 set(gca,'FontSize',36)
  ax = gca;
+ 
+ box on
 
+ set(gca,'linewidth',4)
+
+ 
+%legend ('Final 0.25 grows','Final 0.5 grows','Final 0.75 grows','First 0.25 grows','First 0.5 grows','First 0.75 grows')
+%legend ('Final 75% of the domain grows, M1','Final 50% of the domain grows, M2','Final 25% of the domain grows, M3')
+%legend ('First 25% of the domain grows, M4','First 50% of the domain grows, M5','First 75% of the domain grows, M6')
+%legend ('First 75% of the domain grows, M6','First 75% of the domain grows, double speed, M8')
+legend ('First 75% of the domain grows, M6','First 75% of the domain grows, double speed, M6,d')
 
 %% this is for smooth curves 
 

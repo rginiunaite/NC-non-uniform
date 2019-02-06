@@ -87,7 +87,7 @@ double prop_break(double diff_conc, int n_seed) {
     //double diff_conc = 0.1; // sensing threshold, i.e. how much concentration has to be bigger, so that the cell moves in that direction
     int freq_growth = 1; // determines how frequently domain grows (actually not relevant because it will go every timestep)
     int insertion_freq = 1; // determines how frequently new cells are inserted, regulates the density of population
-    double speed_l = 0.05;// 0.05;//1;//0.05; // speed of a leader cell
+    double speed_l = 2*0.05;// 0.05;//1;//0.05; // speed of a leader cell
     double increase_fol_speed = 1.3;
     double speed_f = increase_fol_speed * speed_l;//0.05;//0.1;//0.08; // speed of a follower cell
     double dettach_prob = 0.5; // probability that a follower cell which is on trail looses the trail
@@ -127,7 +127,7 @@ double prop_break(double diff_conc, int n_seed) {
 
 
     //piecewise constant, two parts
-    double thetasmall = 0.25; // first thetasmall is non-growing
+    double thetasmall = 0.75; // first thetasmall is non-growing
     int theta1 = int(thetasmall * length_x);
 
     //int theta2 = int(0.7 * space_grid_controller);
@@ -1499,7 +1499,7 @@ int main(){
     * will store everything in one matrix, the entries will be summed over all simulations
     */
 
-    ofstream output3("chain-FIRST-025.csv");
+    ofstream output3("chain-FIRST-075_twice_speed.csv");
 
 
 
