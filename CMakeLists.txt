@@ -76,8 +76,12 @@ include_directories(src ${INCLUDES})
 #add_executable(analytical_piecewise_constant_end analytical_piecewise_constant_end.cpp)
 #add_executable(analytical_piecewise_new_approach analytical_piecewise_new_approach.cpp)
 #add_executable(manufactured manufactured.cpp)
-add_executable(manufactured_explicit manufactured_explicit.cpp)
-
+#add_executable(manufactured_explicit manufactured_explicit.cpp)
+#add_executable(infinite_domain infinite_domain.cpp)
+add_executable(2D_with_cells 2D_with_cells.cpp)
+#add_executable(2D_cells_first_half_grows 2D_cells_first_half_grows.cpp)
+#add_executable(2D_final_grows_prop_in_chain 2D_final_grows_prop_in_chain.cpp)
+#add_executable(2D_FIRST_grows_prop_in_chain 2D_FIRST_grows_prop_in_chain.cpp)
 
 
 #target_link_libraries(NC-model ${LIBRARIES})
@@ -121,5 +125,11 @@ add_executable(manufactured_explicit manufactured_explicit.cpp)
 #target_link_libraries(analytical_piecewise_constant_end ${LIBRARIES})
 #target_link_libraries(analytical_piecewise_new_approach ${LIBRARIES})
 #target_link_libraries(manufactured ${LIBRARIES})
-target_link_libraries(manufactured_explicit ${LIBRARIES})
+#target_link_libraries(manufactured_explicit ${LIBRARIES})
+#target_link_libraries(infinite_domain ${LIBRARIES})
+target_link_libraries(2D_with_cells ${LIBRARIES})
+#target_link_libraries(2D_cells_first_half_grows ${LIBRARIES})
+#target_link_libraries(2D_final_grows_prop_in_chain ${LIBRARIES})
+#target_link_libraries(2D_FIRST_grows_prop_in_chain ${LIBRARIES})
+
 
