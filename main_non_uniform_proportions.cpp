@@ -289,18 +289,18 @@ VectorXi proportions(double diff_conc, int n_seed) {
     int counter = 0;
 
 
-    // save data to plot chemoattractant concentration
-    ofstream outputinit("matrix_non_uniform0.csv");
-
-    outputinit << "x, y, z, u" << "\n" << endl;
-
-
-    for (int i = 0; i < length_x * length_y; i++) {
-        for (int j = 0; j < 4; j++) {
-            outputinit << chemo_3col(i, j) << ", ";
-        }
-        outputinit << "\n" << endl;
-    }
+//    // save data to plot chemoattractant concentration
+//    ofstream outputinit("matrix_non_uniform0.csv");
+//
+//    outputinit << "x, y, z, u" << "\n" << endl;
+//
+//
+//    for (int i = 0; i < length_x * length_y; i++) {
+//        for (int j = 0; j < 4; j++) {
+//            outputinit << chemo_3col(i, j) << ", ";
+//        }
+//        outputinit << "\n" << endl;
+//    }
 
 
     //ofstream output2("track_point" + to_string(t) + ".csv");
@@ -578,7 +578,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
         /// update positions uniformly based on the domain growth
 
         vdouble2 x; // use variable x for the position of cells
-        double x0;
+        double x0=0;
         int pos;
 
         for (int i = 0; i < particles.size(); i++) {
@@ -1340,32 +1340,35 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //        }
 
         if (counter % 100 == 0) {
-
-
+//
+//if (t > 40) {
 //
 //#ifdef HAVE_VTK
-//            vtkWriteGrid("changeddxdyfirst1CELLS", t, particles.get_grid(true));
+//    vtkWriteGrid("final075CELLS", t, particles.get_grid(true));
 //#endif
 //
 //
 //
-//            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-//            ofstream output("changeddxdyfirst1matrix" + to_string(int(t + 0.01)) + ".csv");
+//    //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+//    ofstream output("final075matrix" + to_string(int(t + 0.00001)) + ".csv");
 //
 //
-//            output << "x, y, z, u" << "\n" << endl;
+//    output << "x, y, z, u" << "\n" << endl;
 //
 //
 //
-//            //output << "x, y, z, u" << "\n" << endl;
+//    //output << "x, y, z, u" << "\n" << endl;
 //
 //
-//            for (int i = 0; i < length_x * length_y; i++) {
-//                for (int j = 0; j < 4; j++) {
-//                    output << chemo_3col(i, j) << ", ";
-//                }
-//                output << "\n" << endl;
-//            }
+//    for (int i = 0; i < length_x * length_y; i++) {
+//        for (int j = 0; j < 4; j++) {
+//            output << chemo_3col(i, j) << ", ";
+//        }
+//        output << "\n" << endl;
+//    }
+//}
+
+
 
 
             //up to hear when comment saving
@@ -1423,7 +1426,6 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
     }
 
-    cout << "domain partition " << domain_partition << endl;
 
     /*
  * Proportion that break
@@ -1461,7 +1463,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 int main() {
 
     const int number_parameters = 1; // parameter range
-    const int sim_num = 20;
+    const int sim_num = 10;
 
     //VectorXd store_chains;
     //VectorXi vector_check_length = proportions(0.05, 2); //just to know what the length is
@@ -1490,26 +1492,27 @@ int main() {
         //initialise the matrix to store the values
         MatrixXi numbers = MatrixXi::Zero(num_parts, number_parameters);
 
-        cout << "how many simulations? " << n << endl;
+        //cout << "how many simulations? " << n << endl;
         numbers.block(0, 0, num_parts, 1) = proportions(threshold[0], n);
 
+        // comment from here
 
         // This is what I am using for MATLAB
-        ofstream output2("un.csv");
+        //ofstream output2("un.csv");
 
         for (int i = 0; i < numbers.rows(); i++) {
 
             for (int j = 0; j < numbers.cols(); j++) {
 
-                output2 << numbers(i, j) << ", ";
+                //output2 << numbers(i, j) << ", ";
 
                 sum_of_all(i, j) += numbers(i, j);
 
             }
-            output2 << "\n" << endl;
+            //output2 << "\n" << endl;
         }
 
-        ofstream output4("TRIALchainsTheta025FINAL.csv");
+        ofstream output4("chainsTheta1First.csv");
 
         // store_chains(n) =;
 
@@ -1517,13 +1520,19 @@ int main() {
 
         output4 << "\n" << endl;
 
+        //up to here
+
     }
+
+
+
 
     /*
     * will store everything in one matrix, the entries will be summed over all simulations
     */
 
-    ofstream output3("TRIALPROPTHETA025FINAL.csv");
+    //comment up to last bracket
+    ofstream output3("PROPTHETA1First.csv");
 
 
     for (int i = 0; i < num_parts; i++) {
