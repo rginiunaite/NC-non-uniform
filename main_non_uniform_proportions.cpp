@@ -65,7 +65,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     double cell_radius = 7.5;//0.5; // radius of a cell
     const double diameter =
             2 * cell_radius; // diameter of a cell
-    const size_t N = 5; // initial number of cells
+    const size_t N = 3; // initial number of cells
     double l_filo_y = 27.5;//2; // sensing radius, filopodia + cell radius
     double l_filo_x = 27.5; // sensing radius, it will have to be rescaled when domain grows
     double l_filo_x_in = l_filo_x; // this value is used for rescaling when domain grows based on initial value
@@ -85,11 +85,16 @@ VectorXi proportions(double diff_conc, int n_seed) {
     int count_dir = 0; // this is to count the number of times the cell moved the same direction, up to same_dir for each cell
     double lam = 1.0;//72/(100)/10; // to 1000 /h chemoattractant internalisation
 
+    int value = 0; // value of the Gamma(value), where Gamma is close to a cell center
 
     // distance to the track parameters
     double dist_thres = 1;
     int closest_time;
     int leader_track;
+
+
+    vdouble2 xposi; // to store positions
+
 
 
     // int n_seed = 0;
@@ -338,9 +343,10 @@ VectorXi proportions(double diff_conc, int n_seed) {
     ABORIA_VARIABLE(type, int, "type") // 0 if a cell is a leader, 1 if follower
     ABORIA_VARIABLE(chain_type, int, "chain_type") // leaders form different chain types
     ABORIA_VARIABLE(chain, int, "chain") // stores whether a follower is part of the chain or no, 0 if it is not part of
+    ABORIA_VARIABLE(scaling, int, "scaling ") // stores the value that the cell position is scaled down to initial coordinates
     // the chain and then increasing integer if it is. If it is attached to a leader, it is 1, and then increasing order.
     // stores the distance to the closest neighbour, if less than thresold
-    typedef Particles<std::tuple<radius, type, attached_to_id, direction, chain, chain_type, persistence_extent, same_dir_step>, 2> particle_type; // 2 stands for dimension
+    typedef Particles<std::tuple<radius, type, attached_to_id, direction, chain, chain_type, persistence_extent, same_dir_step,scaling>, 2> particle_type; // 2 stands for dimension
 
     // will use stored value of the position of a particle
     typedef particle_type::position position;
@@ -363,12 +369,33 @@ VectorXi proportions(double diff_conc, int n_seed) {
         get<radius>(particles[i]) = cell_radius;
         get<type>(particles[i]) = 0; // initially all cells are leaders
 
-        //get<position>(p) = vdouble2(cell_radius,(i+1)*diameter); // x=2, uniformly in y
+        //IMPORTANT UNCOMMENT
         get<position>(particles[i]) = vdouble2(cell_radius, (i + 1) * double(length_y - 1) / double(N) -
                                                             0.5 * double(length_y - 1) /
                                                             double(N)); // x=2, uniformly in y
         get<persistence_extent>(particles[i]) = 0;
         get<same_dir_step>(particles[i]) = 0;
+
+//        // for fixed cells
+//        if (i==0){
+//            get<position>(particles[i]) = vdouble2(cell_radius, (i + 1) * double(length_y - 1) / double(N) -
+//                                                                0.5 * double(length_y - 1) /
+//                                                                double(N)); //
+//        }
+//        if(i==1) {
+//            get<position>(particles[i]) = vdouble2(170, (i + 1) * double(length_y - 1) / double(N) -
+//                                                        0.5 * double(length_y - 1) /
+//                                                        double(N)); //
+//        }
+//
+//        if(i==2){
+//            get<position>(particles[i]) = vdouble2(339, (i + 1) * double(length_y - 1) / double(N) -
+//                                                        0.5 * double(length_y - 1) /
+//                                                        double(N)); //
+//        }
+
+
+
 
     }
 
@@ -392,7 +419,10 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 
-
+    // this is for tracking cell positions
+    ofstream outputtrack75nornd("track_cell7p5.csv");
+    ofstream outputtrack170nornd("track_cell170.csv");
+    ofstream outputtrack339nornd("track_cell339.csv");
 
 
     //for each timestep
@@ -441,6 +471,15 @@ VectorXi proportions(double diff_conc, int n_seed) {
         t = t + dt;
 
         counter = counter + 1;
+
+
+        /*
+ *
+ * Domain growth, and update cell positions
+ */
+
+
+
 
         // update the strain rate
         for (int i = 0; i < length_x; i++) {
@@ -587,18 +626,35 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
             // since I do not know how to do it for general case, I will do it for my specific
 
-            if (x[0] > Gamma(theta1 - 1)) {
+            // analytical for two different regions
+//            if (x[0] > Gamma_old(theta1 - 1)) {
+//
+//                x0 = (x[0] - Gamma_old(theta1 - 1)) *
+//                        ((Gamma(length_x - 1) - Gamma(theta1 - 1)) /
+//                     (Gamma_old(length_x - 1) - Gamma_old(theta1 - 1))) + Gamma(theta1 - 1);
+//
+//                get<position>(particles)[i] = vdouble2(x0,x[1]);
+//
+//            } else {
+//                get<position>(particles)[i] *= vdouble2((Gamma(theta1 - 1)) / (Gamma_old(theta1 - 1)),
+//                                                        1); // update position based on changes in Gamma
+//            }
+                int j = 0;
+                while (x[0]> Gamma_old(j)){
+                    value = j;
+                    j = j+1;
+                    //cout << "value " << value << endl;
 
-                x0 = (x[0] - Gamma_old(theta1 - 1)) *
-                       (Gamma(length_x - 1) - Gamma(theta1 - 1)) /
-                       (Gamma_old(length_x - 1) - Gamma_old(theta1 - 1)) + Gamma(theta1 - 1);
+                }
 
-                get<position>(particles)[i] = vdouble2(x0,x[1]);
 
-            } else {
-                get<position>(particles)[i] *= vdouble2((Gamma(theta1 - 1)) / (Gamma_old(theta1 - 1)),
-                                                        1); // update position based on changes in Gamma
-            }
+            get<scaling>(particles)[i] = value;
+
+//            x[0] = x[0] + Gamma(value)-Gamma_old(value);
+
+            get<position>(particles)[i] += vdouble2(Gamma(value)-Gamma_old(value),0);
+
+
 
         }
 
@@ -606,6 +662,10 @@ VectorXi proportions(double diff_conc, int n_seed) {
         Gamma_old = Gamma;
 
 
+        /*
+         * update chamo concentration
+         *
+         * */
 
 
         // internalisation rate
@@ -663,7 +723,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
         chemo = chemo_new; // update chemo concentration
-        //}
+
 
 
 
@@ -700,6 +760,8 @@ VectorXi proportions(double diff_conc, int n_seed) {
         for (int i = 0; i < length_x * length_y; i++) {
             chemo_3col(i, 3) = chemo(chemo_3col_ind(i, 0), chemo_3col_ind(i, 1));
         }
+
+
 
 
 
@@ -776,28 +838,38 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
                 double x_in; // x coordinate in initial domain length scale
-                if (x[0] < Gamma(theta1 - 1)) {
-                    x_in = x[0] * (theta1) / Gamma(theta1 - 1);
-                    l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
-                } else {
-                    x_in = x[0] - (Gamma(theta1 - 1) - theta1);
-                }
 
+                // if two regions
+//                if (x[0] < Gamma(theta1 - 1)) {
+//                    x_in = x[0] * (theta1) / Gamma(theta1 - 1);
+//                    l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
+//                } else {
+//                    x_in = (x[0]-Gamma(theta1-1))* (length_x-theta1)/(Gamma(length_x-1)-Gamma(theta1-1)) + theta1;
+//                    l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
+//                }
 
+                // for any Gamma
+
+                x_in = get<scaling>(particles)[particle_id(j)];
+                l_filo_x = l_filo_x_in *get<scaling>(particles)[particle_id(j)]/ Gamma(get<scaling>(particles)[particle_id(j)]);
 
 
                 // if it is still in the process of moving in the same direction
                 if (get<persistence_extent>(particles[particle_id(j)]) == 1) {
 
 
-                    x += get<direction>(particles[particle_id(j)]);
+                    // two regions
+//                    x += get<direction>(particles[particle_id(j)]);
+//
+//                    if (x[0] < Gamma(theta1 - 1)) {
+//                        x_in = x[0] * (theta1) / Gamma(theta1 - 1);
+//                        l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
+//                    } else {
+//                        x_in = (x[0]-Gamma(theta1-1))* (length_x-theta1)/(Gamma(length_x-1)-Gamma(theta1-1)) + theta1;
+//                        l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
+//                    }
 
-                    if (x[0] < Gamma(theta1 - 1)) {
-                        x_in = x[0] * (theta1) / Gamma(theta1 - 1);
-                        l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
-                    } else {
-                        x_in = x[0] - (Gamma(theta1 - 1) - theta1);
-                    }
+
 
                     bool free_position = true; // check if the neighbouring position is free
 
@@ -859,6 +931,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
                             round(x[1] + cos(random_angle[i]) * l_filo_y) > length_y - 1) {
                             new_chemo[i] = 0;
                         } else {
+
                             new_chemo[i] = chemo(round((x_in + sin(random_angle[i]) * l_filo_x)),
                                                  round(x[1] + cos(random_angle[i]) * l_filo_y));
                         }
@@ -884,13 +957,16 @@ VectorXi proportions(double diff_conc, int n_seed) {
                         x += speed_l *
                              vdouble2(sin(random_angle[chemo_max_number]), cos(random_angle[chemo_max_number]));
 
+            // two regions
+//                        if (x[0] < Gamma(theta1 - 1)) {
+//                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
+//                            l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
+//                        } else {
+//                            x_in = (x[0]-Gamma(theta1-1))* (length_x-theta1)/(Gamma(length_x-1)-Gamma(theta1-1)) + theta1;
+//                            l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
+//                        }
 
-                        if (x[0] < Gamma(theta1 - 1)) {
-                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
-                            l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
-                        } else {
-                            x_in = x[0] - (Gamma(theta1 - 1) - theta1);
-                        }
+                        // for any Gamma
 
                         bool free_position = true; // check if the neighbouring position is free
 
@@ -932,13 +1008,15 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
                         x += speed_l * vdouble2(sin(random_angle[filo_number]), cos(random_angle[filo_number]));
 
+                    // for specific case
+//                        if (x[0] < Gamma(theta1 - 1)) {
+//                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
+//                            l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
+//                        } else {
+//                            x_in = (x[0]-Gamma(theta1-1))* (length_x-theta1)/(Gamma(length_x-1)-Gamma(theta1-1)) + theta1;
+//                            l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
+//                        }
 
-                        if (x[0] < Gamma(theta1 - 1)) {
-                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
-                            l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
-                        } else {
-                            x_in = x[0] - (Gamma(theta1 - 1) - theta1);
-                        }
 
 
                         bool free_position = true; // check if the neighbouring position is free
@@ -996,13 +1074,20 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
                 double x_in; // x coordinate in initial domain length scale
 
+                // fro two regions
+//                if (x[0] < Gamma(theta1 - 1)) {
+//                    x_in = x[0] * (theta1) / Gamma(theta1 - 1);
+//                    l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
+//                } else {
+//                    x_in = (x[0]-Gamma(theta1-1))* (length_x-theta1)/(Gamma(length_x-1)-Gamma(theta1-1)) + theta1;
+//                    l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
+//                }
 
-                if (x[0] < Gamma(theta1 - 1)) {
-                    x_in = x[0] * (theta1) / Gamma(theta1 - 1);
-                    l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
-                } else {
-                    x_in = x[0] - (Gamma(theta1 - 1) - theta1);
-                }
+                //for any Gamma
+
+                x_in = get<scaling>(particles)[j];
+                l_filo_x = l_filo_x_in *get<scaling>(particles)[particle_id(j)]/ Gamma(get<scaling>(particles)[particle_id(j)]);
+
                 // if the particle is part of the chain
                 if (get<chain>(particles[particle_id(j)]) > 0) {
 
@@ -1013,6 +1098,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
                     dist = get<position>(particles[particle_id(j)]) -
                            get<position>(particles[get<attached_to_id>(particles[particle_id(j)])]);
+
 
                     // if it is sufficiently far dettach the cell
                     if (dist.norm() > l_filo_max) {
@@ -1038,13 +1124,17 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
                     double x_in_chain; // scaled coordinate
 
+                    // for two regions
+//                    if (x_chain[0] < Gamma(theta1 - 1)) {
+//                        x_in_chain = x_chain[0] * (theta1) / Gamma(theta1 - 1);
+//                        l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
+//                    } else {
+//                        x_in_chain = (x_chain[0]-Gamma(theta1-1))* (length_x-theta1)/(Gamma(length_x-1)-Gamma(theta1-1)) + theta1;
+//
+//                        l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
+//                    }
 
-                    if (x_chain[0] < Gamma(theta1 - 1)) {
-                        x_in_chain = x_chain[0] * (theta1) / Gamma(theta1 - 1);
-                        l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
-                    } else {
-                        x_in_chain = x_chain[0] - (Gamma(theta1 - 1) - theta1);
-                    }
+                    //for any Gamma
 
 
                     bool free_position = true;
@@ -1091,6 +1181,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
                     // try to find a close leader
+                    // l_filo_x not scaled because I am looking at cell positions which are not scaled
                     for (auto k = euclidean_search(particles.get_query(), x, l_filo_x_in); k != false; ++k) {
 
 
@@ -1149,11 +1240,19 @@ VectorXi proportions(double diff_conc, int n_seed) {
                         // Non-uniform domain growth
                         double x_in_chain;
 
-                        if (x_chain[0] < Gamma(theta1 - 1)) {
-                            x_in_chain = x_chain[0] * (theta1) / Gamma(theta1 - 1);
-                        } else {
-                            x_in_chain = x_chain[0] - (Gamma(theta1 - 1) - theta1);
-                        }
+
+                        // for two regions
+//                        if (x_chain[0] < Gamma(theta1 - 1)) {
+//                            x_in_chain = x_chain[0] * (theta1) / Gamma(theta1 - 1);
+//                        } else {
+//                            x_in_chain = (x_chain[0]-Gamma(theta1-1))* (length_x-theta1)/(Gamma(length_x-1)-Gamma(theta1-1)) + theta1;
+//                            l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
+//                        }
+
+                        //for any Gamma
+
+                        //x_in_chain = get<scaling>(particles)[particle_id(j)];
+
 
 
                         bool free_position = true;
@@ -1208,17 +1307,17 @@ VectorXi proportions(double diff_conc, int n_seed) {
                         x += speed_f * vdouble2(sin(random_angle), cos(random_angle));
 
 
-                        if (x[0] < theta1) {
-                            x_in = x[0];
-                        } else {
-                            x_in = x[0] * (Gamma_initial - theta1) / (Gamma(length_x - 1) - theta1);
-                        }
+                        // FOR TWO REGIONS
+//                        if (x[0] < Gamma(theta1 - 1)) {
+//                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
+//                        } else {
+//                            x_in = (x[0]-Gamma(theta1-1))* (length_x-theta1)/(Gamma(length_x-1)-Gamma(theta1-1)) + theta1;
+//                        }
 
-                        if (x[0] < Gamma(theta1 - 1)) {
-                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
-                        } else {
-                            x_in = x[0] - (Gamma(theta1 - 1) - theta1);
-                        }
+                        //for any Gamma
+
+                       // x_in = get<scaling>(particles)[j];
+
 
 
                         bool free_position = true; // check if the neighbouring position is free
@@ -1322,35 +1421,18 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 
+        if (counter % 35 == 0) {
 
 
-
-
-
-
-
-
-
-        // update chemoattractant profile after the domain grew
-//        cout << "t " << t << endl;
-//        double ine = t;
-//        if(ine == t){
-//            cout << "is it in here "<< ine << endl;
-//
-//        }
-
-        if (counter % 100 == 0) {
-//
-//if (t > 40) {
 //
 //#ifdef HAVE_VTK
-//    vtkWriteGrid("final075CELLS", t, particles.get_grid(true));
+//    vtkWriteGrid("NEWtheta1firstCELLS", t, particles.get_grid(true));
 //#endif
 //
 //
 //
 //    //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-//    ofstream output("final075matrix" + to_string(int(t + 0.00001)) + ".csv");
+//    ofstream output("NEWtheta1firstMATRIX" + to_string(int(t)) + ".csv");
 //
 //
 //    output << "x, y, z, u" << "\n" << endl;
@@ -1366,7 +1448,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //        }
 //        output << "\n" << endl;
 //    }
-//}
+
 
 
 
@@ -1379,12 +1461,14 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //            output2 << particles.size() << endl;
 //
 
-
-
-
-            //ofstream output2("track_point" + to_string(t) + ".csv");
 //
-//            ofstream output2("track_point" + to_string(t) + ".csv");
+//            xposi = get<position>(particles[0]);
+//            outputtrack75nornd << xposi[0] << ", " << xposi[1] << endl;
+//            xposi = get<position>(particles[1]);
+//            outputtrack170nornd << xposi[0] << ", " << xposi[1] << endl;
+//            xposi = get<position>(particles[2]);
+//            outputtrack339nornd << xposi[0] << ", " << xposi[1] << endl;
+
 //
 //            output2 << Gamma(length_x / 2) << endl;
 //
@@ -1410,7 +1494,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     const int domain_partition = int(Gamma(length_x - 1) / double(55));; // number of intervals of 50 \mu m
 
 
-    VectorXi proportions = VectorXi::Zero(domain_partition+1); // integer with number of cells in particular part that plus one is proportions that are not in chains
+    VectorXi proportions = VectorXi::Zero(domain_partition); // integer with number of cells in particular part that plus one is proportions that are not in chains
 
     double one_part = Gamma(length_x - 1) / double(domain_partition);
 
@@ -1426,12 +1510,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
     }
 
-
-    /*
- * Proportion that break
- *
- */
-
+    //print the proportion that break
     double pro_break = 0.0; // the stream did not break
 
     int followers_not_in_chain = 0;
@@ -1446,10 +1525,10 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
     pro_break = double(followers_not_in_chain)/(double(particles.size()-N));
 
-    proportions(domain_partition) = pro_break;
+    cout << "prop that break " << pro_break << endl;
 
-    return proportions;
 
+return proportions;
 
 }
 
@@ -1463,15 +1542,18 @@ VectorXi proportions(double diff_conc, int n_seed) {
 int main() {
 
     const int number_parameters = 1; // parameter range
-    const int sim_num = 10;
+    const int sim_num = 1;
 
     //VectorXd store_chains;
-    //VectorXi vector_check_length = proportions(0.05, 2); //just to know what the length is
+    //VectorXi vector_check_length = proportions(0.05, 0); //just to know what the length is
 
     //int num_parts = vector_check_length.size(); // number of parts that I partition my domain
     //cout << "length " << vector_check_length.size() << endl;
-    int num_parts = 18 +1; // since 18 is domain partition for time 54 and 1 for chains
+    int num_parts = 18; // since 18 is domain partition for time 54 and 1 for chains
     MatrixXf sum_of_all = MatrixXf::Zero(num_parts, number_parameters); // sum of the values over all simulations
+
+    //initialise the matrix to store the values
+    MatrixXi numbers = MatrixXi::Zero(num_parts, number_parameters);
 
     // n would correspond to different seeds
     // parallel programming
@@ -1488,9 +1570,6 @@ int main() {
             threshold[i] = 0.05;
 
         }
-
-        //initialise the matrix to store the values
-        MatrixXi numbers = MatrixXi::Zero(num_parts, number_parameters);
 
         //cout << "how many simulations? " << n << endl;
         numbers.block(0, 0, num_parts, 1) = proportions(threshold[0], n);
@@ -1512,15 +1591,16 @@ int main() {
             //output2 << "\n" << endl;
         }
 
-        ofstream output4("chainsTheta1First.csv");
-
-        // store_chains(n) =;
-
-        output4 <<  numbers(numbers.rows()-1,1) << ", ";
-
-        output4 << "\n" << endl;
-
-        //up to here
+        //this was used when I tried to combine the two
+//        ofstream output4("chainsTheta1First.csv");
+//
+//        // store_chains(n) =;
+//
+//        output4 <<  numbers(numbers.rows()-1,1) << ", ";
+//
+//        output4 << "\n" << endl;
+//
+//         comment up to here
 
     }
 
@@ -1531,19 +1611,19 @@ int main() {
     * will store everything in one matrix, the entries will be summed over all simulations
     */
 
-    //comment up to last bracket
-    ofstream output3("PROPTHETA1First.csv");
-
-
-    for (int i = 0; i < num_parts; i++) {
-
-        for (int j = 0; j < number_parameters; j++) {
-
-            output3 << sum_of_all(i, j) << ", ";
-
-        }
-        output3 << "\n" << endl;
-    }
+//    //comment up to last bracket
+//    ofstream output3("NEWtheta025firstdata.csv");
+//
+//
+//    for (int i = 0; i < num_parts; i++) {
+//
+//        for (int j = 0; j < number_parameters; j++) {
+//
+//            output3 << sum_of_all(i, j) << ", ";
+//
+//        }
+//        output3 << "\n" << endl;
+//    }
 
 
 }
