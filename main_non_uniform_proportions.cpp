@@ -26,7 +26,6 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 // parameters
 
-// model parameters
 
     //specify whether first or final part of the domain grows faster
 
@@ -53,8 +52,6 @@ VectorXi proportions(double diff_conc, int n_seed) {
     int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx = 1.0;// / space_grid_controller; // space step in x direction, double to be consistent with other types
     double dy = 1.0;// / space_grid_controller; // space step in y direction
-    //double kai = 0.00001;//0;//0.1 // to 1 /h production rate of chemoattractant
-//    double y_init = 120.0;
 
     // reaction rate
     double k_reac = 1.0;//0.00001;//0.1;//0.105;//0.03;//.205; // reaction term
@@ -65,7 +62,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     double cell_radius = 7.5;//0.5; // radius of a cell
     const double diameter =
             2 * cell_radius; // diameter of a cell
-    const size_t N = 3; // initial number of cells
+    const size_t N = 5; // initial number of cells
     double l_filo_y = 27.5;//2; // sensing radius, filopodia + cell radius
     double l_filo_x = 27.5; // sensing radius, it will have to be rescaled when domain grows
     double l_filo_x_in = l_filo_x; // this value is used for rescaling when domain grows based on initial value
@@ -110,6 +107,9 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
     //piecewise constant, two parts
+    // 1 part n_faster times faster than the other part
+    double n_faster = 2.0;
+
     double thetasmall = 1.0; // first thetasmall is growing
     int theta1 = int(thetasmall * length_x);
 
@@ -118,25 +118,25 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
     //check whether first part grows
     if (first_part_grows ==true){
-        double xvar = final_length/ (2 * length_x*thetasmall + length_x*(1-thetasmall)); // solve: 2 *xvar * length_x * thetasmall + x * length(1-thetasmall) = final_length
+        double xvar = final_length/ (n_faster * double(length_x)*thetasmall + double(length_x)*(1-thetasmall)); // solve: 2 *xvar * length_x * thetasmall + x * length(1-thetasmall) = final_length
 
-        double ratio1 = 2 * length_x*thetasmall * xvar / (length_x*thetasmall);
+        double ratio1 = n_faster * double(length_x)*thetasmall * xvar / (double(length_x)*thetasmall);
 
         alpha1 = log (ratio1)/final_time;
 
-        double ratio2 =  length_x*(1- thetasmall) * xvar / (length_x*(1- thetasmall));
+        double ratio2 =  double(length_x)*(1- thetasmall) * xvar / (double(length_x)*(1- thetasmall));
 
         alpha2 = log (ratio2)/final_time;
     }
 
     else if(first_part_grows == false){
-        double xvar = final_length/ (length_x*thetasmall + 2*length_x*(1-thetasmall)); // solve: 2 *xvar * length_x * thetasmall + x * length(1-thetasmall) = final_length
+        double xvar = final_length/ (double(length_x)*thetasmall + n_faster*double(length_x)*(1-thetasmall)); // solve: 2 *xvar * length_x * thetasmall + x * length(1-thetasmall) = final_length
 
-        double ratio1 = length_x*thetasmall * xvar / (length_x*thetasmall);
+        double ratio1 = double(length_x)*thetasmall * xvar / (double(length_x)*thetasmall);
 
         alpha1 = log (ratio1)/final_time;
 
-        double ratio2 =  length_x*(1- thetasmall) * xvar*2 / (length_x*(1- thetasmall));
+        double ratio2 =  double(length_x)*(1- thetasmall) * xvar*n_faster / (double(length_x)*(1- thetasmall));
 
         alpha2 = log (ratio2)/final_time;
     }
@@ -420,9 +420,11 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
     // this is for tracking cell positions
-    ofstream outputtrack75nornd("track_cell7p5.csv");
-    ofstream outputtrack170nornd("track_cell170.csv");
-    ofstream outputtrack339nornd("track_cell339.csv");
+//    ofstream outputtrack75nornd("track_cell7p5.csv");
+//    ofstream outputtrack170nornd("track_cell170.csv");
+//    ofstream outputtrack339nornd("track_cell339.csv");
+
+ //   ofstream outputtrack("track_celltheta025first.csv");
 
 
     //for each timestep
@@ -431,7 +433,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 //              insert new cells
-
+//
 
         bool free_position = false;
         particle_type::value_type f;
@@ -723,7 +725,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
         chemo = chemo_new; // update chemo concentration
-
+//
 
 
 
@@ -1297,12 +1299,12 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
                         double random_angle = uniformpi(gen1);
 
-                        while (((x_in + sin(random_angle) * l_filo_y) < 0 ||
-                                ((x_in + sin(random_angle) * l_filo_y)) >
-                                length_x - 1 || (x[1] + cos(random_angle) * l_filo_y) < 0 ||
-                                (x[1] + cos(random_angle) * l_filo_y) > length_y - 1)) {
-                            random_angle = uniformpi(gen1);
-                        }
+//                        while (((x_in + sin(random_angle) * l_filo_x_in) < 0 ||
+//                                ((x_in + sin(random_angle) * l_filo_x_in)) >
+//                                length_x - 1 || (x[1] + cos(random_angle) * l_filo_y) < 0 ||
+//                                (x[1] + cos(random_angle) * l_filo_y) > length_y - 1)) {
+//                            random_angle = uniformpi(gen1);
+//                        }
 
                         x += speed_f * vdouble2(sin(random_angle), cos(random_angle));
 
@@ -1415,39 +1417,33 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 
-
-
-
-
-
-
-        if (counter % 35 == 0) {
+        if (counter % 100 == 0) {
 
 
 //
-//#ifdef HAVE_VTK
-//    vtkWriteGrid("NEWtheta1firstCELLS", t, particles.get_grid(true));
-//#endif
-//
-//
-//
-//    //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-//    ofstream output("NEWtheta1firstMATRIX" + to_string(int(t)) + ".csv");
-//
-//
-//    output << "x, y, z, u" << "\n" << endl;
-//
-//
-//
-//    //output << "x, y, z, u" << "\n" << endl;
-//
-//
-//    for (int i = 0; i < length_x * length_y; i++) {
-//        for (int j = 0; j < 4; j++) {
-//            output << chemo_3col(i, j) << ", ";
-//        }
-//        output << "\n" << endl;
-//    }
+#ifdef HAVE_VTK
+    vtkWriteGrid("UnifromfollowsamespeedleadersCELLS", t, particles.get_grid(true));
+#endif
+
+
+
+    //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+    ofstream output("UnifromfollowsamespeedleadersMATRIX" + to_string(int(t)) + ".csv");
+
+
+    output << "x, y, z, u" << "\n" << endl;
+
+
+
+    //output << "x, y, z, u" << "\n" << endl;
+
+
+    for (int i = 0; i < length_x * length_y; i++) {
+        for (int j = 0; j < 4; j++) {
+            output << chemo_3col(i, j) << ", ";
+        }
+        output << "\n" << endl;
+    }
 
 
 
@@ -1461,11 +1457,13 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //            output2 << particles.size() << endl;
 //
 
-//
-//            xposi = get<position>(particles[0]);
-//            outputtrack75nornd << xposi[0] << ", " << xposi[1] << endl;
-//            xposi = get<position>(particles[1]);
-//            outputtrack170nornd << xposi[0] << ", " << xposi[1] << endl;
+            //if (particles.size() > 50){
+//                xposi = get<position>(particles[0]);
+//                outputtrack << xposi[0] << ", " << xposi[1] << endl;
+//                xposi = get<position>(particles[1]);
+//                outputtrack << xposi[0] << ", " << xposi[1] << endl;
+//            //}
+
 //            xposi = get<position>(particles[2]);
 //            outputtrack339nornd << xposi[0] << ", " << xposi[1] << endl;
 
@@ -1577,19 +1575,19 @@ int main() {
         // comment from here
 
         // This is what I am using for MATLAB
-        //ofstream output2("un.csv");
-
-        for (int i = 0; i < numbers.rows(); i++) {
-
-            for (int j = 0; j < numbers.cols(); j++) {
-
-                //output2 << numbers(i, j) << ", ";
-
-                sum_of_all(i, j) += numbers(i, j);
-
-            }
-            //output2 << "\n" << endl;
-        }
+//        ofstream output2("sepdata4timestheta075final.csv" + to_string(n) + ".csv");
+//
+//        for (int i = 0; i < numbers.rows(); i++) {
+//
+//            for (int j = 0; j < numbers.cols(); j++) {
+//
+//                output2 << numbers(i, j) << ", ";
+//
+//                sum_of_all(i, j) += numbers(i, j);
+//
+//            }
+//            output2 << "\n" << endl;
+//        }
 
         //this was used when I tried to combine the two
 //        ofstream output4("chainsTheta1First.csv");
@@ -1611,8 +1609,8 @@ int main() {
     * will store everything in one matrix, the entries will be summed over all simulations
     */
 
-//    //comment up to last bracket
-//    ofstream output3("NEWtheta025firstdata.csv");
+    //comment up to last bracket
+//    ofstream output3("Updated4timestheta075final.csv");
 //
 //
 //    for (int i = 0; i < num_parts; i++) {
