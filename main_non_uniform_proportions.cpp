@@ -110,7 +110,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     // 1 part n_faster times faster than the other part
     double n_faster = 2.0;
 
-    double thetasmall = 1.0; // first thetasmall is growing
+    double thetasmall = 0.25; // first thetasmall is growing
     int theta1 = int(thetasmall * length_x);
 
     double alpha1;
@@ -424,7 +424,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //    ofstream outputtrack170nornd("track_cell170.csv");
 //    ofstream outputtrack339nornd("track_cell339.csv");
 
- //   ofstream outputtrack("track_celltheta025first.csv");
+//   ofstream outputtrack("track_cell_non_growing_full.csv");
 
 
     //for each timestep
@@ -524,29 +524,47 @@ VectorXi proportions(double diff_conc, int n_seed) {
          * */
 
 
-        for (int i = 0; i < theta1; i++) {
-//            Gamma(i) =
-//                    Gamma_initial * (double(i) / double(space_grid_controller)) * (Gamma_x(i)); // linearly increasing
-            Gamma(i) = (double(i)) * (Gamma_x(i));
+//        for (int i = 0; i < theta1; i++) {
+////            Gamma(i) =
+////                    Gamma_initial * (double(i) / double(space_grid_controller)) * (Gamma_x(i)); // linearly increasing
+//            Gamma(i) = (double(i)) * (Gamma_x(i));
+//            cout << "old Gamma(i) " << i << " value " << Gamma(i) << endl;
+//
+//        }
+//
+//
+//
+//        // second part is constant
+//        for (int i = theta1; i < length_x; i++) {
+////
+////            Gamma(i) = Gamma(theta1 - 1) +
+////                       Gamma_initial * (double(i) / double(space_grid_controller) - double(theta1 - 1) /
+////                                                                                    double(space_grid_controller)) *
+////                       Gamma_x(i);
+//
+//            Gamma(i) = Gamma(theta1 - 1) + (double(i) - double(theta1 - 1)) * Gamma_x(i);
+////
+//            cout << "old Gamma(i) " << i << " value " << Gamma(i) << endl;
+//            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
+//
+//        }
 
+
+        /*
+         * arbitrary Gamma function
+         * */
+
+
+        Gamma(0) = 0; // this is assumption, since I cannot calculate it
+        //cout << "Gamma(0) " << 0 << " value " << Gamma(0) << endl;
+
+        for (int i = 1; i < length_x;i++){
+
+            Gamma(i) = Gamma_x(i) * dx + Gamma(i-1);
+
+         //   cout << "Gamma(i) " << i << " value " << Gamma(i) << endl;
         }
 
-
-
-        // second part is constant
-        for (int i = theta1; i < length_x; i++) {
-//
-//            Gamma(i) = Gamma(theta1 - 1) +
-//                       Gamma_initial * (double(i) / double(space_grid_controller) - double(theta1 - 1) /
-//                                                                                    double(space_grid_controller)) *
-//                       Gamma_x(i);
-
-            Gamma(i) = Gamma(theta1 - 1) + (double(i) - double(theta1 - 1)) * Gamma_x(i);
-//
-
-            //Gamma(i,j) = ; // linearly decreasing, if I do this do not forget to change Gamma
-
-        }
 
 
 
@@ -1417,35 +1435,35 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 
-        if (counter % 100 == 0) {
+        if (counter % 35 == 0) {
 
 
+
+//#ifdef HAVE_VTK
+//    vtkWriteGrid("TIMES3theta05firstCELLS", t, particles.get_grid(true));
+//#endif
 //
-#ifdef HAVE_VTK
-    vtkWriteGrid("UnifromfollowsamespeedleadersCELLS", t, particles.get_grid(true));
-#endif
-
-
-
-    //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-    ofstream output("UnifromfollowsamespeedleadersMATRIX" + to_string(int(t)) + ".csv");
-
-
-    output << "x, y, z, u" << "\n" << endl;
-
-
-
-    //output << "x, y, z, u" << "\n" << endl;
-
-
-    for (int i = 0; i < length_x * length_y; i++) {
-        for (int j = 0; j < 4; j++) {
-            output << chemo_3col(i, j) << ", ";
-        }
-        output << "\n" << endl;
-    }
-
-
+//
+//
+//    //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+//    ofstream output("TIMES3theta05firstMATRIX" + to_string(int(t)) + ".csv");
+//
+//
+//    output << "x, y, z, u" << "\n" << endl;
+//
+//
+//
+//    //output << "x, y, z, u" << "\n" << endl;
+//
+//
+//    for (int i = 0; i < length_x * length_y; i++) {
+//        for (int j = 0; j < 4; j++) {
+//            output << chemo_3col(i, j) << ", ";
+//        }
+//        output << "\n" << endl;
+//    }
+//
+//
 
 
 
@@ -1460,9 +1478,11 @@ VectorXi proportions(double diff_conc, int n_seed) {
             //if (particles.size() > 50){
 //                xposi = get<position>(particles[0]);
 //                outputtrack << xposi[0] << ", " << xposi[1] << endl;
+
+
 //                xposi = get<position>(particles[1]);
 //                outputtrack << xposi[0] << ", " << xposi[1] << endl;
-//            //}
+            //}
 
 //            xposi = get<position>(particles[2]);
 //            outputtrack339nornd << xposi[0] << ", " << xposi[1] << endl;
@@ -1523,7 +1543,13 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
     pro_break = double(followers_not_in_chain)/(double(particles.size()-N));
 
-    cout << "prop that break " << pro_break << endl;
+//    for (int i = 0; i<N; i++){
+//        cout << "position leaders " << get<position>(particles[i]) << endl;
+//    }
+ //   cout << " " << pro_break << endl;
+
+
+
 
 
 return proportions;
@@ -1575,7 +1601,7 @@ int main() {
         // comment from here
 
         // This is what I am using for MATLAB
-//        ofstream output2("sepdata4timestheta075final.csv" + to_string(n) + ".csv");
+//        ofstream output2("sepdatafollspeed1p2theta1first.csv" + to_string(n) + ".csv");
 //
 //        for (int i = 0; i < numbers.rows(); i++) {
 //
@@ -1589,7 +1615,7 @@ int main() {
 //            output2 << "\n" << endl;
 //        }
 
-        //this was used when I tried to combine the two
+//        this was used when I tried to combine the two
 //        ofstream output4("chainsTheta1First.csv");
 //
 //        // store_chains(n) =;
@@ -1597,7 +1623,7 @@ int main() {
 //        output4 <<  numbers(numbers.rows()-1,1) << ", ";
 //
 //        output4 << "\n" << endl;
-//
+
 //         comment up to here
 
     }
@@ -1609,8 +1635,8 @@ int main() {
     * will store everything in one matrix, the entries will be summed over all simulations
     */
 
-    //comment up to last bracket
-//    ofstream output3("Updated4timestheta075final.csv");
+//    comment up to last bracket
+//    ofstream output3("Followerspeed1p2theta1first.csv");
 //
 //
 //    for (int i = 0; i < num_parts; i++) {
