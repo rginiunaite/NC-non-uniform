@@ -8,7 +8,7 @@ clear all
 
 for i = 1:N
     
-    filename = sprintf('CORRECTtrack_folTheta1.000000FIRSTnseed%i.csv',i-1);
+    filename = sprintf('CORRECTtrack_folTheta0.500000FIRSTnseed%i.csv',i-1);
     celltrack = load(filename);
     for j = 1:length(celltrack)
         cell_id(j,i) = celltrack(j,1); % I stored first follower's id's
@@ -366,7 +366,7 @@ legend('follower id = 9','follower id = 29', 'follower id = 49','follower id = 6
 
 for i = 1:N
     
-    filename2 = sprintf('CORRECTtrack_leadTheta1.000000FIRSTnseed%i.csv',i-1);
+    filename2 = sprintf('CORRECTtrack_leadTheta0.500000FIRSTnseed%i.csv',i-1);
     celltrack2 = load(filename2);
     for j = 1:length(celltrack2)
         distance2(j,i) = celltrack2(j,1);% store all the distances
@@ -508,19 +508,19 @@ distancefor9 = columnMeanDistance9(In9);
 hold on 
 
 ratio2 = sp29(In29)./speed2(1:length(sp29(In29)));
-plot(columnMeanDistance9(In29),ratio2,'-o','linewidth',4)
+%plot(columnMeanDistance9(In29),ratio2,'-o','linewidth',4)
 distancefor29 = columnMeanDistance29(In29);
 
 ratio3 = sp49(In49)./speed2(1:length(sp49(In49)));
-plot(columnMeanDistance49(In49),ratio3,':','linewidth',4)
+%plot(columnMeanDistance49(In49),ratio3,':','linewidth',4)
 distancefor49 = columnMeanDistance49(In49);
 
 ratio4 = sp69(In69)./speed2(1:length(sp69(In69)));
-plot(columnMeanDistance69(In69),ratio4,'-.','linewidth',4)
+%plot(columnMeanDistance69(In69),ratio4,'-.','linewidth',4)
 distancefor69 = columnMeanDistance69(In69);
 
 ratio5 = sp89(In89)./speed2(1:length(sp89(In89)));
-plot(columnMeanDistance89(In89),ratio5,'--','linewidth',4)
+%plot(columnMeanDistance89(In89),ratio5,'--','linewidth',4)
 distancefor89 = columnMeanDistance89(In89);
 
 set(gca,'FontSize',30)
@@ -576,7 +576,7 @@ ylim([0,2])
 
 
 
-  %% bar plot        
+  %% bar plot of follower cells      
 
         
 % find logical values for the numbers in those intervals
@@ -617,13 +617,65 @@ ylim([0,2])
     distancebar = 0:25:distance9nooutl(length(distance9nooutl));
     distancebar = distancebar + 12.5; % shift to the centre of thebar
     figure
-    hb = bar(distancebar, sidemean)
+    hbFol = bar(distancebar, sidemean,0.3)
     
     hold on
-    for ib = 1:numel(hb)
+    for ib = 1:numel(hbFol)
     %XData property is the tick labels/group centers; XOffset is the offset
     %of each distinct group
-    xData = hb(ib).XData+hb(ib).XOffset;
+    xData = hbFol(ib).XData+hbFol(ib).XOffset;
     errorbar(xData,sidemean(ib,:),sidestd(ib,:),'k.','linewidth',2)
     end
     
+    
+    %% bar plot of a leader
+    
+    distleadernooutl = distance2(I2);
+    speedleadnooutl = speed2(I2);
+    
+    ivar =1;
+      while distleadernooutl(length(distleadernooutl)) > (ivar-1)*(25)
+            blockLogicallead(:,ivar) = distleadernooutl < (ivar)*25 & distleadernooutl > (ivar-1)*25; 
+            ivar = ivar +1;
+      end
+    
+        sz = size(blockLogicallead);
+        
+       sidemeanL = zeros(1,sz(2));
+       sidestdL = zeros(1,sz(2));
+      
+      
+         for im = 1:sz(2)       
+       % loop over all cells and add their values at those particular values
+       allvector = speedleadnooutl( blockLogicallead(:,im)) ;
+        
+        sidemeanL(im) = mean(nonzeros(allvector)); %% mean of all elements
+        sidestdL(im) = std(nonzeros(allvector)); % std of all elements
+        end
+        
+      
+      
+    distancebar = 0:25:distleadernooutl(length(distleadernooutl));
+    distancebar = distancebar + 25; % shift to the centre of thebar
+    hold on
+    hbLead = bar(distancebar, sidemeanL,0.3)
+    
+    
+    for ib = 1:numel(hbLead)
+    %XData property is the tick labels/group centers; XOffset is the offset
+    %of each distinct group
+    xData = hbLead(ib).XData+hbLead(ib).XOffset;
+    errorbar(xData,sidemeanL(ib,:),sidestdL(ib,:),'k.','linewidth',2)
+    end
+    
+    legend([hbFol,hbLead],'follower cell','leader cell')
+    
+    set(gca,'FontSize',30)
+    ax = gca;
+
+xlabel('Distance from the neural tube, \mu m')
+ylabel('Ratio follower to leader speed')
+
+    
+
+Ratio = sidemean./sidemeanL(1:length(sidemean));
