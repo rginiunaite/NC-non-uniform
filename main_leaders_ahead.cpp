@@ -1,6 +1,6 @@
 //
-// Created by giniunaite on 06/03/19.
-// non uniform growth, two parts, can switch whether first or final part grows
+// Created by giniunaite on 15/05/19.
+// non uniform growth, two parts, leaders placed ahead
 //
 
 #include "Aboria.h"
@@ -409,7 +409,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
     // save particles before they move
 
-  //  vtkWriteGrid("particles", t, particles.get_grid(true));
+    //  vtkWriteGrid("particles", t, particles.get_grid(true));
 
     // initialise random number generator to obtain random number between 0 and 2*pi
     std::default_random_engine gen1;
@@ -429,16 +429,16 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //    ofstream outputtrack170nornd("track_cell170.csv");
 //    ofstream outputtrack339nornd("track_cell339.csv");
 
-  //    ofstream outputtrackL("CORRECTV2nongrowingnseed" + to_string(n_seed) + ".csv");
+    //    ofstream outputtrackL("CORRECTV2nongrowingnseed" + to_string(n_seed) + ".csv");
 
-  //     ofstream outputtrackL("MARCH29CORRECTtrack_leadTheta" + to_string(thetasmall) + "FINALnseed" + to_string(n_seed) + ".csv");
+    //     ofstream outputtrackL("MARCH29CORRECTtrack_leadTheta" + to_string(thetasmall) + "FINALnseed" + to_string(n_seed) + ".csv");
 //        ofstream outputtrackL2("track_lead2theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
 //        ofstream outputtrackL3("track_lead3theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
 //        ofstream outputtrackL4("track_lead4theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
 //        ofstream outputtrackL5("track_lead5theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
 
- // ofstream outputtrackF("CORRECTV2FOLnongrowingnseed"+ to_string(n_seed) + ".csv");
- //      ofstream outputtrackF("CORRECTtrack_folTheta" + to_string(thetasmall) + "FINALnseed"+ to_string(n_seed) + ".csv");
+    // ofstream outputtrackF("CORRECTV2FOLnongrowingnseed"+ to_string(n_seed) + ".csv");
+    //      ofstream outputtrackF("CORRECTtrack_folTheta" + to_string(thetasmall) + "FINALnseed"+ to_string(n_seed) + ".csv");
 //        ofstream outputtrackF2("track_fol2theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
 //        ofstream outputtrackF3("track_fol3theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
 //        ofstream outputtrackF4("track_fol4theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
@@ -481,14 +481,14 @@ VectorXi proportions(double diff_conc, int n_seed) {
         // this is if I only have a certain number of cells
         //if (t < 27){ // this
 
-            if (free_position) {
-                get<chain>(f) = 0;
-                get<chain_type>(f) = -1;
-                get<attached_to_id>(f) = -1;
-                particles.push_back(f);
-            }
+        if (free_position) {
+            get<chain>(f) = 0;
+            get<chain_type>(f) = -1;
+            get<attached_to_id>(f) = -1;
+            particles.push_back(f);
+        }
 
-            particles.update_positions();
+        particles.update_positions();
 
         // } // this
 
@@ -508,6 +508,57 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //            }
 //            particles.update_positions();
         //}
+
+        /*
+         * Insert leader cells ahead of the stream
+         *
+         */
+
+
+        if (t >0.995 && t < 1.01) {
+            cout << "here " << t <<  endl;
+
+
+            bool free_position = true;
+
+            particle_type::value_type l;
+            //get<radius>(f) = cell_radius;
+
+            for (int nr = 0; nr < N; nr++){
+                get<position>(l) = vdouble2(200.0, (nr + 1) * double(length_y - 1) / double(N) -
+                                                   0.5 * double(length_y - 1) /
+                                                   double(N)); // x=2, uniformly in y
+
+                for (auto tpl = euclidean_search(particles.get_query(), get<position>(l), diameter); tpl != false; ++tpl) {
+
+                    vdouble2 diffx = tpl.dx();
+
+                    if (diffx.norm() < diameter) {
+                        free_position = false;
+                        break;
+                    }
+                }
+
+
+                // our assumption that all new cells are followers
+                get<type>(l) = 0;
+
+                // this is if I only have a certain number of cells
+                //if (t < 27){ // this
+
+                get<persistence_extent>(l) = 0;
+                get<same_dir_step>(l) = 0;
+
+                if (free_position) {
+                    particles.push_back(l);
+                }
+
+
+                particles.update_positions();
+            }
+
+
+        }
 
 
 
@@ -603,7 +654,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
             Gamma(i) = Gamma_x(i) * dx + Gamma(i-1);
 
-         //   cout << "Gamma(i) " << i << " value " << Gamma(i) << endl;
+            //   cout << "Gamma(i) " << i << " value " << Gamma(i) << endl;
         }
 
 
@@ -700,13 +751,13 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //                get<position>(particles)[i] *= vdouble2((Gamma(theta1 - 1)) / (Gamma_old(theta1 - 1)),
 //                                                        1); // update position based on changes in Gamma
 //            }
-                int j = 0;
-                while (x[0]> Gamma_old(j)){
-                    value = j;
-                    j = j+1;
-                    //cout << "value " << value << endl;
+            int j = 0;
+            while (x[0]> Gamma_old(j)){
+                value = j;
+                j = j+1;
+                //cout << "value " << value << endl;
 
-                }
+            }
 
 
             get<scaling>(particles)[i] = value;
@@ -1018,7 +1069,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
                         x += speed_l *
                              vdouble2(sin(random_angle[chemo_max_number]), cos(random_angle[chemo_max_number]));
 
-            // two regions
+                        // two regions
 //                        if (x[0] < Gamma(theta1 - 1)) {
 //                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
 //                            l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
@@ -1069,7 +1120,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
                         x += speed_l * vdouble2(sin(random_angle[filo_number]), cos(random_angle[filo_number]));
 
-                    // for specific case
+                        // for specific case
 //                        if (x[0] < Gamma(theta1 - 1)) {
 //                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
 //                            l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
@@ -1377,7 +1428,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
                         //for any Gamma
 
-                       // x_in = get<scaling>(particles)[j];
+                        // x_in = get<scaling>(particles)[j];
 
 
 
@@ -1481,28 +1532,28 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 #ifdef HAVE_VTK
-    vtkWriteGrid("AheadCELLS", t, particles.get_grid(true));
+            vtkWriteGrid("AheadCELLS", t, particles.get_grid(true));
 #endif
 
 
 
-    //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-    ofstream output("AheadMATRIX" + to_string(int(t)) + ".csv");
+            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+            ofstream output("AheadMATRIX" + to_string(int(t)) + ".csv");
 
 
-    output << "x, y, z, u" << "\n" << endl;
+            output << "x, y, z, u" << "\n" << endl;
 
 
 
-    //output << "x, y, z, u" << "\n" << endl;
+            //output << "x, y, z, u" << "\n" << endl;
 
 
-    for (int i = 0; i < length_x * length_y; i++) {
-        for (int j = 0; j < 4; j++) {
-            output << chemo_3col(i, j) << ", ";
-        }
-        output << "\n" << endl;
-    }
+            for (int i = 0; i < length_x * length_y; i++) {
+                for (int j = 0; j < 4; j++) {
+                    output << chemo_3col(i, j) << ", ";
+                }
+                output << "\n" << endl;
+            }
 
 
 
@@ -1518,7 +1569,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
             // positions of five leader cells
-                xposi = get<position>(particles[0]);
+            xposi = get<position>(particles[0]);
 
 //                outputtrackL << xposi[0] << ", " << xposi[1] << endl;
 //                xposi = get<position>(particles[1]);
@@ -1632,7 +1683,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 
-return proportions;
+    return proportions;
 
 }
 

@@ -503,13 +503,20 @@ VectorXi proportions(double diff_conc, int n_seed) {
         lead_coord = get<position>(particles[i]);
         leaders_pos = leaders_pos + lead_coord[0];
     }
-        av_lead = leaders_pos/double(N);
+        av_lead = leaders_pos/double(N); // not scaled to initial coordinates
 
-        theta1 = int (av_lead);
+        int j = 0;
+        while (av_lead> Gamma_old(j)){
+            value = j;
+            j = j+1;
+
+        }
+
+        theta1 = value;
 
 
         for (int i = 0; i < theta1; i++){
-            strain(i) = 0.05;
+            strain(i) = 0.02;
         }
 
 
@@ -1470,13 +1477,13 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 #ifdef HAVE_VTK
-            vtkWriteGrid("cellinducedgrowthCELLS", t, particles.get_grid(true));
+            vtkWriteGrid("cellinducedgrowthst002REALCELLS", t, particles.get_grid(true));
 #endif
 
 
 
             //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-            ofstream output("cellinducedgrowthMATRIX" + to_string(int(t)) + ".csv");
+            ofstream output("cellinducedgrowthst002REALMATRIX" + to_string(int(t)) + ".csv");
 
 
             output << "x, y, z, u" << "\n" << endl;
