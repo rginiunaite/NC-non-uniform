@@ -24,7 +24,6 @@ using namespace Eigen; // objects VectorXd, MatrixXd
 VectorXi proportions(double diff_conc, int n_seed) {
 //int  main(){
 
-
 // parameters
 
 
@@ -111,7 +110,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     // 1 part n_faster times faster than the other part
     double n_faster = 2.0;
 
-    double thetasmall = 0.25; // first thetasmall is growing
+    double thetasmall = 0.75; // first thetasmall is growing
     int theta1 = int(thetasmall * length_x);
 
     double alpha1;
@@ -479,8 +478,8 @@ VectorXi proportions(double diff_conc, int n_seed) {
         // our assumption that all new cells are followers
         get<type>(f) = 1;
 
-        // this is if I only have a certain number of cells
-        //if (t < 27){ // this
+        // this is if I only have a certain number of cells entering the domain
+        //if (t < 20){ // this 20 gambit, 5 forge, 10 I think cyclops
 
         if (free_position) {
             get<chain>(f) = 0;
@@ -499,8 +498,9 @@ VectorXi proportions(double diff_conc, int n_seed) {
          * After some time, domain growth profile changes!!!
          *
          * */
-
-       if (t >27.1 && t < 27.03){
+//
+       if (t >26.9 && t < 27.01){
+           cout << "change happended " << endl;
         bool first_part_grows = false; //false if final part grows faster, change
 
 
@@ -542,17 +542,12 @@ VectorXi proportions(double diff_conc, int n_seed) {
         }
 
 
-        VectorXd strain = VectorXd::Zero(length_x);
-
-
         // constant
 //    for (int i = 0; i < length_x; i++) {
 //        strain(i) = alpha;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
 //    }
 
-        //cout << alpha1 << alpha1 << endl;
-//    alpha1 = 0.0301;
-//    alpha2 = 0.0;
+
 
         // first part it is linear growth
         for (int i = 0; i < theta1; i++) {
@@ -566,9 +561,9 @@ VectorXi proportions(double diff_conc, int n_seed) {
             strain(i) = alpha2;// 0.002;//0.5 * linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
             //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
         }
-
-
     }
+
+
 
 
 
@@ -1444,32 +1439,32 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
         if (counter % 100 == 0) {
 
+        cout << "now t is " << t << endl;
 
-//
-//#ifdef HAVE_VTK
-//            vtkWriteGrid("changeCELLS", t, particles.get_grid(true));
-//#endif
-//
-//
-//
-//            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-//            ofstream output("changeMATRIX" + to_string(int(t)) + ".csv");
-//
-//
-//            output << "x, y, z, u" << "\n" << endl;
-//
-//
-//
-//            //output << "x, y, z, u" << "\n" << endl;
-//
-//
-//            for (int i = 0; i < length_x * length_y; i++) {
-//                for (int j = 0; j < 4; j++) {
-//                    output << chemo_3col(i, j) << ", ";
-//                }
-//                output << "\n" << endl;
-//            }
-//
+#ifdef HAVE_VTK
+            vtkWriteGrid("change075first05finalNEWCELLS", t, particles.get_grid(true));
+#endif
+
+
+
+            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+            ofstream output("change075first05finalNEWMATRIX" + to_string(int(t)) + ".csv");
+
+
+            output << "x, y, z, u" << "\n" << endl;
+
+
+
+            //output << "x, y, z, u" << "\n" << endl;
+
+
+            for (int i = 0; i < length_x * length_y; i++) {
+                for (int j = 0; j < 4; j++) {
+                    output << chemo_3col(i, j) << ", ";
+                }
+                output << "\n" << endl;
+            }
+
 
 
 
@@ -1539,7 +1534,6 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //            ofstream output4("track3_point" + to_string(t) + ".csv");
 //
 //            output4 << Gamma(3 * int(length_x / 4)) << endl;
-
 
         }
 
@@ -1612,10 +1606,10 @@ VectorXi proportions(double diff_conc, int n_seed) {
 int main() {
 
     const int number_parameters = 1; // parameter range
-    const int sim_num = 20;
+    const int sim_num = 1;
 
     //VectorXd store_chains;
-    VectorXi vector_check_length = proportions(0.05, 0); //just to know what the length is
+    //VectorXi vector_check_length = proportions(0.05, 0); //just to know what the length is
 
     //int num_parts = vector_check_length.size(); // number of parts that I partition my domain
     //cout << "length " << vector_check_length.size() << endl;
@@ -1646,8 +1640,8 @@ int main() {
 
         // comment from here
 
-        // This is what I am using for MATLAB
-//        ofstream output2("sepdataCHANGE025.csv" + to_string(n) + ".csv");
+//        // This is what I am using for MATLAB
+//        ofstream output2("sepdataCHANGE075first05finalNEW.csv" + to_string(n) + ".csv");
 //
 //        for (int i = 0; i < numbers.rows(); i++) {
 //
@@ -1680,9 +1674,9 @@ int main() {
     /*
     * will store everything in one matrix, the entries will be summed over all simulations
     */
-
-   // comment up to last bracket
-//    ofstream output3("cahnge025DATA.csv");
+//
+//   // comment up to last bracket
+//    ofstream output3("change075first05finalDATANEW.csv");
 //
 //
 //    for (int i = 0; i < num_parts; i++) {
