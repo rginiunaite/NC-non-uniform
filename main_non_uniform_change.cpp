@@ -93,6 +93,10 @@ VectorXi proportions(double diff_conc, int n_seed) {
     vdouble2 xposi; // to store positions
 
 
+    //switch of growth profile
+    double first_profile = 26.995;//26.99;
+    double second_profile = 27.0095;//27.01;
+
 
     // int n_seed = 0;
     // double diff_conc = 0.05;
@@ -207,6 +211,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     VectorXd Gamma = VectorXd::Zero(length_x);
     VectorXd Gamma_t = VectorXd::Zero(length_x);
     VectorXd Gamma_old = VectorXd::Zero(length_x);
+    VectorXd Gamma_temp = VectorXd::Zero(length_x);     // for switch in growth profiles
 
     for (int i = 0; i < length_x; i++) {
         Gamma_x(i) = exp(0 * strain(i));
@@ -499,8 +504,8 @@ VectorXi proportions(double diff_conc, int n_seed) {
          *
          * */
 //
-       if (t >26.9 && t < 27.01){
-           cout << "change happended " << endl;
+       if (t > first_profile && t < second_profile){
+           cout << "change happended t" << t << endl;
         bool first_part_grows = false; //false if final part grows faster, change
 
 
@@ -564,14 +569,6 @@ VectorXi proportions(double diff_conc, int n_seed) {
     }
 
 
-
-
-
-        t = t + dt;
-
-        counter = counter + 1;
-
-
         /*
  *
  * Domain growth, and update cell positions
@@ -581,12 +578,21 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
         // update the strain rate
-        for (int i = 0; i < length_x; i++) {
-            Gamma_x(i) = exp(t * strain(i));
+
+
+        if (t < first_profile){
+                for (int i = 0; i < length_x; i++) {
+                    Gamma_x(i) = exp(t * strain(i));
+                }
         }
 
 
+        if (t >first_profile){
+            for (int i = 0; i < length_x;i++){
+                Gamma_x(i) = exp(t * strain(i));
+            }
 
+        }
 
         /*
          * arbitrary Gamma function
@@ -596,16 +602,48 @@ VectorXi proportions(double diff_conc, int n_seed) {
         Gamma(0) = 0; // this is assumption, since I cannot calculate it
         //cout << "Gamma(0) " << 0 << " value " << Gamma(0) << endl;
 
-        for (int i = 1; i < length_x;i++){
 
-            Gamma(i) = Gamma_x(i) * dx + Gamma(i-1);
+        if (t < first_profile ){
+            for (int i = 1; i < length_x;i++){
 
-            //   cout << "Gamma(i) " << i << " value " << Gamma(i) << endl;
+                Gamma(i) = Gamma_x(i) * dx + Gamma(i-1);
+            }
+
         }
 
 
+        Gamma_temp(0) = 0; // this is assumption, since I cannot calculate it
 
+        double total_increase = 0;
+        double smallest_increase = 0;
 
+        if (t > first_profile ){
+
+            for (int i = 1; i < length_x;i++){
+
+                Gamma_temp(i) = Gamma_x(i) * dx + Gamma_temp(i-1);
+
+            }
+            total_increase = Gamma_temp(length_x-1) - Gamma(length_x-1);
+            smallest_increase = total_increase/ (double(theta1) + n_faster*(double(length_x-theta1))); // it grows twice as fast in one part as in the other part
+
+            for (int i = 1; i < theta1;i++){
+
+                Gamma(i) = Gamma_old(i) + smallest_increase *i;
+               ;
+            }
+            for (int i = theta1; i < length_x;i++){
+
+                Gamma(i) = Gamma_old(i) + 2.0*smallest_increase *i;
+            }
+
+        }
+
+    // update time step;
+
+        t = t + dt;
+
+        counter = counter + 1;
 
 
 
@@ -1439,31 +1477,31 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
         if (counter % 100 == 0) {
 
-        cout << "now t is " << t << endl;
+        
 
-#ifdef HAVE_VTK
-            vtkWriteGrid("change075first05finalNEWCELLS", t, particles.get_grid(true));
-#endif
-
-
-
-            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-            ofstream output("change075first05finalNEWMATRIX" + to_string(int(t)) + ".csv");
-
-
-            output << "x, y, z, u" << "\n" << endl;
-
-
-
-            //output << "x, y, z, u" << "\n" << endl;
-
-
-            for (int i = 0; i < length_x * length_y; i++) {
-                for (int j = 0; j < 4; j++) {
-                    output << chemo_3col(i, j) << ", ";
-                }
-                output << "\n" << endl;
-            }
+//#ifdef HAVE_VTK
+//            vtkWriteGrid("change075first05finalNEWCELLS", t, particles.get_grid(true));
+//#endif
+//
+//
+//
+//            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+//            ofstream output("change075first05finalNEWMATRIX" + to_string(int(t)) + ".csv");
+//
+//
+//            output << "x, y, z, u" << "\n" << endl;
+//
+//
+//
+//            //output << "x, y, z, u" << "\n" << endl;
+//
+//
+//            for (int i = 0; i < length_x * length_y; i++) {
+//                for (int j = 0; j < 4; j++) {
+//                    output << chemo_3col(i, j) << ", ";
+//                }
+//                output << "\n" << endl;
+//            }
 
 
 
@@ -1606,7 +1644,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 int main() {
 
     const int number_parameters = 1; // parameter range
-    const int sim_num = 1;
+    const int sim_num = 20;
 
     //VectorXd store_chains;
     //VectorXi vector_check_length = proportions(0.05, 0); //just to know what the length is
@@ -1640,20 +1678,20 @@ int main() {
 
         // comment from here
 
-//        // This is what I am using for MATLAB
-//        ofstream output2("sepdataCHANGE075first05finalNEW.csv" + to_string(n) + ".csv");
-//
-//        for (int i = 0; i < numbers.rows(); i++) {
-//
-//            for (int j = 0; j < numbers.cols(); j++) {
-//
-//                output2 << numbers(i, j) << ", ";
-//
-//                sum_of_all(i, j) += numbers(i, j);
-//
-//            }
-//            output2 << "\n" << endl;
-//        }
+        // This is what I am using for MATLAB
+        ofstream output2("sepdataCHANGE075first05finalNEW.csv" + to_string(n) + ".csv");
+
+        for (int i = 0; i < numbers.rows(); i++) {
+
+            for (int j = 0; j < numbers.cols(); j++) {
+
+                output2 << numbers(i, j) << ", ";
+
+                sum_of_all(i, j) += numbers(i, j);
+
+            }
+            output2 << "\n" << endl;
+        }
 
 //        this was used when I tried to combine the two
 //        ofstream output4("chainsTheta1First.csv");
@@ -1674,20 +1712,20 @@ int main() {
     /*
     * will store everything in one matrix, the entries will be summed over all simulations
     */
-//
-//   // comment up to last bracket
-//    ofstream output3("change075first05finalDATANEW.csv");
-//
-//
-//    for (int i = 0; i < num_parts; i++) {
-//
-//        for (int j = 0; j < number_parameters; j++) {
-//
-//            output3 << sum_of_all(i, j) << ", ";
-//
-//        }
-//        output3 << "\n" << endl;
-//    }
+
+   // comment up to last bracket
+    ofstream output3("change075first05finalDATANEW.csv");
+
+
+    for (int i = 0; i < num_parts; i++) {
+
+        for (int j = 0; j < number_parameters; j++) {
+
+            output3 << sum_of_all(i, j) << ", ";
+
+        }
+        output3 << "\n" << endl;
+    }
 
 
 }
