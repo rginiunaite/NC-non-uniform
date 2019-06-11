@@ -1,14 +1,12 @@
 % plot total length of the domain 
-% and compare with the analytical solution for the cases with no switching
+% and compare with the analytical solution
+% for 075first05final
 
 N= 54;
 j=1;
-for i = 1:3:N
+for i = 1:3:N   
 
-
- %     filename = sprintf('Domain growth points data/Domain1firsttheta%i.000000.csv',i);
-     filename = sprintf('Domain growth points data/Domain075firsttheta%i.000000.csv',i);
- %     filename = sprintf('Domain growth points data/Domain05finaltheta%i.000000.csv',i);
+     filename = sprintf('Domain growth points data/Domain05final025firstV2%i.000000.csv',i); % change after42
 
     
     T = readtable(filename);
@@ -37,33 +35,6 @@ for i =2: length(values(1,:))
     %diffOfall(:,i) = values(:,i) - values(:,i-1);
     mean_value = mean(nonzeros(diffOfall(:,i))); % we find mean value because we can then distinguish when there is different change in growth in different parts of the domain
     
-% % switch happens at 42, final half
-%  if i <= 14
-%      smaller = true(1,length(diffOfall(:,1)));
-%      smaller(length(diffOfall(:,1))/2:length(diffOfall(:,1))) = false;
-%      larger = ~smaller;
-%  end
-%  
-%  % first 25%
-%   if i> 14
-%      smaller = false(1,length(diffOfall(:,1)));
-%      smaller(length(diffOfall(:,1))/4:length(diffOfall(:,1))) = true;
-%      larger = ~smaller;
-%   end
- 
-%  % first 075% grows fast, switch happens at 27, final half, 27 corresponds to 9
-%  if i<= 9
-%      smaller = true(1,length(diffOfall(:,1)));
-%      smaller(1:length(diffOfall(:,1))*3/4) = false;
-%      larger = ~smaller;
-%  end
-%  
-%  % first 27%
-%   if i> 9
-%      smaller = true(1,length(diffOfall(:,1)));
-%      smaller(length(diffOfall(:,1))/2:length(diffOfall(:,1))) = false;
-%      larger = ~smaller;
-%  end
   
  
         smaller = diffOfall(:,i) < mean_value; % slow growth, automatic
@@ -99,23 +70,25 @@ xlabel('Time, hrs')
  
  secondpoint = values(200,:);
  
+ Gammatheta = values(round(342*0.25),:);% 
+ 
  thirdpoint = values(300,:);
  
 
- theta1 = 0.75;
+ theta1 = 0.5;
  
  %% first faster
  % analytical solution, how does it change?
-sigma1 = 0.022599; %75% grows faster
-sigma2 = 0.00976355; % 25%slower
+% sigma1 = 0.022599; %75% grows faster
+% sigma2 = 0.00976355; % 25%slower
 
 % 
 % sigma1 = 0.00254543; %50% grows faster
 % sigma2 = 0.0126182; % 50%slower
-
 % 
-% sigma1 =  0.0288306; % 25% faster
-% sigma2 =  0.0159945; % 75% slower
+% 
+ sigma1final =  0.0288306; % 25% faster
+ sigma2final =  0.0159945; % 75% slower
 
  %% final faster
  % analytical solution, how does it change?
@@ -123,8 +96,9 @@ sigma2 = 0.00976355; % 25%slower
  % sigma1 =0.00976355; % 25% slower
 % sigma2 =  0.022599; % 75% faster
 % 
-%  sigma1 = 0.0126182; % 50%slower
-%  sigma2 = 0.0254543; %50% grows faster
+
+  sigma1 = 0.0126182; % 50%slower
+  sigma2 = 0.0254543; %50% grows faster
 
 % sigma1 = 0.0159945; %75% grows slower
 % sigma2 = 0.0288306; % 25%faster
@@ -135,49 +109,69 @@ sigma2 = 0.00976355; % 25%slower
 
 sigmaU = 0.0201268;
 %%
+lag=41;
+i=1;
+for  t = 0:1:N-1
 
+    if t < 42
+        a1(i) = firstpoint(1)*exp(sigma1*t);
 
- t = 0:3:N-1;
+        a2(i) = secondpoint(1)*exp(sigma2*t)+345*theta1*(exp(sigma1*t) -exp(sigma2*t) ); % adapt as necessary  342 * 0.75 = 256. Leave when 0.5 and 0.25
 
-    a1 = firstpoint(1)*exp(sigma1*t);
+        a3(i) = thirdpoint(1)*exp(sigma2*t)+345*theta1*(exp(sigma1*t) -exp(sigma2*t) );
+       
+      Gtheta(i) = Gammatheta(1)*exp(sigma1*t);
+      furthestpoint = Gtheta(i);
+    else
 
-    a2 = secondpoint(1)*exp(sigma1*t);% + 342*theta1*(exp(sigma1*t) -exp(sigma2*t) ); % adapt as necessary  342 * 0.75 = 256. Leave when 0.5 and 0.25
+        lastpoint1 = a1(42);
+        lastpoint2 = a2(42);
+        lastpoint3 = a3(42);
+        
+%         end
+        a1(i) = lastpoint1*exp(sigma2final*(t-lag)) + furthestpoint*(exp(sigma1final*(t-lag)) -exp(sigma2final*(t-lag)) );
+        %a1(i) = +exp(sigma1final*(t-lag))/scaling_factor;
 
-    a3 = thirdpoint(1)*exp(sigma2*t)+342*theta1*(exp(sigma1*t) -exp(sigma2*t) );
+        a2(i) = lastpoint2*exp(sigma2final*(t-lag)) + furthestpoint*(exp(sigma1final*(t-lag)) -exp(sigma2final*(t-lag)) ); % adapt as necessary  342 * 0.75 = 256. Leave when 0.5 and 0.25
+        %a2(i) = (lastpoint2*exp(sigma2final*(t-lag)) + 342*0.5*(exp(sigma1final*(t-lag)) -exp(sigma2final*(t-lag)) ))/scaling_factor; % adapt as necessary  342 * 0.75 = 256. Leave when 0.5 and 0.25
 
+        a3(i) = lastpoint3*exp(sigma2final*(t-lag))+furthestpoint*(exp(sigma1final*(t-lag)) -exp(sigma2final*(t-lag)) );
+        %a3(i) = (lastpoint3*exp(sigma2final*(t-lag))+342*0.5*(exp(sigma1final*(t-lag)) -exp(sigma2final*(t-lag)) ))/scaling_factor;
+    end
+    i= i+1;
+end
 
 % a1 = firstpoint(1)*exp(sigmaU*t);
 % 
 % a2 = secondpoint(1)*exp(sigmaU*t); % uniform
 % 
 % a3 = thirdpoint(1)*exp(sigmaU*t );
+t = 0:3:N-1;
 
+figure
 
- figure
- 
 % newtime = 6:1:22
- 
- endtime = N; % because starts from zero and 17 is missed
-
+ endtime = N; 
  % hold on
  scaling = 18/endtime;
  newtime = scaling*t +6;
+
  
-%   scatter(firstpoint,100,'g','filled')
-%  
-% hold on
-%  scatter(secondpoint,100,'r','filled')
-%  scatter(thirdpoint,100,'b','filled')
  scatter(newtime, firstpoint,100,'g','filled')
  
 hold on
  scatter(newtime, secondpoint,100,'r','filled')
  scatter(newtime, thirdpoint,100,'b','filled')
 
-plot(newtime,a1,'k','linewidth',2)
-plot(newtime,a2,'k','linewidth',2)
+hold on
+scaling = 17/endtime;
+timeforcont = scaling*t +6;
 
-plot(newtime,a3,'k','linewidth',2)
+
+plot(newtime,a1(1:3:N),'k','linewidth',2)
+plot(newtime,a2(1:3:N),'k','linewidth',2)
+
+plot(newtime,a3(1:3:N),'k','linewidth',2)
 
 set(gca,'FontSize',30)
 ax = gca;
@@ -188,5 +182,5 @@ xlabel('Time, hrs')
  box on
 
  set(gca,'linewidth',4)
-ylim([1,1000])
- 
+
+  ylim([1,1000])
