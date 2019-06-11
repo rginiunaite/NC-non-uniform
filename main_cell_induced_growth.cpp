@@ -516,7 +516,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
         for (int i = 0; i < theta1; i++){
-            strain(i) = 0.02;
+            strain(i) = 0.025;
         }
 
 
@@ -1477,13 +1477,13 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 #ifdef HAVE_VTK
-            vtkWriteGrid("cellinducedgrowthst002REALCELLS", t, particles.get_grid(true));
+            vtkWriteGrid("cellinducedgrowthst0025CELLS", t, particles.get_grid(true));
 #endif
 
 
 
             //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-            ofstream output("cellinducedgrowthst002REALMATRIX" + to_string(int(t)) + ".csv");
+            ofstream output("cellinducedgrowthst0025MATRIX" + to_string(int(t)) + ".csv");
 
 
             output << "x, y, z, u" << "\n" << endl;
