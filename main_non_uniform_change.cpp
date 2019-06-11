@@ -29,7 +29,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
     //specify whether first or final part of the domain grows faster
 
-    bool first_part_grows = true; //false if final part grows faster
+    bool first_part_grows = false; //false if final part grows faster
 
 
     double space_grid_controller = 100.0;
@@ -54,7 +54,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     double dy = 1.0;// / space_grid_controller; // space step in y direction
 
     // reaction rate
-    double k_reac = 1.0;//0.00001;//0.1;//0.105;//0.03;//.205; // reaction term
+    double k_reac = 1.0; // reaction term
 
 
     // cell parameters
@@ -94,8 +94,8 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
     //switch of growth profile
-    double first_profile = 26.995;//26.99;
-    double second_profile = 27.0095;//27.01;
+    double first_profile = 26.995;//26.995; //41.995;//;just once if timestep is 0.01
+    double second_profile = 27.0095;//27.0095; // 42.0095;//
 
 
     // int n_seed = 0;
@@ -114,7 +114,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     // 1 part n_faster times faster than the other part
     double n_faster = 2.0;
 
-    double thetasmall = 0.75; // first thetasmall is growing
+    double thetasmall = 0.5; // first thetasmall is growing
     int theta1 = int(thetasmall * length_x);
 
     double alpha1;
@@ -175,7 +175,8 @@ VectorXi proportions(double diff_conc, int n_seed) {
         //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
     }
 
-
+        cout << "strain(0) " << strain(0) << endl;
+    cout << "strain(1) " << strain(length_x-2) << endl;
 
 
 
@@ -212,6 +213,8 @@ VectorXi proportions(double diff_conc, int n_seed) {
     VectorXd Gamma_t = VectorXd::Zero(length_x);
     VectorXd Gamma_old = VectorXd::Zero(length_x);
     VectorXd Gamma_temp = VectorXd::Zero(length_x);     // for switch in growth profiles
+    VectorXd Gamma_base = VectorXd::Zero(length_x);     // for switch in growth profiles
+
 
     for (int i = 0; i < length_x; i++) {
         Gamma_x(i) = exp(0 * strain(i));
@@ -484,7 +487,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
         get<type>(f) = 1;
 
         // this is if I only have a certain number of cells entering the domain
-        //if (t < 20){ // this 20 gambit, 5 forge, 10 I think cyclops
+        //if (t < 10){ // this 20 gambit, 5 forge, 10 I think cyclops
 
         if (free_position) {
             get<chain>(f) = 0;
@@ -495,7 +498,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
         particles.update_positions();
 
-        // } // this
+         // //} // this
 
 
 
@@ -505,21 +508,21 @@ VectorXi proportions(double diff_conc, int n_seed) {
          * */
 //
        if (t > first_profile && t < second_profile){
-           cout << "change happended t" << t << endl;
+
         bool first_part_grows = false; //false if final part grows faster, change
 
 
 
-        double n_faster = 2.0;
+        n_faster = 2.0;
 
-        double thetasmall = 0.5; // first thetasmall is growing
-        int theta1 = int(thetasmall * length_x);
+        thetasmall = 0.5; // first thetasmall is growing
+        theta1 = int(thetasmall * length_x);
 
-        double alpha1;
-        double alpha2;
+        alpha1;
+        alpha2;
 
         //check whether first part grows
-        double thetasmalltemp = thetasmall;
+        thetasmalltemp = thetasmall;
         if (first_part_grows == true) {
             double xvar = final_length / (n_faster * double(length_x) * thetasmalltemp + double(length_x) * (1 -
                                                                                                              thetasmalltemp)); // solve: 2 *xvar * length_x * thetasmall + x * length(1-thetasmall) = final_length
@@ -586,10 +589,10 @@ VectorXi proportions(double diff_conc, int n_seed) {
                 }
         }
 
-
+//changed here!!!!
         if (t >first_profile){
             for (int i = 0; i < length_x;i++){
-                Gamma_x(i) = exp(t * strain(i));
+                Gamma_x(i) = exp((t) * strain(i)); // for new version exp((t-first_profile) * strain(i));
             }
 
         }
@@ -608,34 +611,49 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
                 Gamma(i) = Gamma_x(i) * dx + Gamma(i-1);
             }
-
+            Gamma_base = Gamma;
         }
+
+
+
 
 
         Gamma_temp(0) = 0; // this is assumption, since I cannot calculate it
 
         double total_increase = 0;
         double smallest_increase = 0;
+        double total_sum = Gamma_x(0);
+        double factor = 0; // sum all gamma over this factor is equal to total change
 
         if (t > first_profile ){
+            cout << "theta1 " << theta1 << endl;
+            cout << "Gamma_base " << Gamma_base(theta1) << endl;
 
+            // old version which worked
+         //   this is for general case
             for (int i = 1; i < length_x;i++){
 
                 Gamma_temp(i) = Gamma_x(i) * dx + Gamma_temp(i-1);
-
+                total_sum = total_sum +Gamma_x(i);
             }
             total_increase = Gamma_temp(length_x-1) - Gamma(length_x-1);
-            smallest_increase = total_increase/ (double(theta1) + n_faster*(double(length_x-theta1))); // it grows twice as fast in one part as in the other part
 
-            for (int i = 1; i < theta1;i++){
+            factor = total_sum/total_increase;
 
-                Gamma(i) = Gamma_old(i) + smallest_increase *i;
-               ;
+
+            for (int i = 1; i < length_x;i++){
+                Gamma(i) = Gamma_old(i) + Gamma_temp(i)/factor;
             }
-            for (int i = theta1; i < length_x;i++){
 
-                Gamma(i) = Gamma_old(i) + 2.0*smallest_increase *i;
-            }
+        // new version, also changed in //changed here!!!!
+
+//            for (int i = 1; i < theta1;i++){
+//                Gamma(i) = Gamma_base(i)* Gamma_x(i);
+//            }
+//            for (int i = theta1; i < length_x;i++){
+//
+//                Gamma(i) =  Gamma_base(i)* Gamma_x(i) + Gamma_base(theta1)*(Gamma_x(1)-Gamma_x(i));
+//            }
 
         }
 
@@ -679,6 +697,8 @@ VectorXi proportions(double diff_conc, int n_seed) {
         vdouble2 x; // use variable x for the position of cells
         double x0=0;
         int pos;
+
+        // to uncomment!!!
 
         for (int i = 0; i < particles.size(); i++) {
 
@@ -1477,30 +1497,44 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
         if (counter % 100 == 0) {
 
-        
+
 
 //#ifdef HAVE_VTK
-//            vtkWriteGrid("change075first05finalNEWCELLS", t, particles.get_grid(true));
+//            vtkWriteGrid("change05final025firstNEWCELLS", t, particles.get_grid(true));
 //#endif
-//
-//
-//
-//            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-//            ofstream output("change075first05finalNEWMATRIX" + to_string(int(t)) + ".csv");
-//
-//
-//            output << "x, y, z, u" << "\n" << endl;
-//
+
+
+
+            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+            ofstream output("TRIALchange075first05finalNEWMATRIX" + to_string(int(t)) + ".csv");
+
+
+            output << "x, y, z, u" << "\n" << endl;
+
+
+
+            //output << "x, y, z, u" << "\n" << endl;
+
+
+            for (int i = 0; i < length_x * length_y; i++) {
+                for (int j = 0; j < 4; j++) {
+                    output << chemo_3col(i, j) << ", ";
+                }
+                output << "\n" << endl;
+            }
+
+
+            //STORE Gamma_x
+//            ofstream output2("Gamma_Xchange075first05final" + to_string(int(t)) + ".csv");
 //
 //
 //            //output << "x, y, z, u" << "\n" << endl;
 //
 //
-//            for (int i = 0; i < length_x * length_y; i++) {
-//                for (int j = 0; j < 4; j++) {
-//                    output << chemo_3col(i, j) << ", ";
-//                }
-//                output << "\n" << endl;
+//            for (int i = 0; i < length_x; i++) {
+//                output2 << Gamma_x(i) << "\n" << endl;
+//
+//
 //            }
 
 
@@ -1644,7 +1678,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 int main() {
 
     const int number_parameters = 1; // parameter range
-    const int sim_num = 20;
+    const int sim_num = 1;
 
     //VectorXd store_chains;
     //VectorXi vector_check_length = proportions(0.05, 0); //just to know what the length is
@@ -1678,20 +1712,20 @@ int main() {
 
         // comment from here
 
-        // This is what I am using for MATLAB
-        ofstream output2("sepdataCHANGE075first05finalNEW.csv" + to_string(n) + ".csv");
-
-        for (int i = 0; i < numbers.rows(); i++) {
-
-            for (int j = 0; j < numbers.cols(); j++) {
-
-                output2 << numbers(i, j) << ", ";
-
-                sum_of_all(i, j) += numbers(i, j);
-
-            }
-            output2 << "\n" << endl;
-        }
+//        // This is what I am using for MATLAB
+//        ofstream output2("sepdataCHANGE05final025firstNEW.csv" + to_string(n) + ".csv");
+//
+//        for (int i = 0; i < numbers.rows(); i++) {
+//
+//            for (int j = 0; j < numbers.cols(); j++) {
+//
+//                output2 << numbers(i, j) << ", ";
+//
+//                sum_of_all(i, j) += numbers(i, j);
+//
+//            }
+//            output2 << "\n" << endl;
+//        }
 
 //        this was used when I tried to combine the two
 //        ofstream output4("chainsTheta1First.csv");
@@ -1699,7 +1733,7 @@ int main() {
 //        // store_chains(n) =;
 //
 //        output4 <<  numbers(numbers.rows()-1,1) << ", ";
-//
+
 //        output4 << "\n" << endl;
 
 //         comment up to here
@@ -1714,18 +1748,19 @@ int main() {
     */
 
    // comment up to last bracket
-    ofstream output3("change075first05finalDATANEW.csv");
-
-
-    for (int i = 0; i < num_parts; i++) {
-
-        for (int j = 0; j < number_parameters; j++) {
-
-            output3 << sum_of_all(i, j) << ", ";
-
-        }
-        output3 << "\n" << endl;
-    }
+//    //ofstream output3("change075first05finalDATANEW.csv"); for first change
+//    ofstream output3("change05final025firstDATANEW.csv");
+//
+//
+//    for (int i = 0; i < num_parts; i++) {
+//
+//        for (int j = 0; j < number_parameters; j++) {
+//
+//            output3 << sum_of_all(i, j) << ", ";
+//
+//        }
+//        output3 << "\n" << endl;
+//    }
 
 
 }
