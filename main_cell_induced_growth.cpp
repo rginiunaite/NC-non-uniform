@@ -506,7 +506,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
         av_lead = leaders_pos/double(N); // not scaled to initial coordinates
 
         int j = 0;
-        while (av_lead> Gamma_old(j)){
+        while (av_lead +100.0 > Gamma_old(j)){// +100.0 when the highest growth is ahead of the stream // av_lead-100.0> Gamma_old(j) (when with delay)
             value = j;
             j = j+1;
 
@@ -515,9 +515,17 @@ VectorXi proportions(double diff_conc, int n_seed) {
         theta1 = value;
 
 
+//        for (int i = 0; i < theta1; i++){
+//            strain(i) = 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+//        }
+
         for (int i = 0; i < theta1; i++){
-            strain(i) = 0.025;
+            strain(i) = 0.03*(i)/theta1; // linearly decreasing
         }
+
+//        for (int i = 0; i < theta1; i++){
+//            strain(i) = 0.025; // for all the examples before 0.025, when I had heaviside function
+//        }
 
 
         // update the strain rate
@@ -1477,13 +1485,13 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 #ifdef HAVE_VTK
-            vtkWriteGrid("cellinducedgrowthst0025CELLS", t, particles.get_grid(true));
+            vtkWriteGrid("cellinducedgrowthst003AHEADlinearCELLS", t, particles.get_grid(true));
 #endif
 
 
-
+//
             //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-            ofstream output("cellinducedgrowthst0025MATRIX" + to_string(int(t)) + ".csv");
+            ofstream output("cellinducedgrowthst003AHEADlinearMATRIX" + to_string(int(t)) + ".csv");
 
 
             output << "x, y, z, u" << "\n" << endl;
@@ -1499,6 +1507,30 @@ VectorXi proportions(double diff_conc, int n_seed) {
                 }
                 output << "\n" << endl;
             }
+
+
+
+            // For points on the domain
+
+
+            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+            ofstream output2("DomainCellInduced003AHEADlinear" + to_string(t) + ".csv");
+
+
+            output2 << "x, y, z, u" << "\n" << endl;
+
+
+
+            //output << "x, y, z, u" << "\n" << endl;
+
+
+            for (int i = 0; i < length_x * length_y; i++) {
+                for (int j = 0; j < 4; j++) {
+                    output2 << chemo_3col(i, j) << ", ";
+                }
+                output2 << "\n" << endl;
+            }
+
 
 
 
@@ -1645,7 +1677,7 @@ int main() {
     const int sim_num = 1;
 
     //VectorXd store_chains;
-    VectorXi vector_check_length = proportions(0.05, 0); //just to know what the length is
+    //VectorXi vector_check_length = proportions(0.05, 0); //just to know what the length is
 
     //int num_parts = vector_check_length.size(); // number of parts that I partition my domain
     //cout << "length " << vector_check_length.size() << endl;
