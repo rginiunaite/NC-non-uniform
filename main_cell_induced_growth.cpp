@@ -70,7 +70,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     //double diff_conc = 0.1; // sensing threshold, i.e. how much concentration has to be bigger, so that the cell moves in that direction
     int freq_growth = 1; // determines how frequently domain grows (actually not relevant because it will go every timestep)
     int insertion_freq = 1; // determines how frequently new cells are inserted, regulates the density of population
-    double speed_l = 0.14;// 0.05;//1;//0.05; // speed of a leader cell
+    double speed_l = 1.5 * 0.14;// 0.05;//1;//0.05; // speed of a leader cell
     double increase_fol_speed = 1.3;
     double speed_f = increase_fol_speed * speed_l;//0.05;//0.1;//0.08; // speed of a follower cell
     double dettach_prob = 0.5; // probability that a follower cell which is on trail looses the trail
@@ -106,12 +106,6 @@ VectorXi proportions(double diff_conc, int n_seed) {
     * */
 
 
-    //piecewise constant, two parts
-    // 1 part n_faster times faster than the other part
-    double n_faster = 2.0;
-
-
-    int theta1 = int(0.0 * length_x);
 
 
 
@@ -119,55 +113,74 @@ VectorXi proportions(double diff_conc, int n_seed) {
     VectorXd strain = VectorXd::Zero(length_x);
 
 
-    // constant
-//    for (int i = 0; i < length_x; i++) {
-//        strain(i) = alpha;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
-//    }
 
-    //cout << alpha1 << alpha1 << endl;
-//    alpha1 = 0.0301;
-//    alpha2 = 0.0;
 
-    // first part it is linear growth
-    for (int i = 0; i < theta1; i++) {
-        strain(i) = 0;//linear_par * double(theta1) /
-        // double(space_grid_controller);//linear_par * (double(i) / double(space_grid_controller));
+// cells hinder the growth
+
+
+    /*
+    * strain rate
+    * */
+
+
+    //piecewise constant, two parts
+    // 1 part n_faster times faster than the other part
+    double n_faster = 2.0;
+
+    double thetasmall = 1.0; // first thetasmall is growing
+    int theta1 = int(thetasmall * length_x);
+
+    double alpha1;
+    double alpha2;
+
+
+    /*
+     * Uncomment for cell-hindered growth (G4)
+     * */
+    //check whether first part grows
+    double thetasmalltemp = thetasmall;
+    if (first_part_grows ==true){
+        double xvar = final_length/ (n_faster * double(length_x)*thetasmalltemp + double(length_x)*(1-thetasmalltemp)); // solve: 2 *xvar * length_x * thetasmall + x * length(1-thetasmall) = final_length
+
+        double ratio1 = n_faster * double(length_x)*thetasmalltemp * xvar / (double(length_x)*thetasmalltemp);
+
+        alpha1 = log (ratio1)/final_time;
+
+        double ratio2 =  double(length_x)*(1- thetasmalltemp) * xvar / (double(length_x)*(1- thetasmalltemp));
+
+        alpha2 = log (ratio2)/final_time;
+
+    }
+
+    else if(first_part_grows == false){
+        double xvar = final_length/ (double(length_x)*thetasmall + n_faster*double(length_x)*(1-thetasmall)); // solve: 2 *xvar * length_x * thetasmall + x * length(1-thetasmall) = final_length
+
+        double ratio1 = double(length_x)*thetasmall * xvar / (double(length_x)*thetasmall);
+
+        alpha1 = log (ratio1)/final_time;
+
+        double ratio2 =  double(length_x)*(1- thetasmall) * xvar*n_faster / (double(length_x)*(1- thetasmall));
+
+        alpha2 = log (ratio2)/final_time;
     }
 
 
-    // second part is constant
+
+    double strainInitial = alpha1 +0.01;
+
+    // first part it is linear growth
+    for (int i = 0; i < theta1; i++) {
+        strain(i) = alpha1+0.01;//linear_par * double(theta1) /
+        // double(space_grid_controller);//linear_par * (double(i) / double(space_grid_controller));
+    }
+
     for (int i = theta1; i < length_x; i++) {
-        strain(i) = 0;// 0.002;//0.5 * linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
+        strain(i) = alpha2+0.01;// 0.002;//0.5 * linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
         //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
     }
 
 
 
-
-
-
-
-    // three parts, including spatial linear growth
-
-////        int theta1 = int(0.4 * space_grid_controller);
-////    int theta2 = int(0.7 * space_grid_controller);
-//
-    // first part it is linear growth
-//    for (int i = 0; i < theta1; i++) {
-//        strain(i) = alpha * (double(i) / double(space_grid_controller));
-//    }
-//
-//
-//    // second part is constant
-//    for (int i = theta1; i < length_x; i++) {
-//        strain(i) = alpha * double(theta1) / double(space_grid_controller); // constant to where it was
-//        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
-//    }
-
-////    // third part no growth, constant
-////    for (int i = theta2; i < length_x; i++) {
-////        strain(i) = 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
-////    }
 
     // growth function
 
@@ -387,34 +400,18 @@ VectorXi proportions(double diff_conc, int n_seed) {
     std::uniform_real_distribution<double> uniformpi(0, 2 * M_PI);
 
 
-
-
-
-
-
-
-
-    // this is for tracking cell positions
-//    ofstream outputtrack75nornd("track_cell7p5.csv");
-//    ofstream outputtrack170nornd("track_cell170.csv");
-//    ofstream outputtrack339nornd("track_cell339.csv");
-
-    //    ofstream outputtrackL("CORRECTV2nongrowingnseed" + to_string(n_seed) + ".csv");
-
-    //     ofstream outputtrackL("MARCH29CORRECTtrack_leadTheta" + to_string(thetasmall) + "FINALnseed" + to_string(n_seed) + ".csv");
-//        ofstream outputtrackL2("track_lead2theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackL3("track_lead3theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackL4("track_lead4theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackL5("track_lead5theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-
-    // ofstream outputtrackF("CORRECTV2FOLnongrowingnseed"+ to_string(n_seed) + ".csv");
-    //      ofstream outputtrackF("CORRECTtrack_folTheta" + to_string(thetasmall) + "FINALnseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackF2("track_fol2theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackF3("track_fol3theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackF4("track_fol4theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackF5("track_fol5theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-
-
+//         ofstream outputtrackL("speed1p5track_leadTheta" + to_string(thetasmall) + "FINALnseed" + to_string(n_seed) + ".csv");
+////        ofstream outputtrackL2("track_lead2theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackL3("track_lead3theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackL4("track_lead4theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackL5("track_lead5theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+//
+////    ofstream outputtrackF("CORRECTV2FOLnongrowingnseed"+ to_string(n_seed) + ".csv");
+//          ofstream outputtrackF("speed1p5track_folTheta" + to_string(thetasmall) + "FINALnseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackF2("track_fol2theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackF3("track_fol3theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackF4("track_fol4theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackF5("track_fol5theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
 
 
     //for each timestep
@@ -449,18 +446,18 @@ VectorXi proportions(double diff_conc, int n_seed) {
         get<type>(f) = 1;
 
         // this is if I only have a certain number of cells
-        //if (t < 27){ // this
+        //if (t < 2) { // this
 
-        if (free_position) {
-            get<chain>(f) = 0;
-            get<chain_type>(f) = -1;
-            get<attached_to_id>(f) = -1;
-            particles.push_back(f);
-        }
-
+            if (free_position) {
+                get<chain>(f) = 0;
+                get<chain_type>(f) = -1;
+                get<attached_to_id>(f) = -1;
+                particles.push_back(f);
+            }
+        //} // this
         particles.update_positions();
 
-        // } // this
+
 
 
 
@@ -506,7 +503,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
         av_lead = leaders_pos/double(N); // not scaled to initial coordinates
 
         int j = 0;
-        while (av_lead +100.0 > Gamma_old(j)){// +100.0 when the highest growth is ahead of the stream // av_lead-100.0> Gamma_old(j) (when with delay)
+        while (av_lead > Gamma_old(j)){// // av_lead-100.0> Gamma_old(j) (when with delay, G2)
             value = j;
             j = j+1;
 
@@ -514,15 +511,17 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
         theta1 = value;
 
-
+    // linearly increasing (G3)
 //        for (int i = 0; i < theta1; i++){
 //            strain(i) = 0.035*(theta1-i)/theta1; // linearly increasing to the NT
 //        }
 
+        // Cell-hindered (G4)
         for (int i = 0; i < theta1; i++){
-            strain(i) = 0.03*(i)/theta1; // linearly decreasing
+            strain(i) = strainInitial* (i)/theta1; // linearly decreasing
         }
 
+        // G1 and G2
 //        for (int i = 0; i < theta1; i++){
 //            strain(i) = 0.025; // for all the examples before 0.025, when I had heaviside function
 //        }
@@ -720,7 +719,6 @@ VectorXi proportions(double diff_conc, int n_seed) {
             get<position>(particles)[i] += vdouble2(Gamma(value)-Gamma_old(value),0);
 
 
-
         }
 
 
@@ -895,6 +893,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
             vdouble2 x; // use variable x for the position of cells
             x = get<position>(particles[particle_id(j)]);
+
 
             if (get<type>(particles[particle_id(j)]) == 0) {
 
@@ -1409,6 +1408,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
                 }
 
+
                 /* CHECK IF A FOLLOWER DOES NOT BECOME A LEADER
                 * Alternative phenotypic switching if a follower overtakes a leader it becomes a leader and that leader follower.
                 * I will have to be careful when there will be channels because I will have to choose the closest leader
@@ -1485,13 +1485,13 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 #ifdef HAVE_VTK
-            vtkWriteGrid("cellinducedgrowthst003AHEADlinearCELLS", t, particles.get_grid(true));
+            vtkWriteGrid("speed1p5HINDEREDCELLS", t, particles.get_grid(true));
 #endif
 
 
 //
             //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-            ofstream output("cellinducedgrowthst003AHEADlinearMATRIX" + to_string(int(t)) + ".csv");
+            ofstream output("speed1p5HINDEREDMATRIX" + to_string(int(t)) + ".csv");
 
 
             output << "x, y, z, u" << "\n" << endl;
@@ -1513,8 +1513,8 @@ VectorXi proportions(double diff_conc, int n_seed) {
             // For points on the domain
 
 
-            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-            ofstream output2("DomainCellInduced003AHEADlinear" + to_string(t) + ".csv");
+
+            ofstream output2("Speed1p5DomainCellHindered" + to_string(t) + ".csv");
 
 
             output2 << "x, y, z, u" << "\n" << endl;
@@ -1536,18 +1536,10 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 
-            //up to hear when comment saving
 
-
-
-//            ofstream output2("number_of_cells_double_speed " + to_string(int(round(t))) +  ".csv");
-//            output2 << particles.size() << endl;
+//            // positions of five leader cells
+//            xposi = get<position>(particles[0]);
 //
-
-
-            // positions of five leader cells
-            xposi = get<position>(particles[0]);
-
 //                outputtrackL << xposi[0] << ", " << xposi[1] << endl;
 //                xposi = get<position>(particles[1]);
 //                outputtrackL << xposi[0] << ", " << xposi[1] << endl;
@@ -1580,27 +1572,6 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //                    outputtrackF  << 89 << ", "<< xposi[0] << ", " << xposi[1] << endl;
 //                }
 
-//
-
-
-
-//                xposi= get<position>(particles[1]);
-//                outputtrack << xposi[0] << ", " << xposi[1] << endl;
-            //}
-
-//            xposi = get<position>(particles[2]);
-//            outputtrack339nornd << xposi[0] << ", " << xposi[1] << endl;
-
-//
-//            output2 << Gamma(length_x / 2) << endl;
-//
-//            ofstream output3("track2_point" + to_string(t) + ".csv");
-//
-//            output3 << Gamma(int(length_x / 4)) << endl;
-//
-//            ofstream output4("track3_point" + to_string(t) + ".csv");
-//
-//            output4 << Gamma(3 * int(length_x / 4)) << endl;
 
 
         }
