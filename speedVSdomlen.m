@@ -17,8 +17,8 @@ plot(speed,dom_length,'linewidth',4)
 set(gca,'FontSize',30)
 ax = gca;
 
-xlabel('Input cell speed, \mu m/min')
-ylabel('Final domain length, \mu m')
+xlabel(['Input cell speed, ',char(181),'m/min'],'FontSize',14)
+ylabel(['Final domain length, ',char(181),'m'],'FontSize',14)
 
  set(gca,'FontSize',30)
 ax = gca;

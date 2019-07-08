@@ -1,67 +1,244 @@
 %% plot average of ten simulations
+N = 20;
 
-sim1 = 'FIRST075.csv';
+% sim1 = 'NEWtheta1firstdata.csv';
+%sim1 = 'Times3growthNEWtheta1firstdata.csv';
+%sim1 = 'LATEST data proportions/Updatedtheta1first.csv';
+%sim1 = 'ONLYLEADERSFIRST05.csv';
+sim1 = 'sepdataG10.csv';
+sim12 = 'sepdataG116.csv';
+
+
+%sim1 = 'change075first05finalDATA.csv';
+
+%sim1 = 'ONLYLEADERS.csv';
 M1 = csvread(sim1);
-M1 = M1(:,1)/10;
+M12 = csvread(sim12);
+M1 = (M1(:,1) + M12(:,1))*0.5;
 
-sim2 = 'FIRST075_twice_speed.csv';
+
+for i = 1:N
+    
+    %filename = sprintf('LATEST data proportions/sepdatatheta1first.csv%i.csv',i-1);
+    filename = sprintf('sepdataG4.csv%i.csv',i-1);
+   %filename = sprintf('sepdataCHANGE075first05final.csv%i.csv',i-1);
+   
+   % filename = sprintf('sepdataONLYLEADERS.csv%i.csv',i-1);
+    sepdata = load(filename);
+        alldata(:,i) = sepdata; 
+
+end
+
+std1 = std(alldata');
+% 
+% 
+% %sim2 = 'NEWtheta075finaldata.csv';
+% %sim2 = 'LATEST data proportions/Times3growthNEWtheta075finaldata.csv';
+%sim2 = 'change075first05finalDATANEW.csv';
+
+% sim2 = 'Review images and data/ONLYLEADERS.csv';
+ sim2 = 'DATAG2.csv';
+
+% sim2 = 'ONLYLEADERSFINAL05.csv';
+% %sim2 = 'Updatedtheta075final.csv';
 M2 = csvread(sim2);
-M2 = M2(:,1)/10;
+M2 = M2(:,1)/20;
 
-sim3 = 'final075.csv';
+% 
+ for i = 1:N
+%    
+%     %filename = sprintf('LATEST data proportions/sepdatatheta075final.csv%i.csv',i-1);
+     %filename = sprintf('Review images and data/sepdataONLYLEADERS.csv%i.csv',i-1);
+      filename = sprintf('sepdataG2.csv%i.csv',i-1);
+     %     %filename = sprintf('sepdataONLYLEADERSFINAL05.csv%i.csv',i-1);
+%      filename = sprintf('sepdataONLYLEADERSFINAL05.csv%i.csv',i-1);
+%        filename = sprintf('sepdataCHANGE075first05final.csv%i.csv',i-1);
+    sepdata2 = load(filename);
+        alldata2(:,i) = sepdata2; 
+% 
+ end
+% 
+ std2 = std(alldata2');
+% 
+% 
+% %sim3 = 'NEWtheta05Finaldata.csv';
+% sim3 = 'LATEST data proportions/Times3growthNEWtheta05finaldata.csv';
+%sim3 = 'change05final025firstDATANEW.csv';
+sim3 = 'DATAG3.csv';
+% %sim3 = 'Updatedtheta05final.csv';
 M3 = csvread(sim3);
-M3 = M3(:,1)/10;
+M3 = M3(:,1)/20;
 
-sim4 = 'FIRST025.csv';
+
+% 
+for i = 1:N
+    
+ %   filename = sprintf('LATEST data proportions/sepdatatheta05final.csv%i.csv',i-1);
+       filename = sprintf('sepdataG3.csv%i.csv',i-1);
+
+    sepdata3 = load(filename);
+        alldata3(:,i) = sepdata3; 
+
+end
+% 
+ std3 = std(alldata3');
+% 
+% 
+%sim4 = 'NEWtheta025Finaldata.csv';
+%sim4 = 'LATEST data proportions/Times3growthNEWtheta025finaldata.csv';
+sim4 = 'DATASp4G4.csv';
+%sim4 = 'Updatedtheta025final.csv';
 M4 = csvread(sim4);
-M4 = M4(:,1)/10;
+M4 = M4(:,1)/20;
 
-sim5 = 'FIRST05.csv';
-M5 = csvread(sim5);
-M5 = M5(:,1)/10;
+% 
+for i = 1:N
+    
+ %   filename = sprintf('LATEST data proportions/sepdatatheta025final.csv%i.csv',i-1);
+ filename = sprintf('sepdataG4.csv%i.csv',i-1);
+ 
+ sepdata4 = load(filename);
+        alldata4(:,i) = sepdata4; 
 
-sim6 = 'FIRST075.csv';
-M6 = csvread(sim6);
-M6 = M6(:,1)/10;
+end
+% 
+ std4 = std(alldata4');
+% 
+% 
+% %sim5 = 'NEWtheta025firstdata.csv';
+% sim5 = 'LATEST data proportions/Times3growthNEWtheta025firstdata.csv';
+sim5 = 'DATAG4sp1p5.csv';
+% %sim5 = 'Updatedtheta025first.csv';
+ M5 = csvread(sim5);
+ M5 = M5(:,1)/10;
+% 
+for i = 1:9
+    
+%    filename = sprintf('LATEST data proportions/sepdatatheta025first.csv%i.csv',i-1);
+    filename = sprintf('sepdataG4sp1p5%i.csv',i-1);
+
+    sepdata5 = load(filename);
+        alldata5(:,i) = sepdata5; 
+
+end
+% 
+ std5 = std(alldata5');
+% 
+% 
+% %sim6 = 'NEWtheta05firstdata.csv';
+% sim6 = 'LATEST data proportions/Times3growthNEWtheta05firstdata.csv';
+% %sim6 = 'Updatedtheta05first.csv';
+% M6 = csvread(sim6);
+% M6 = M6(:,1)/20;
+% 
+% for i = 1:N
+%     
+%     filename = sprintf('LATEST data proportions/sepdatatheta05first.csv%i.csv',i-1);
+%     sepdata6 = load(filename);
+%         alldata6(:,i) = sepdata6; 
+% 
+% end
+% 
+% std6 = std(alldata6');
+% 
+% 
+% %sim7 = 'NEWtheta075firstdata.csv';
+% sim7 = 'LATEST data proportions/Times3growthNEWtheta075firstdata.csv';
+% %sim7 = 'Updatedtheta075first.csv';
+% M7 = csvread(sim7);
+% M7 = M7(:,1)/20;
+% 
+% for i = 1:N
+%     
+%     filename = sprintf('LATEST data proportions/sepdatatheta075first.csv%i.csv',i-1);
+%     sepdata7 = load(filename);
+%         alldata7(:,i) = sepdata7; 
+% 
+% end
+
+%std7 = std(alldata7');
+
+x = [0:58:1014];
+
+G1x = [0:1092/(length(M1)-1):1092]; % from domain data
+G2x =  [0:1024/(length(M2)-1):1024];
+G3x =  [0:1003/(length(M3)-1):1003];
+G4x =  [0:1116/(length(M4)-1):1116];
+G5x =  [0:872/(length(M5)-1):872];
 
 
-
-x = [0:58:1100];
 
 figure 
 % 
-h1 = plot(x,M1,'--')
-hold on
-h2 = plot(x,M2,':')
-%h3 = plot(x,M3,'-')
-% h4 = plot(x,M4,'--')
+ h1 = plot(G1x,M1,'-')
+   
+     hold on
+%     
+%     errorbar (x,M1, std1,'k.','linewidth',2)
+%   
 % hold on
-% h5 = plot(x,M5,':')
-% h6 = plot(x,M6,'-')
+  h2 = plot(G2x,M2,':')
+ %    errorbar (G2x,M2, std2,'k.','linewidth',2)
 
-h1.LineWidth =6;
-h2.LineWidth =6;
- h3.LineWidth =6;
-% h4.LineWidth =6;
-% h5.LineWidth =6;
-% h6.LineWidth =6;
+%hold on
+ h3 = plot(G3x,M3,'--')
+    errorbar (G3x,M3, std3,'k.','linewidth',2)
+% 
+%  h4 = plot(G4x,M4,'--')
+ %   errorbar (G4x,M4, std4,'r.','linewidth',2)
 
-xlabel('Distance from the neural tube, \mu m','FontSize',14)
+% hold on
+%  h5 = plot(G5x,M5,':')
+ %   errorbar (G5x,M5, std5,'k.','linewidth',2)
+
+%  hold on
+%  h6 = plot(x,M6,'-')
+%    errorbar (x,M6, std6,'k.','linewidth',2)
+
+%  h7 = plot(x,M7,'--')
+%    errorbar (x,M7, std7,'k.','linewidth',2)
+
+
+    h1.LineWidth =6;
+ h2.LineWidth =6;
+  h3.LineWidth =6;
+  h4.LineWidth =6;
+   h5.LineWidth =6;
+%   h6.LineWidth =6;
+%   h7.LineWidth =6;
+  
+xlabel(['Distance from the neural tube, ',char(181),'m'],'FontSize',14)
 set(gca,'linewidth',2)
-ylabel('Number of cells','FontSize',14)
+ylabel(['Number of cells (per 55 ',char(181),'m)'],'FontSize',14)
 set(gca,'FontSize',36)
  ax = gca;
- 
+
+
  box on
 
  set(gca,'linewidth',4)
 
- 
-%legend ('Final 0.25 grows','Final 0.5 grows','Final 0.75 grows','First 0.25 grows','First 0.5 grows','First 0.75 grows')
-%legend ('Final 75% of the domain grows, M1','Final 50% of the domain grows, M2','Final 25% of the domain grows, M3')
+% legend('Uniform', 'D7+D3', 'D3+D5')
+ % legend([h1 h2],{'Leaders and followers','Only leaders'})
+%  legend([h1 h2 h3 h4 h5],{'G1','G2','G3','G4','G4 increased speed'})
+  legend([h1 h2 h3],{'G1','G2','G3'})
+ % lgnd = legend([h4 h5],{'G4','G4, speed up'})
+
+%  set(lgnd,'FontName','Times New Roman');
+%   legend([h1 h2],{'First half grows','Second half grows'})
+
+%legend('Uniform, U1')
+% legend('M1','M2','M3','M4','M5','M6','M7')
+%legend ('Uniform','Final 0.25 grows faster','Final 0.50 grows faster','Final 0.75 grows faster','First 0.25 grows faster','First 0.5 grows faster','First 0.75 grows faster')
+%legend ('Uniform','Final 0.25 grows','First 0.25 grows','First 0.5 grows','First 0.75 grows')
+% legend ('T2','T3','T4')
+% legend ('D2','D3','D4')
+%legend ('T5','T6','T7')
+%legend ('D5','D6','D7')
 %legend ('First 25% of the domain grows, M4','First 50% of the domain grows, M5','First 75% of the domain grows, M6')
 %legend ('First 75% of the domain grows, M6','First 75% of the domain grows, double speed, M8')
-legend ('First 75% of the domain grows, M6','First 75% of the domain grows, double speed, M6,d')
+%legend ('First 75% of the domain grows, M6','First 75% of the domain grows, double speed, M6,d')
+%legend('Uniform growth, M1')
 
 %% this is for smooth curves 
 
@@ -125,4 +302,4 @@ legend ('First 75% of the domain grows, M6','First 75% of the domain grows, doub
 %  ax = gca;
 % 
 % 
-
+%ylim([0,40])
