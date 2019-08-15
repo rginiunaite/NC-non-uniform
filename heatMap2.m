@@ -11,12 +11,13 @@
 %data = 'Cell-induced growth/Data heatmap/CorrectCellHinderedData.csv';
 %data = 'Cell-induced growth/Data heatmap/CorrectCellInducedData.csv';
 data = 'Cell-induced growth/Data heatmap/CorrectCellInducedBaseData.csv';
+data = 'CorrectCellInducedSMALLERSPEEDData.csv';
 %cell-induced with base
 
 data = csvread(data);
 
 
-x = data(:,1)*0.8*0.5; % speed
+x = data(:,1)*0.8*0.5; % speed !!!! Important to change when I will investigate different speed, to 0.4
 y = 0.5*(data(:,2) + ones(length(data(:,2)),1)*0.0201268); % domain growth rate for G4
 %y = 0.5*(data(:,2)); % domain growth rate for G3
 z = data(:,3);
@@ -32,8 +33,8 @@ set(h,'LineStyle','none')
 xlabel(['Input cell speed, ',char(181),'m/min'])
 ylabel(['Domain growth rate, /min'])
 title (['Furthest distance travelled by cells, ',char(181),'m'])
- xticks([0.4, 0.6, 0.8, 1.0, 1.2, 1.4])
- xticklabels({'0.4','0.6','0.8','1.0','1.2','1.4'});%, '2.0'})
+%  xticks([0.4, 0.6, 0.8, 1.0, 1.2, 1.4])
+%  xticklabels({'0.4','0.6','0.8','1.0','1.2','1.4'});%, '2.0'})
     yticks([0.014, 0.016, 0.018, 0.020])
     yticklabels({'0.014','0.016','0.018','0.020'});%, '2.0'})
  %   yticks([0.005, 0.010, 0.015, 0.020])
