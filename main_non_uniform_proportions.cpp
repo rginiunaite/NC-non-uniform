@@ -41,7 +41,10 @@ VectorXi proportions(double diff_conc, int n_seed) {
     double initial_domain_length = domain_length;
     const int length_y = int(1.2 * space_grid_controller); // length in y direction of the chemoattractant matrix
     const double final_time = 54; // number of timesteps, 1min - 0.05, now dt =0.01, for 18hours we have 54.
+    //const double final_time = 24; //chemical ablation of growth 12hours
     double final_length = 1014;//real 1014
+    //double final_length = 510;// chemical ablation of growth, 520 control, 16hours // 400 uniform ablation, 510 linear ablation
+
 
 // parameters for the dynamics of chemoattractant concentration
 
@@ -70,7 +73,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     //double diff_conc = 0.1; // sensing threshold, i.e. how much concentration has to be bigger, so that the cell moves in that direction
     int freq_growth = 1; // determines how frequently domain grows (actually not relevant because it will go every timestep)
     int insertion_freq = 1; // determines how frequently new cells are inserted, regulates the density of population
-    double speed_l = 0.14;// 0.05;//1;//0.05; // speed of a leader cell
+    double speed_l = 0.14 ;// 0.05;//1;//0.05; // speed of a leader cell
     double increase_fol_speed = 1.3;
     double speed_f = increase_fol_speed * speed_l;//0.05;//0.1;//0.08; // speed of a follower cell
     double dettach_prob = 0.5; // probability that a follower cell which is on trail looses the trail
@@ -144,7 +147,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     }
 
 
-
+cout << "alpha " << alpha1 << endl;
 
     VectorXd strain = VectorXd::Zero(length_x);
 
@@ -154,9 +157,8 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //        strain(i) = alpha;// 0;//linear_par * double(theta1) / double(space_grid_controller);//0;
 //    }
 
-    //cout << alpha1 << alpha1 << endl;
-//    alpha1 = 0.0301;
-//    alpha2 = 0.0;
+
+    // IMPORTANT
 
     // first part it is linear growth
     for (int i = 0; i < theta1; i++) {
@@ -170,6 +172,24 @@ VectorXi proportions(double diff_conc, int n_seed) {
         strain(i) = alpha2;// 0.002;//0.5 * linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
         //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
     }
+
+
+
+    // linearly increasing for chemical inhibition
+
+
+//    double initial_strain = 0.0; // 0.01 now
+//    double domain_growth_par = alpha1;
+//
+//    // linearly decreasing growth
+//        for (int i = 0; i < theta1; i++) {
+//            strain(i) = domain_growth_par * (theta1 - i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+//        }
+//        for (int i = theta1; i < length_x; i++) {
+//            strain(i) = initial_strain; //when there is baseline growth // linearly increasing to the NT
+//        }
+//
+
 
 
 
@@ -448,12 +468,12 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
     //for each timestep
-    while (t < final_time){
+    while (t < final_time) {
 
 
 
-//              insert new cells
-//
+////              insert new cells
+////
 
         bool free_position = false;
         particle_type::value_type f;
@@ -481,17 +501,18 @@ VectorXi proportions(double diff_conc, int n_seed) {
         // this is if I only have a certain number of cells
         //if (t < 27){ // this
 
-            if (free_position) {
-                get<chain>(f) = 0;
-                get<chain_type>(f) = -1;
-                get<attached_to_id>(f) = -1;
-                particles.push_back(f);
-            }
+        if (free_position) {
+            get<chain>(f) = 0;
+            get<chain_type>(f) = -1;
+            get<attached_to_id>(f) = -1;
+            particles.push_back(f);
+        }
 
-            particles.update_positions();
+        particles.update_positions();
 
         // } // this
 
+        //no cells inserted
 
 
         /*
@@ -599,11 +620,11 @@ VectorXi proportions(double diff_conc, int n_seed) {
         Gamma(0) = 0; // this is assumption, since I cannot calculate it
         //cout << "Gamma(0) " << 0 << " value " << Gamma(0) << endl;
 
-        for (int i = 1; i < length_x;i++){
+        for (int i = 1; i < length_x; i++) {
 
-            Gamma(i) = Gamma_x(i) * dx + Gamma(i-1);
+            Gamma(i) = Gamma_x(i) * dx + Gamma(i - 1);
 
-         //   cout << "Gamma(i) " << i << " value " << Gamma(i) << endl;
+            //   cout << "Gamma(i) " << i << " value " << Gamma(i) << endl;
         }
 
 
@@ -674,20 +695,23 @@ VectorXi proportions(double diff_conc, int n_seed) {
         }
 
 
+        //physical aplabtion of cells, cells only start moving after 2 hours
 
-        /// update positions uniformly based on the domain growth
+        //if (t > 6) {
+            /// update positions uniformly based on the domain growth
 
-        vdouble2 x; // use variable x for the position of cells
-        double x0=0;
-        int pos;
+            vdouble2 x; // use variable x for the position of cells
+            double x0 = 0;
+            int pos;
 
-        for (int i = 0; i < particles.size(); i++) {
 
-            x = get<position>(particles[i]);
+            for (int i = 0; i < particles.size(); i++) {
 
-            // since I do not know how to do it for general case, I will do it for my specific
+                x = get<position>(particles[i]);
 
-            // analytical for two different regions
+                // since I do not know how to do it for general case, I will do it for my specific
+
+                // analytical for two different regions
 //            if (x[0] > Gamma_old(theta1 - 1)) {
 //
 //                x0 = (x[0] - Gamma_old(theta1 - 1)) *
@@ -701,24 +725,23 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //                                                        1); // update position based on changes in Gamma
 //            }
                 int j = 0;
-                while (x[0]> Gamma_old(j)){
+                while (x[0] > Gamma_old(j)) {
                     value = j;
-                    j = j+1;
+                    j = j + 1;
                     //cout << "value " << value << endl;
 
                 }
 
 
-            get<scaling>(particles)[i] = value;
+                get<scaling>(particles)[i] = value;
 
 //            x[0] = x[0] + Gamma(value)-Gamma_old(value);
 
-            get<position>(particles)[i] += vdouble2(Gamma(value)-Gamma_old(value),0);
+                get<position>(particles)[i] += vdouble2(Gamma(value) - Gamma_old(value), 0);
 
 
-
-        }
-
+            }
+        //} // physical ablation
 
         Gamma_old = Gamma;
 
@@ -859,11 +882,14 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
         // update the position of all particles in a random order created above
 
-        for (int j = 0; j < particles.size(); j++) {
+        // physical ablation of NC cells
+        //if (t>6) {
 
-            /*
-            * phenotypic switching, based on chemoattractant concentration in front, +0.5
-            */
+            for (int j = 0; j < particles.size(); j++) {
+
+                /*
+                * phenotypic switching, based on chemoattractant concentration in front, +0.5
+                */
 //
 //            vdouble2 coord = get<position>(particles[particle_id(j)]);
 //
@@ -886,21 +912,21 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //            }
 
 
-            // if a particle is a leader
+                // if a particle is a leader
 
-
-            vdouble2 x; // use variable x for the position of cells
-            x = get<position>(particles[particle_id(j)]);
-
-            if (get<type>(particles[particle_id(j)]) == 0) {
 
                 vdouble2 x; // use variable x for the position of cells
                 x = get<position>(particles[particle_id(j)]);
 
+                if (get<type>(particles[particle_id(j)]) == 0) {
 
-                double x_in; // x coordinate in initial domain length scale
+                    vdouble2 x; // use variable x for the position of cells
+                    x = get<position>(particles[particle_id(j)]);
 
-                // if two regions
+
+                    double x_in; // x coordinate in initial domain length scale
+
+                    // if two regions
 //                if (x[0] < Gamma(theta1 - 1)) {
 //                    x_in = x[0] * (theta1) / Gamma(theta1 - 1);
 //                    l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
@@ -909,17 +935,18 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //                    l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
 //                }
 
-                // for any Gamma
+                    // for any Gamma
 
-                x_in = get<scaling>(particles)[particle_id(j)];
-                l_filo_x = l_filo_x_in *get<scaling>(particles)[particle_id(j)]/ Gamma(get<scaling>(particles)[particle_id(j)]);
-
-
-                // if it is still in the process of moving in the same direction
-                if (get<persistence_extent>(particles[particle_id(j)]) == 1) {
+                    x_in = get<scaling>(particles)[particle_id(j)];
+                    l_filo_x = l_filo_x_in * get<scaling>(particles)[particle_id(j)] /
+                               Gamma(get<scaling>(particles)[particle_id(j)]);
 
 
-                    // two regions
+                    // if it is still in the process of moving in the same direction
+                    if (get<persistence_extent>(particles[particle_id(j)]) == 1) {
+
+
+                        // two regions
 //                    x += get<direction>(particles[particle_id(j)]);
 //
 //                    if (x[0] < Gamma(theta1 - 1)) {
@@ -932,93 +959,95 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 
-                    bool free_position = true; // check if the neighbouring position is free
+                        bool free_position = true; // check if the neighbouring position is free
 
-                    // check if there are other particles in the position where the particle wants to move
-                    for (auto k = euclidean_search(particles.get_query(), x, diameter); k != false; ++k) {
-                        if (get<id>(*k) != get<id>(particles[particle_id(j)])) { // check if it is not the same particle
-                            free_position = false;
-                        }
-                    }
-
-                    // check that the position they want to move to is free and not out of bounds
-                    if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) && (x[1]) > cell_radius &&
-                        (x[1]) < length_y - 1 - cell_radius) {
-                        // if that is the case, move into that position
-                        get<position>(particles)[particle_id(j)] +=
-                                get<direction>(particles)[particle_id(j)];
-                    }
-                    get<same_dir_step>(particles)[particle_id(
-                            j)] += 1; // add regardless whether the step happened or no to that count of the number of movement in the same direction
-
-                }
-
-
-                // if a particle is not in a sequence of persistent steps
-                if (get<persistence_extent>(particles[particle_id(j)]) == 0) {
-
-
-
-                    // create an array to store random directions
-                    array<double, filo_number + 1> random_angle;
-
-                    // choose the number of angles where the filopodia is sent
-                    for (int k = 0; k < filo_number + 1; k++) {
-
-                        double random_angle_tem = uniformpi(gen1);
-                        int sign_x_tem, sign_y_tem;
-
-                        random_angle_tem = uniformpi(gen1);
-                        random_angle[k] = random_angle_tem;
-
-                    }
-
-
-                    // choose which direction to move
-
-
-                    // store variables for concentration at new locations
-
-
-                    double old_chemo = chemo((round(x_in)), round(x)[1]);
-                    array<double, filo_number> new_chemo;
-
-
-                    for (int i = 0; i < filo_number; i++) {
-
-                        if (round((x_in + sin(random_angle[i]) * l_filo_x)) < 0 ||
-                            round((x_in + sin(random_angle[i]) * l_filo_x)) >
-                            length_x - 1 || round(x[1] + cos(random_angle[i]) * l_filo_y) < 0 ||
-                            round(x[1] + cos(random_angle[i]) * l_filo_y) > length_y - 1) {
-                            new_chemo[i] = 0;
-                        } else {
-
-                            new_chemo[i] = chemo(round((x_in + sin(random_angle[i]) * l_filo_x)),
-                                                 round(x[1] + cos(random_angle[i]) * l_filo_y));
+                        // check if there are other particles in the position where the particle wants to move
+                        for (auto k = euclidean_search(particles.get_query(), x, diameter); k != false; ++k) {
+                            if (get<id>(*k) !=
+                                get<id>(particles[particle_id(j)])) { // check if it is not the same particle
+                                free_position = false;
+                            }
                         }
 
-                    }
-
-
-                    // find maximum concentration of chemoattractant
-
-                    int chemo_max_number = 0;
-
-                    for (int i = 1; i < filo_number; i++) {
-                        if (new_chemo[chemo_max_number] < new_chemo[i]) {
-                            chemo_max_number = i;
+                        // check that the position they want to move to is free and not out of bounds
+                        if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) - cell_radius &&
+                            (x[1]) > cell_radius &&
+                            (x[1]) < length_y - 1 - cell_radius) {
+                            // if that is the case, move into that position
+                            get<position>(particles)[particle_id(j)] +=
+                                    get<direction>(particles)[particle_id(j)];
                         }
+                        get<same_dir_step>(particles)[particle_id(
+                                j)] += 1; // add regardless whether the step happened or no to that count of the number of movement in the same direction
+
                     }
 
-                    // if the concentration in a new place is relatively higher than the old one (diff_conc determines that threshold), move that way
-                    if ((new_chemo[chemo_max_number] - old_chemo) / sqrt(old_chemo) > diff_conc) {
 
-                        count_dir += 1;
+                    // if a particle is not in a sequence of persistent steps
+                    if (get<persistence_extent>(particles[particle_id(j)]) == 0) {
 
-                        x += speed_l *
-                             vdouble2(sin(random_angle[chemo_max_number]), cos(random_angle[chemo_max_number]));
 
-            // two regions
+
+                        // create an array to store random directions
+                        array<double, filo_number + 1> random_angle;
+
+                        // choose the number of angles where the filopodia is sent
+                        for (int k = 0; k < filo_number + 1; k++) {
+
+                            double random_angle_tem = uniformpi(gen1);
+                            int sign_x_tem, sign_y_tem;
+
+                            random_angle_tem = uniformpi(gen1);
+                            random_angle[k] = random_angle_tem;
+
+                        }
+
+
+                        // choose which direction to move
+
+
+                        // store variables for concentration at new locations
+
+
+                        double old_chemo = chemo((round(x_in)), round(x)[1]);
+                        array<double, filo_number> new_chemo;
+
+
+                        for (int i = 0; i < filo_number; i++) {
+
+                            if (round((x_in + sin(random_angle[i]) * l_filo_x)) < 0 ||
+                                round((x_in + sin(random_angle[i]) * l_filo_x)) >
+                                length_x - 1 || round(x[1] + cos(random_angle[i]) * l_filo_y) < 0 ||
+                                round(x[1] + cos(random_angle[i]) * l_filo_y) > length_y - 1) {
+                                new_chemo[i] = 0;
+                            } else {
+
+                                new_chemo[i] = chemo(round((x_in + sin(random_angle[i]) * l_filo_x)),
+                                                     round(x[1] + cos(random_angle[i]) * l_filo_y));
+                            }
+
+                        }
+
+
+                        // find maximum concentration of chemoattractant
+
+                        int chemo_max_number = 0;
+
+                        for (int i = 1; i < filo_number; i++) {
+                            if (new_chemo[chemo_max_number] < new_chemo[i]) {
+                                chemo_max_number = i;
+                            }
+                        }
+
+                        // if the concentration in a new place is relatively higher than the old one (diff_conc determines that threshold), move that way
+                        if ((new_chemo[chemo_max_number] - old_chemo) / sqrt(old_chemo) > diff_conc) {
+
+                            count_dir += 1;
+
+                            x += speed_l *
+                                 vdouble2(sin(random_angle[chemo_max_number]), cos(random_angle[chemo_max_number]));
+
+                            // two regions
 //                        if (x[0] < Gamma(theta1 - 1)) {
 //                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
 //                            l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
@@ -1027,115 +1056,117 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //                            l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
 //                        }
 
-                        // for any Gamma
+                            // for any Gamma
 
-                        bool free_position = true; // check if the neighbouring position is free
+                            bool free_position = true; // check if the neighbouring position is free
 
-                        // check if the position the particle wants to move is free
-                        for (auto k = euclidean_search(particles.get_query(), x, diameter); k != false; ++k) {
+                            // check if the position the particle wants to move is free
+                            for (auto k = euclidean_search(particles.get_query(), x, diameter); k != false; ++k) {
 
-                            if (get<id>(*k) !=
-                                get<id>(particles[particle_id(j)])) { // check if it is not the same particle
-                                free_position = false;
-                            }
-                        }
-
-
-                        // if the position they want to move to is free and not out of bounds, move that direction
-                        if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) && (x[1]) > cell_radius &&
-                            (x[1]) < length_y - 1 - cell_radius) {
-                            get<position>(particles)[particle_id(j)] +=
-                                    speed_l * vdouble2(sin(random_angle[chemo_max_number]),
-                                                       cos(random_angle[chemo_max_number])); // update if nothing is in the next position
-                            get<direction>(particles)[particle_id(j)] =
-                                    speed_l * vdouble2(sin(random_angle[chemo_max_number]),
-                                                       cos(random_angle[chemo_max_number]));
-
-                            // if there is some kind of tendency to move persistently
-                            if (same_dir > 0) {
-                                get<persistence_extent>(particles[particle_id(
-                                        j)]) = 1; // assume for now that it also becomes peristent in random direction
-
+                                if (get<id>(*k) !=
+                                    get<id>(particles[particle_id(j)])) { // check if it is not the same particle
+                                    free_position = false;
+                                }
                             }
 
-                        }
 
+                            // if the position they want to move to is free and not out of bounds, move that direction
+                            if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) - cell_radius &&
+                                (x[1]) > cell_radius &&
+                                (x[1]) < length_y - 1 - cell_radius) {
+                                get<position>(particles)[particle_id(j)] +=
+                                        speed_l * vdouble2(sin(random_angle[chemo_max_number]),
+                                                           cos(random_angle[chemo_max_number])); // update if nothing is in the next position
+                                get<direction>(particles)[particle_id(j)] =
+                                        speed_l * vdouble2(sin(random_angle[chemo_max_number]),
+                                                           cos(random_angle[chemo_max_number]));
 
-                    }
-
-                        // if the concentration is not higher, move in random direction
-                    else {
-
-
-                        x += speed_l * vdouble2(sin(random_angle[filo_number]), cos(random_angle[filo_number]));
-
-                    // for specific case
-//                        if (x[0] < Gamma(theta1 - 1)) {
-//                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
-//                            l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
-//                        } else {
-//                            x_in = (x[0]-Gamma(theta1-1))* (length_x-theta1)/(Gamma(length_x-1)-Gamma(theta1-1)) + theta1;
-//                            l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
-//                        }
-
-
-
-                        bool free_position = true; // check if the neighbouring position is free
-
-                        // if this loop is entered, it means that there is another cell where I want to move
-                        for (auto k = euclidean_search(particles.get_query(), x, diameter); k != false; ++k) {
-
-                            if (get<id>(*k) !=
-                                get<id>(particles[particle_id(j)])) { // check if it is not the same particle
-                                free_position = false;
-                            }
-                        }
-
-
-                        // update the position if the place they want to move to is free and not out of bounds
-                        if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) && (x[1]) > cell_radius &&
-                            (x[1]) < length_y - 1 - cell_radius) {
-                            get<position>(particles)[particle_id(j)] +=
-                                    speed_l * vdouble2(sin(random_angle[filo_number]),
-                                                       cos(random_angle[filo_number])); // update if nothing is in the next position
-                            get<direction>(particles)[particle_id(j)] =
-                                    speed_l * vdouble2(sin(random_angle[filo_number]),
-                                                       cos(random_angle[filo_number]));
-                            // if particles start moving persistently in all directions
-                            if (random_pers) {
+                                // if there is some kind of tendency to move persistently
                                 if (same_dir > 0) {
                                     get<persistence_extent>(particles[particle_id(
                                             j)]) = 1; // assume for now that it also becomes peristent in random direction
 
                                 }
+
+                            }
+
+
+                        }
+
+                            // if the concentration is not higher, move in random direction
+                        else {
+
+
+                            x += speed_l * vdouble2(sin(random_angle[filo_number]), cos(random_angle[filo_number]));
+
+                            // for specific case
+//                        if (x[0] < Gamma(theta1 - 1)) {
+//                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
+//                            l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
+//                        } else {
+//                            x_in = (x[0]-Gamma(theta1-1))* (length_x-theta1)/(Gamma(length_x-1)-Gamma(theta1-1)) + theta1;
+//                            l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
+//                        }
+
+
+
+                            bool free_position = true; // check if the neighbouring position is free
+
+                            // if this loop is entered, it means that there is another cell where I want to move
+                            for (auto k = euclidean_search(particles.get_query(), x, diameter); k != false; ++k) {
+
+                                if (get<id>(*k) !=
+                                    get<id>(particles[particle_id(j)])) { // check if it is not the same particle
+                                    free_position = false;
+                                }
+                            }
+
+
+                            // update the position if the place they want to move to is free and not out of bounds
+                            if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) - cell_radius &&
+                                (x[1]) > cell_radius &&
+                                (x[1]) < length_y - 1 - cell_radius) {
+                                get<position>(particles)[particle_id(j)] +=
+                                        speed_l * vdouble2(sin(random_angle[filo_number]),
+                                                           cos(random_angle[filo_number])); // update if nothing is in the next position
+                                get<direction>(particles)[particle_id(j)] =
+                                        speed_l * vdouble2(sin(random_angle[filo_number]),
+                                                           cos(random_angle[filo_number]));
+                                // if particles start moving persistently in all directions
+                                if (random_pers) {
+                                    if (same_dir > 0) {
+                                        get<persistence_extent>(particles[particle_id(
+                                                j)]) = 1; // assume for now that it also becomes peristent in random direction
+
+                                    }
+                                }
+
                             }
 
                         }
 
                     }
 
+                    // check if it is not the end of moving in the same direction
+                    if (get<same_dir_step>(particles)[particle_id(j)] > same_dir) {
+                        get<persistence_extent>(particles)[particle_id(j)] = 0;
+                        get<same_dir_step>(particles[particle_id(j)]) = 0;
+                    }
+
                 }
 
-                // check if it is not the end of moving in the same direction
-                if (get<same_dir_step>(particles)[particle_id(j)] > same_dir) {
-                    get<persistence_extent>(particles)[particle_id(j)] = 0;
-                    get<same_dir_step>(particles[particle_id(j)]) = 0;
-                }
-
-            }
 
 
 
+                // if a particle is a follower
+                if (get<type>(particles[particle_id(j)]) == 1) {
 
-            // if a particle is a follower
-            if (get<type>(particles[particle_id(j)]) == 1) {
+                    vdouble2 x;
+                    x = get<position>(particles[particle_id(j)]);
 
-                vdouble2 x;
-                x = get<position>(particles[particle_id(j)]);
+                    double x_in; // x coordinate in initial domain length scale
 
-                double x_in; // x coordinate in initial domain length scale
-
-                // fro two regions
+                    // fro two regions
 //                if (x[0] < Gamma(theta1 - 1)) {
 //                    x_in = x[0] * (theta1) / Gamma(theta1 - 1);
 //                    l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
@@ -1144,48 +1175,49 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //                    l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
 //                }
 
-                //for any Gamma
+                    //for any Gamma
 
-                x_in = get<scaling>(particles)[j];
-                l_filo_x = l_filo_x_in *get<scaling>(particles)[particle_id(j)]/ Gamma(get<scaling>(particles)[particle_id(j)]);
+                    x_in = get<scaling>(particles)[j];
+                    l_filo_x = l_filo_x_in * get<scaling>(particles)[particle_id(j)] /
+                               Gamma(get<scaling>(particles)[particle_id(j)]);
 
-                // if the particle is part of the chain
-                if (get<chain>(particles[particle_id(j)]) > 0) {
-
-
-                    // check if it is not too far from the cell it was following
-
-                    vdouble2 dist;
-
-                    dist = get<position>(particles[particle_id(j)]) -
-                           get<position>(particles[get<attached_to_id>(particles[particle_id(j)])]);
+                    // if the particle is part of the chain
+                    if (get<chain>(particles[particle_id(j)]) > 0) {
 
 
-                    // if it is sufficiently far dettach the cell
-                    if (dist.norm() > l_filo_max) {
-                        get<chain>(particles[particle_id(j)]) = 0;
-                        //dettach also all the cells that are behind it, so that other cells would not be attached to this chain
-                        for (int i = 0; i < particles.size(); ++i) {
-                            if (get<chain_type>(particles[i]) == get<chain_type>(particles)[particle_id(j)]) {
-                                // get<chain_type>(particles)[i] = -1;
-                                get<chain>(particles[i]) = 0;
+                        // check if it is not too far from the cell it was following
+
+                        vdouble2 dist;
+
+                        dist = get<position>(particles[particle_id(j)]) -
+                               get<position>(particles[get<attached_to_id>(particles[particle_id(j)])]);
+
+
+                        // if it is sufficiently far dettach the cell
+                        if (dist.norm() > l_filo_max) {
+                            get<chain>(particles[particle_id(j)]) = 0;
+                            //dettach also all the cells that are behind it, so that other cells would not be attached to this chain
+                            for (int i = 0; i < particles.size(); ++i) {
+                                if (get<chain_type>(particles[i]) == get<chain_type>(particles)[particle_id(j)]) {
+                                    // get<chain_type>(particles)[i] = -1;
+                                    get<chain>(particles[i]) = 0;
+                                }
+
                             }
-
+                            // get<chain_type>(particles)[particle_id(j)] = -1;
                         }
-                        // get<chain_type>(particles)[particle_id(j)] = -1;
-                    }
 
 
-                    // direction the same as of the cell it is attached to
-                    get<direction>(particles)[particle_id(j)] = get<direction>(particles)[get<attached_to_id>(
-                            particles[particle_id(j)])];
+                        // direction the same as of the cell it is attached to
+                        get<direction>(particles)[particle_id(j)] = get<direction>(particles)[get<attached_to_id>(
+                                particles[particle_id(j)])];
 
-                    //try to move in the same direction as the cell it is attached to
-                    vdouble2 x_chain = x + increase_fol_speed * get<direction>(particles)[particle_id(j)];
+                        //try to move in the same direction as the cell it is attached to
+                        vdouble2 x_chain = x + increase_fol_speed * get<direction>(particles)[particle_id(j)];
 
-                    double x_in_chain; // scaled coordinate
+                        double x_in_chain; // scaled coordinate
 
-                    // for two regions
+                        // for two regions
 //                    if (x_chain[0] < Gamma(theta1 - 1)) {
 //                        x_in_chain = x_chain[0] * (theta1) / Gamma(theta1 - 1);
 //                        l_filo_x = l_filo_x_in * theta1 / Gamma(theta1 - 1);
@@ -1195,29 +1227,30 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //                        l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
 //                    }
 
-                    //for any Gamma
+                        //for any Gamma
 
 
-                    bool free_position = true;
+                        bool free_position = true;
 
-                    // check if the position it wants to move to is free
-                    for (auto pos = euclidean_search(particles.get_query(), x_chain, diameter);
-                         pos != false; ++pos) {
-                        if (get<id>(*pos) !=
-                            get<id>(particles[particle_id(j)])) { // check if it is not the same particle
-                            free_position = false;
+                        // check if the position it wants to move to is free
+                        for (auto pos = euclidean_search(particles.get_query(), x_chain, diameter);
+                             pos != false; ++pos) {
+                            if (get<id>(*pos) !=
+                                get<id>(particles[particle_id(j)])) { // check if it is not the same particle
+                                free_position = false;
+                            }
                         }
-                    }
 
 
-                    // update the position if the place they want to move to is free and not out of bounds
-                    if (free_position && x_chain[0] > cell_radius && x_chain[0] < Gamma(length_x - 1) &&
-                        (x_chain[1]) > cell_radius &&
-                        (x_chain[1]) < length_y - 1 - cell_radius) {
-                        get<position>(particles)[particle_id(j)] +=
-                                increase_fol_speed * get<direction>(particles[particle_id(j)]);
+                        // update the position if the place they want to move to is free and not out of bounds
+                        if (free_position && x_chain[0] > cell_radius &&
+                            x_chain[0] < Gamma(length_x - 1) - cell_radius &&
+                            (x_chain[1]) > cell_radius &&
+                            (x_chain[1]) < length_y - 1 - cell_radius) {
+                            get<position>(particles)[particle_id(j)] +=
+                                    increase_fol_speed * get<direction>(particles[particle_id(j)]);
 
-                    }
+                        }
 
 //                        /*
 //                           * NOT IN THE SUMMARY I SENT THEM
@@ -1230,79 +1263,82 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
 
-                }
-
-                // if the cell is not part of the chain
-                if (get<chain>(particles[particle_id(j)]) == 0) {
-
-
-                    /* check if there are any cells distance l_filo_y apart
-                    * it can be either a leader or a follower already in a chain
-                    */
-
-
-                    // try to find a close leader
-                    // l_filo_x not scaled because I am looking at cell positions which are not scaled
-                    for (auto k = euclidean_search(particles.get_query(), x, l_filo_x_in); k != false; ++k) {
-
-
-                        if (get<type>(*k) == 0) { // if it is close to a leader
-                            get<direction>(particles)[particle_id(j)] = get<direction>(*k); // set the same direction
-                            get<chain>(particles)[particle_id(j)] = 1; // note that it is directly attached to a leader
-                            get<attached_to_id>(particles)[particle_id(j)] = get<id>(
-                                    *k); // note the id of the particle it is attached to
-                            get<chain_type>(particles)[particle_id(j)] = get<id>(
-                                    *k); // chain type is the id of the leader
-                        }
-
                     }
 
-
-                    // if it hasn't found a leader nearby,
-                    // try to find a close follower which is in a chain contact with a leader
-
-                    if (get<chain>(particles)[particle_id(j)] != 1) {
-                        for (auto k = euclidean_search(particles.get_query(), x, l_filo_y); k != false; ++k) {
-
-                            // if it is close to a follower that is part of the chain
-                            if (get<type>(*k) == 1 && get<chain>(*k) > 0) {
-
-                                if (get<id>(*k) != get<id>(particles[particle_id(j)])) {
-                                    //check if there is a leader in front of the chain
-                                    //for (int i= 0; i< particles.size(); i++){//go through all the particles
-                                    //  if (get<chain_type>(particles)[i] == get<chain_type>(*k) && get<chain>(particles)[i] == 1){// if they are in the same chain and directly attached to a leader
-
-                                    get<direction>(particles)[particle_id(j)] = get<direction>(*k);
-                                    get<chain>(particles)[particle_id(j)] =
-                                            get<chain>(*k) + 1; // it is subsequent member of the chain
-                                    get<attached_to_id>(particles)[particle_id(j)] = get<id>(
-                                            *k); // id of the particle it is attached to
-                                    get<chain_type>(particles)[particle_id(j)] = get<chain_type>(*k); // chain type is
-                                    // the same as the one of the particle it is attached to
-                                    //}
-
-                                    //}
-
-                                }
+                    // if the cell is not part of the chain
+                    if (get<chain>(particles[particle_id(j)]) == 0) {
 
 
+                        /* check if there are any cells distance l_filo_y apart
+                        * it can be either a leader or a follower already in a chain
+                        */
+
+
+                        // try to find a close leader
+                        // l_filo_x not scaled because I am looking at cell positions which are not scaled
+                        for (auto k = euclidean_search(particles.get_query(), x, l_filo_x_in); k != false; ++k) {
+
+
+                            if (get<type>(*k) == 0) { // if it is close to a leader
+                                get<direction>(particles)[particle_id(j)] = get<direction>(
+                                        *k); // set the same direction
+                                get<chain>(particles)[particle_id(
+                                        j)] = 1; // note that it is directly attached to a leader
+                                get<attached_to_id>(particles)[particle_id(j)] = get<id>(
+                                        *k); // note the id of the particle it is attached to
+                                get<chain_type>(particles)[particle_id(j)] = get<id>(
+                                        *k); // chain type is the id of the leader
                             }
 
                         }
-                    }
-
-                    // try to move if it has found something
-
-                    if (get<chain>(particles[particle_id(j)]) > 0) {
-
-                        //try to move in the same direction as the cell it is attached to
-                        vdouble2 x_chain = x + increase_fol_speed * get<direction>(particles)[particle_id(j)];
-
-                        // Non-uniform domain growth
-                        double x_in_chain;
 
 
-                        // for two regions
+                        // if it hasn't found a leader nearby,
+                        // try to find a close follower which is in a chain contact with a leader
+
+                        if (get<chain>(particles)[particle_id(j)] != 1) {
+                            for (auto k = euclidean_search(particles.get_query(), x, l_filo_y); k != false; ++k) {
+
+                                // if it is close to a follower that is part of the chain
+                                if (get<type>(*k) == 1 && get<chain>(*k) > 0) {
+
+                                    if (get<id>(*k) != get<id>(particles[particle_id(j)])) {
+                                        //check if there is a leader in front of the chain
+                                        //for (int i= 0; i< particles.size(); i++){//go through all the particles
+                                        //  if (get<chain_type>(particles)[i] == get<chain_type>(*k) && get<chain>(particles)[i] == 1){// if they are in the same chain and directly attached to a leader
+
+                                        get<direction>(particles)[particle_id(j)] = get<direction>(*k);
+                                        get<chain>(particles)[particle_id(j)] =
+                                                get<chain>(*k) + 1; // it is subsequent member of the chain
+                                        get<attached_to_id>(particles)[particle_id(j)] = get<id>(
+                                                *k); // id of the particle it is attached to
+                                        get<chain_type>(particles)[particle_id(j)] = get<chain_type>(
+                                                *k); // chain type is
+                                        // the same as the one of the particle it is attached to
+                                        //}
+
+                                        //}
+
+                                    }
+
+
+                                }
+
+                            }
+                        }
+
+                        // try to move if it has found something
+
+                        if (get<chain>(particles[particle_id(j)]) > 0) {
+
+                            //try to move in the same direction as the cell it is attached to
+                            vdouble2 x_chain = x + increase_fol_speed * get<direction>(particles)[particle_id(j)];
+
+                            // Non-uniform domain growth
+                            double x_in_chain;
+
+
+                            // for two regions
 //                        if (x_chain[0] < Gamma(theta1 - 1)) {
 //                            x_in_chain = x_chain[0] * (theta1) / Gamma(theta1 - 1);
 //                        } else {
@@ -1310,53 +1346,53 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //                            l_filo_x = l_filo_x_in * (length_x - theta1) / (Gamma(length_x-1 ) - Gamma(theta1 - 1));
 //                        }
 
-                        //for any Gamma
+                            //for any Gamma
 
-                        //x_in_chain = get<scaling>(particles)[particle_id(j)];
-
-
-
-                        bool free_position = true;
+                            //x_in_chain = get<scaling>(particles)[particle_id(j)];
 
 
-                        // check if the position it wants to move is free
-                        for (auto pos = euclidean_search(particles.get_query(), x_chain, diameter);
-                             pos != false; ++pos) {
 
-                            if (get<id>(*pos) !=
-                                get<id>(particles[particle_id(j)])) { // check if it is not the same particle
-                                free_position = false;
+                            bool free_position = true;
+
+
+                            // check if the position it wants to move is free
+                            for (auto pos = euclidean_search(particles.get_query(), x_chain, diameter);
+                                 pos != false; ++pos) {
+
+                                if (get<id>(*pos) !=
+                                    get<id>(particles[particle_id(j)])) { // check if it is not the same particle
+                                    free_position = false;
+                                }
+                            }
+
+
+                            // if the position is free and not out of bounds, move that direction
+                            if (free_position &&
+                                x_chain[0] > cell_radius &&
+                                x_chain[0] < Gamma(length_x - 1) - cell_radius && (x_chain[1]) > cell_radius &&
+                                (x_chain[1]) < length_y - 1 - cell_radius) {
+                                //cout << "direction " << get<direction>(particles[particle_id(j)]) << endl;
+                                get<position>(particles)[particle_id(j)] +=
+                                        increase_fol_speed * get<direction>(particles[particle_id(j)]);
+
                             }
                         }
 
 
-                        // if the position is free and not out of bounds, move that direction
-                        if (free_position &&
-                            x_chain[0] > cell_radius &&
-                            x_chain[0] < Gamma(length_x - 1) && (x_chain[1]) > cell_radius &&
-                            (x_chain[1]) < length_y - 1 - cell_radius) {
-                            //cout << "direction " << get<direction>(particles[particle_id(j)]) << endl;
-                            get<position>(particles)[particle_id(j)] +=
-                                    increase_fol_speed * get<direction>(particles[particle_id(j)]);
-
-                        }
-                    }
-
-
-                    /*
-                        * NOT IN THE SUMMARY I SENT THEM
-                     */
+                        /*
+                            * NOT IN THE SUMMARY I SENT THEM
+                         */
 //                    if (free_position == false){
 //                        get<chain>(particles[particle_id(j)]) = 0;
 //                    }
 
 
 
-                    // if it hasn't found anything close, move randomly
+                        // if it hasn't found anything close, move randomly
 
-                    if (get<chain>(particles[particle_id(j)]) == 0) {
+                        if (get<chain>(particles[particle_id(j)]) == 0) {
 
-                        double random_angle = uniformpi(gen1);
+                            double random_angle = uniformpi(gen1);
 
 //                        while (((x_in + sin(random_angle) * l_filo_x_in) < 0 ||
 //                                ((x_in + sin(random_angle) * l_filo_x_in)) >
@@ -1365,144 +1401,147 @@ VectorXi proportions(double diff_conc, int n_seed) {
 //                            random_angle = uniformpi(gen1);
 //                        }
 
-                        x += speed_f * vdouble2(sin(random_angle), cos(random_angle));
+                            x += speed_f * vdouble2(sin(random_angle), cos(random_angle));
 
 
-                        // FOR TWO REGIONS
+                            // FOR TWO REGIONS
 //                        if (x[0] < Gamma(theta1 - 1)) {
 //                            x_in = x[0] * (theta1) / Gamma(theta1 - 1);
 //                        } else {
 //                            x_in = (x[0]-Gamma(theta1-1))* (length_x-theta1)/(Gamma(length_x-1)-Gamma(theta1-1)) + theta1;
 //                        }
 
-                        //for any Gamma
+                            //for any Gamma
 
-                       // x_in = get<scaling>(particles)[j];
+                            // x_in = get<scaling>(particles)[j];
 
 
 
-                        bool free_position = true; // check if the neighbouring position is free
+                            bool free_position = true; // check if the neighbouring position is free
 
-                        // check if the position the cells want to move to is free
-                        for (auto k = euclidean_search(particles.get_query(), x, diameter); k != false; ++k) {
+                            // check if the position the cells want to move to is free
+                            for (auto k = euclidean_search(particles.get_query(), x, diameter); k != false; ++k) {
 
-                            if (get<id>(*k) !=
-                                get<id>(particles[particle_id(j)])) { // check if it is not the same particle
-                                free_position = false;
+                                if (get<id>(*k) !=
+                                    get<id>(particles[particle_id(j)])) { // check if it is not the same particle
+                                    free_position = false;
+                                }
                             }
-                        }
 
-                        // if the position they want to move to is free and not out of bounds, move to that position
-                        if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) && (x[1]) > cell_radius &&
-                            (x[1]) < length_y - 1 - cell_radius) {
-                            get<position>(particles)[particle_id(j)] += speed_f * vdouble2(sin(random_angle),
-                                                                                           cos(random_angle)); // update if nothing is in the next position
-                            get<direction>(particles)[particle_id(j)] = speed_f * vdouble2(sin(random_angle),
-                                                                                           cos(random_angle)); // update direction as well
-                        }
-
-                    }
-
-                }
-
-                /* CHECK IF A FOLLOWER DOES NOT BECOME A LEADER
-                * Alternative phenotypic switching if a follower overtakes a leader it becomes a leader and that leader follower.
-                * I will have to be careful when there will be channels because I will have to choose the closest leader
-                * */
-
-
-                // find the closest leader
-
-
-                // so that I would not go through all the cells I will choose the ones that are closer to the front
-
-                // minimum position in x of the leaders
-
-                int min_index = 0;
-
-                for (int i = 1; i < N; ++i) {
-                    if (get<position>(particles[i])[0] < get<position>(particles[min_index])[0]) {
-                        min_index = i;
-                    }
-
-                }
-
-                // if a follower is eps further in front than the leader, swap their types
-                if (get<position>(particles[particle_id(j)])[0] > get<position>(particles[min_index])[0] + eps) {
-                    // find distance to all the leaders
-                    double distances[N];
-                    vdouble2 dist_vector;
-                    //check which one is the closest
-                    for (int i = 0; i < N; ++i) {
-                        dist_vector = get<position>(particles[particle_id(j)]) - get<position>(particles[i]);
-                        distances[i] = dist_vector.norm();
-
-                        int winning_index = 0;
-                        for (int i = 1; i < N; ++i) {
-                            if (distances[i] < distances[winning_index]) {
-                                winning_index = i;
+                            // if the position they want to move to is free and not out of bounds, move to that position
+                            if (free_position && x[0] > cell_radius && x[0] < Gamma(length_x - 1) - cell_radius &&
+                                (x[1]) > cell_radius &&
+                                (x[1]) < length_y - 1 - cell_radius) {
+                                get<position>(particles)[particle_id(j)] += speed_f * vdouble2(sin(random_angle),
+                                                                                               cos(random_angle)); // update if nothing is in the next position
+                                get<direction>(particles)[particle_id(j)] = speed_f * vdouble2(sin(random_angle),
+                                                                                               cos(random_angle)); // update direction as well
                             }
-                        }
-
-                        // if this closest leader is behind that follower, swap them
-                        if (get<position>(particles[particle_id(j)])[0] >
-                            get<position>(particles[winning_index])[0] + eps) {
-                            particle_type::value_type tmp = particles[winning_index];
-
-
-                            // their position swap
-
-                            vdouble2 temp = get<position>(particles[winning_index]);
-                            get<position>(particles[winning_index]) = get<position>(particles[particle_id(j)]);
-                            get<position>(particles[particle_id(j)]) = temp;
-
 
                         }
 
                     }
 
+                    /* CHECK IF A FOLLOWER DOES NOT BECOME A LEADER
+                    * Alternative phenotypic switching if a follower overtakes a leader it becomes a leader and that leader follower.
+                    * I will have to be careful when there will be channels because I will have to choose the closest leader
+                    * */
+
+
+                    // find the closest leader
+
+
+                    // so that I would not go through all the cells I will choose the ones that are closer to the front
+
+                    // minimum position in x of the leaders
+
+                    int min_index = 0;
+
+                    for (int i = 1; i < N; ++i) {
+                        if (get<position>(particles[i])[0] < get<position>(particles[min_index])[0]) {
+                            min_index = i;
+                        }
+
+                    }
+
+                    // if a follower is eps further in front than the leader, swap their types
+                    if (get<position>(particles[particle_id(j)])[0] > get<position>(particles[min_index])[0] + eps) {
+                        // find distance to all the leaders
+                        double distances[N];
+                        vdouble2 dist_vector;
+                        //check which one is the closest
+                        for (int i = 0; i < N; ++i) {
+                            dist_vector = get<position>(particles[particle_id(j)]) - get<position>(particles[i]);
+                            distances[i] = dist_vector.norm();
+
+                            int winning_index = 0;
+                            for (int i = 1; i < N; ++i) {
+                                if (distances[i] < distances[winning_index]) {
+                                    winning_index = i;
+                                }
+                            }
+
+                            // if this closest leader is behind that follower, swap them
+                            if (get<position>(particles[particle_id(j)])[0] >
+                                get<position>(particles[winning_index])[0] + eps) {
+                                particle_type::value_type tmp = particles[winning_index];
+
+
+                                // their position swap
+
+                                vdouble2 temp = get<position>(particles[winning_index]);
+                                get<position>(particles[winning_index]) = get<position>(particles[particle_id(j)]);
+                                get<position>(particles[particle_id(j)]) = temp;
+
+
+                            }
+
+                        }
+
+
+                    }
 
                 }
 
             }
+       // } // physical ablation
 
-        }
 
         // update positions
         particles.update_positions();
 
 
-
-
-
+        // normally 45
+        if (t > 45)  {
 
         if (counter % 100 == 0) {
 
-
-
-#ifdef HAVE_VTK
-    vtkWriteGrid("AheadCELLS", t, particles.get_grid(true));
-#endif
-
-
-
-    //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-    ofstream output("AheadMATRIX" + to_string(int(t)) + ".csv");
-
-
-    output << "x, y, z, u" << "\n" << endl;
-
-
-
-    //output << "x, y, z, u" << "\n" << endl;
-
-
-    for (int i = 0; i < length_x * length_y; i++) {
-        for (int j = 0; j < 4; j++) {
-            output << chemo_3col(i, j) << ", ";
-        }
-        output << "\n" << endl;
-    }
+//            cout << "t " << t << endl;
+//            cout << "t " << to_string(int(t)) << endl;
+//
+//            #ifdef HAVE_VTK
+//                        vtkWriteGrid("chemicalAblationLinearCELLS", t, particles.get_grid(true));
+//            #endif
+//
+//
+//
+//            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+//            ofstream output("chemicalAblationLinearmatrix" +to_string(int(round(t))) + ".csv"); // before it was to_string(int(t))
+//
+//
+//            output << "x, y, z, u" << "\n" << endl;
+//
+//
+//
+//            //output << "x, y, z, u" << "\n" << endl;
+//
+//
+//            for (int i = 0; i < length_x * length_y; i++) {
+//                for (int j = 0; j < 4; j++) {
+//                    output << chemo_3col(i, j) << ", ";
+//                }
+//                output << "\n" << endl;
+//            }
 
 
 
@@ -1518,7 +1557,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
 
             // positions of five leader cells
-                xposi = get<position>(particles[0]);
+            xposi = get<position>(particles[0]);
 
 //                outputtrackL << xposi[0] << ", " << xposi[1] << endl;
 //                xposi = get<position>(particles[1]);
@@ -1577,6 +1616,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
         }
 
+        } // this one if <45
 
         //   cout << "t " << t << endl;
 //        cout << "domain length " << Gamma_x(length_x-1) << endl;
@@ -1619,15 +1659,15 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
     pro_break = double(followers_not_in_chain)/(double(particles.size()-N));
 
-    //position of leaders
-//    for (int i = 0; i<N; i++){
-//        cout << "position leaders " << get<position>(particles[i]) << endl;
-//    }
+    // position of leaders
+    for (int i = 0; i<N; i++){
+        cout << "position leaders " << get<position>(particles[i]) << endl;
+    }
 
-    cout << "prop break " << pro_break << endl;
+   // cout << "prop break " << pro_break << endl;
 
     // Gamma
-//    cout << "Gamma(length_x-1) " << Gamma(length_x-1) << endl;
+    cout << "Gamma(length_x-1) " << Gamma(length_x-1) << endl;
 
 
 
@@ -1646,23 +1686,23 @@ return proportions;
 int main() {
 
     const int number_parameters = 1; // parameter range
-    const int sim_num = 1;
+    const int sim_num = 20;
 
     //VectorXd store_chains;
     VectorXi vector_check_length = proportions(0.05, 0); //just to know what the length is
 
-    //int num_parts = vector_check_length.size(); // number of parts that I partition my domain
+    int num_parts = vector_check_length.size(); // number of parts that I partition my domain
     //cout << "length " << vector_check_length.size() << endl;
-    int num_parts = 18; // since 18 is domain partition for time 54 and 1 for chains
+    //int num_parts = 18; // since 18 is domain partition for time 54 and 1 for chains
     MatrixXf sum_of_all = MatrixXf::Zero(num_parts, number_parameters); // sum of the values over all simulations
 
     //initialise the matrix to store the values
     MatrixXi numbers = MatrixXi::Zero(num_parts, number_parameters);
 
     // n would correspond to different seeds
-    // parallel programming
+//    // parallel programming
 #pragma omp parallel for
-    for (int n = 0; n < sim_num; n++) {
+    for (int n = 1; n < sim_num; n++) {
 
         // define parameters that I will change
 
@@ -1678,22 +1718,24 @@ int main() {
         //cout << "how many simulations? " << n << endl;
         numbers.block(0, 0, num_parts, 1) = proportions(threshold[0], n);
 
+        cout << "numbers " << numbers << endl;
+
         // comment from here
 
         // This is what I am using for MATLAB
-//        ofstream output2("sepdataONLYLEADERSFIRST05.csv" + to_string(n) + ".csv");
+        ofstream output2("sepdatachemicalLineardistal.csv" + to_string(n) + ".csv");
 
-//        for (int i = 0; i < numbers.rows(); i++) {
-//
-//            for (int j = 0; j < numbers.cols(); j++) {
-//
-//                output2 << numbers(i, j) << ", ";
-//
-//                sum_of_all(i, j) += numbers(i, j);
-//
-//            }
-//            output2 << "\n" << endl;
-//        }
+        for (int i = 0; i < numbers.rows(); i++) {
+
+            for (int j = 0; j < numbers.cols(); j++) {
+
+                output2 << numbers(i, j) << ", ";
+
+                sum_of_all(i, j) += numbers(i, j);
+
+            }
+            output2 << "\n" << endl;
+        }
 
 //        this was used when I tried to combine the two
 //        ofstream output4("chainsTheta1First.csv");
@@ -1711,23 +1753,23 @@ int main() {
 
 
 
-//    /*
-//    * will store everything in one matrix, the entries will be summed over all simulations
-//    */
-//
-//   // comment up to last bracket
-//    ofstream output3("ONLYLEADERSFIRST05.csv");
-//
-//
-//    for (int i = 0; i < num_parts; i++) {
-//
-//        for (int j = 0; j < number_parameters; j++) {
-//
-//            output3 << sum_of_all(i, j) << ", ";
-//
-//        }
-//        output3 << "\n" << endl;
-//    }
+    /*
+    * will store everything in one matrix, the entries will be summed over all simulations
+    */
+
+   // comment up to last bracket
+    ofstream output3("chemicalLinearDATA.csv");
+
+
+    for (int i = 0; i < num_parts; i++) {
+
+        for (int j = 0; j < number_parameters; j++) {
+
+            output3 << sum_of_all(i, j) << ", ";
+
+        }
+        output3 << "\n" << endl;
+    }
 
 
 }
