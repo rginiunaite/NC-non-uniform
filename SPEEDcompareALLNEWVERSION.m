@@ -5,23 +5,28 @@ N = 20; % I only fixed data for 10 of non-uniformly growing domain, so I will us
 
 %% adding leader cell
 
-%distance2 = zeros(255,2)
+%distance2 = zeros(770,2)
 
-for i = 1:N
+for i = 1:N % to change to N
   
     
   % filename2 = sprintf('all data/CORRECTtrack_leadTheta0.500000FINALV2nseed%i.csv',i-1);
-       filename2 = sprintf('all data/CORRECTtrack_leadTheta0.500000FIRSTnseed%i.csv',i-1);
-
+  % filename2 = sprintf('all data/CORRECTtrack_leadTheta0.500000FIRSTnseed%i.csv',i-1); % most recently commented
+    filename2 = sprintf('LeaderTrackSpeed1p250.500000FINALnseed%i.csv',i-1);
  
  %  filename2 = sprintf('/home/giniunaite/NC-non-uniform/speed1p5track_leadTheta1.000000FINALnseed%i.csv',i-1);
 
     celltrack2 = load(filename2);
-    %for j = 1:length(celltrack2)
-        distance2(:,i) = celltrack2(:,1);% store all the distances
-        ycoord2(:,i) = celltrack2(:,2); % store all the speeds
-    %end
-
+    % when not equal length
+    for j = 1:length(celltrack2)
+        distance2(j,i) = celltrack2(j,1);% store all the distances
+        ycoord2(j,i) = celltrack2(j,2); % store all the speeds
+    end
+%     % when equal length
+%         distance2(:,i) = celltrack2(:,1);% store all the distances
+%         ycoord2(:,i) = celltrack2(:,2); % store all the speeds
+    
+    
 end
 figure
 
@@ -33,7 +38,7 @@ allspeed1 = zeros (150,5,N);
 
 
 hold on
-for i =1 :N
+for i =1 :N % to change to N
     
     for j = 1:5 % FOR EACH CELL
         celltrackraw2(:,1) = distance2(j:5:end,i);
