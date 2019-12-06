@@ -29,7 +29,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
 
     //specify whether first or final part of the domain grows faster
 
-    bool first_part_grows = true; //false if final part grows faster
+    bool first_part_grows = false; //false if final part grows faster
 
 
     double space_grid_controller = 100.0;
@@ -43,7 +43,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     const double final_time = 54; // number of timesteps, 1min - 0.05, now dt =0.01, for 18hours we have 54.
     //const double final_time = 24; //chemical ablation of growth 12hours
     double final_length = 1014;//real 1014
-    //double final_length = 510;// chemical ablation of growth, 520 control, 16hours // 400 uniform ablation, 510 linear ablation
+    //double final_length =510;// chemical ablation of growth, 520 control, 16hours // 400 uniform ablation, 510 linear ablation. For D3 I will try 550 for linear growth
 
 
 // parameters for the dynamics of chemoattractant concentration
@@ -73,7 +73,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     //double diff_conc = 0.1; // sensing threshold, i.e. how much concentration has to be bigger, so that the cell moves in that direction
     int freq_growth = 1; // determines how frequently domain grows (actually not relevant because it will go every timestep)
     int insertion_freq = 1; // determines how frequently new cells are inserted, regulates the density of population
-    double speed_l = 0.14 ;// 0.05;//1;//0.05; // speed of a leader cell
+    double speed_l = 0.16;//0.14 *1.25;// 0.05;//1;//0.05; // speed of a leader cell
     double increase_fol_speed = 1.3;
     double speed_f = increase_fol_speed * speed_l;//0.05;//0.1;//0.08; // speed of a follower cell
     double dettach_prob = 0.5; // probability that a follower cell which is on trail looses the trail
@@ -113,7 +113,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     // 1 part n_faster times faster than the other part
     double n_faster = 2.0;
 
-    double thetasmall = 1.0; // first thetasmall is growing
+    double thetasmall = 0.5; // first thetasmall is growing
     int theta1 = int(thetasmall * length_x);
 
     double alpha1;
@@ -147,7 +147,7 @@ VectorXi proportions(double diff_conc, int n_seed) {
     }
 
 
-cout << "alpha " << alpha1 << endl;
+// cout << "alpha " << alpha1 << endl;
 
     VectorXd strain = VectorXd::Zero(length_x);
 
@@ -177,7 +177,7 @@ cout << "alpha " << alpha1 << endl;
 
     // linearly increasing for chemical inhibition
 
-
+//
 //    double initial_strain = 0.0; // 0.01 now
 //    double domain_growth_par = alpha1;
 //
@@ -189,7 +189,7 @@ cout << "alpha " << alpha1 << endl;
 //            strain(i) = initial_strain; //when there is baseline growth // linearly increasing to the NT
 //        }
 //
-
+//
 
 
 
@@ -335,7 +335,7 @@ cout << "alpha " << alpha1 << endl;
 
     //ofstream output2("track_point" + to_string(t) + ".csv");
 
-//    ofstream output2in("track_point0.csv");
+//    ofstream output2in("track1_point0.csv");
 //
 //    output2in << Gamma(length_x / 2) << endl;
 //
@@ -346,8 +346,8 @@ cout << "alpha " << alpha1 << endl;
 //    ofstream output4in("track3_point.csv");
 //
 //    output4in << Gamma(3 * int(length_x / 4)) << endl;
+////
 //
-
 
     /*
      * 2D domain with a few randomly placed particles
@@ -448,21 +448,21 @@ cout << "alpha " << alpha1 << endl;
 //    ofstream outputtrack75nornd("track_cell7p5.csv");
 //    ofstream outputtrack170nornd("track_cell170.csv");
 //    ofstream outputtrack339nornd("track_cell339.csv");
-
-  //    ofstream outputtrackL("CORRECTV2nongrowingnseed" + to_string(n_seed) + ".csv");
-
-  //     ofstream outputtrackL("MARCH29CORRECTtrack_leadTheta" + to_string(thetasmall) + "FINALnseed" + to_string(n_seed) + ".csv");
-//        ofstream outputtrackL2("track_lead2theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackL3("track_lead3theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackL4("track_lead4theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackL5("track_lead5theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-
- // ofstream outputtrackF("CORRECTV2FOLnongrowingnseed"+ to_string(n_seed) + ".csv");
- //      ofstream outputtrackF("CORRECTtrack_folTheta" + to_string(thetasmall) + "FINALnseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackF2("track_fol2theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackF3("track_fol3theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackF4("track_fol4theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
-//        ofstream outputtrackF5("track_fol5theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+//
+//   //   ofstream outputtrackL("CORRECTV2nongrowingnseed" + to_string(n_seed) + ".csv");
+//
+//       ofstream outputtrackL("LeaderTrackSpeed1p25" + to_string(thetasmall) + "FINALnseed" + to_string(n_seed) + ".csv"); // only these are relevant
+////        ofstream outputtrackL2("track_lead2theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackL3("track_lead3theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackL4("track_lead4theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackL5("track_lead5theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+//
+// // ofstream outputtrackF("CORRECTV2FOLnongrowingnseed"+ to_string(n_seed) + ".csv");
+//       ofstream outputtrackF("FollowerTrackSpeed1p25" + to_string(thetasmall) + "FINALnseed"+ to_string(n_seed) + ".csv");// only these are relevant
+////        ofstream outputtrackF2("track_fol2theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackF3("track_fol3theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackF4("track_fol4theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
+////        ofstream outputtrackF5("track_fol5theta" + to_string(thetasmall) + "nseed"+ to_string(n_seed) + ".csv");
 
 
 
@@ -1504,7 +1504,7 @@ cout << "alpha " << alpha1 << endl;
                 }
 
             }
-       // } // physical ablation
+        //} // physical ablation
 
 
         // update positions
@@ -1512,21 +1512,21 @@ cout << "alpha " << alpha1 << endl;
 
 
         // normally 45
-        if (t > 45)  {
+        //if (t > 45)  {
 
-        if (counter % 100 == 0) {
+        if (counter % 100 == 0) { // 35 when track positions
 
 //            cout << "t " << t << endl;
 //            cout << "t " << to_string(int(t)) << endl;
 //
 //            #ifdef HAVE_VTK
-//                        vtkWriteGrid("chemicalAblationLinearCELLS", t, particles.get_grid(true));
+//                        vtkWriteGrid("ChemicalAblationD3LinearCELLS", t, particles.get_grid(true));
 //            #endif
 //
 //
 //
 //            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-//            ofstream output("chemicalAblationLinearmatrix" +to_string(int(round(t))) + ".csv"); // before it was to_string(int(t))
+//            ofstream output("ChemicalAblationD3Linearmatrix" +to_string(int(t)) + ".csv"); // before it was to_string(int(t))
 //
 //
 //            output << "x, y, z, u" << "\n" << endl;
@@ -1556,9 +1556,9 @@ cout << "alpha " << alpha1 << endl;
 //
 
 
-            // positions of five leader cells
-            xposi = get<position>(particles[0]);
-
+//            // positions of five leader cells // only these are relevant
+//                xposi = get<position>(particles[0]);
+//
 //                outputtrackL << xposi[0] << ", " << xposi[1] << endl;
 //                xposi = get<position>(particles[1]);
 //                outputtrackL << xposi[0] << ", " << xposi[1] << endl;
@@ -1568,8 +1568,8 @@ cout << "alpha " << alpha1 << endl;
 //                outputtrackL << xposi[0] << ", " << xposi[1] << endl;
 //                xposi = get<position>(particles[4]);
 //                outputtrackL << xposi[0] << ", " << xposi[1] << endl;
-//
-//                // follower cells only if they already exist
+////
+////                // follower cells only if they already exist // only these are relevant
 //                if (particles.size() > 11) {
 //                    xposi = get<position>(particles[9]);
 //                    outputtrackF << 9 << ", " << xposi[0] << ", " << xposi[1] << endl;
@@ -1590,8 +1590,8 @@ cout << "alpha " << alpha1 << endl;
 //                    xposi = get<position>(particles[89]);
 //                    outputtrackF  << 89 << ", "<< xposi[0] << ", " << xposi[1] << endl;
 //                }
-
 //
+////
 
 
 
@@ -1616,7 +1616,7 @@ cout << "alpha " << alpha1 << endl;
 
         }
 
-        } // this one if <45
+        //} // this one if <45
 
         //   cout << "t " << t << endl;
 //        cout << "domain length " << Gamma_x(length_x-1) << endl;
@@ -1716,27 +1716,29 @@ int main() {
         }
 
         //cout << "how many simulations? " << n << endl;
-        numbers.block(0, 0, num_parts, 1) = proportions(threshold[0], n);
+        // numbers.block(0, 0, num_parts, 1) = proportions(threshold[0], n);
+
+        proportions(threshold[0],n); // simply execute
 
         cout << "numbers " << numbers << endl;
 
         // comment from here
 
-        // This is what I am using for MATLAB
-        ofstream output2("sepdatachemicalLineardistal.csv" + to_string(n) + ".csv");
-
-        for (int i = 0; i < numbers.rows(); i++) {
-
-            for (int j = 0; j < numbers.cols(); j++) {
-
-                output2 << numbers(i, j) << ", ";
-
-                sum_of_all(i, j) += numbers(i, j);
-
-            }
-            output2 << "\n" << endl;
-        }
-
+//        // This is what I am using for MATLAB
+//        ofstream output2("sepdatachemicalLineardistal.csv" + to_string(n) + ".csv");
+//
+//        for (int i = 0; i < numbers.rows(); i++) {
+//
+//            for (int j = 0; j < numbers.cols(); j++) {
+//
+//                output2 << numbers(i, j) << ", ";
+//
+//                sum_of_all(i, j) += numbers(i, j);
+//
+//            }
+//            output2 << "\n" << endl;
+//        }
+//
 //        this was used when I tried to combine the two
 //        ofstream output4("chainsTheta1First.csv");
 //
@@ -1745,31 +1747,33 @@ int main() {
 //        output4 <<  numbers(numbers.rows()-1,1) << ", ";
 //
 //        output4 << "\n" << endl;
-
+//
 //         comment up to here
-
-    }
-
-
+//
+}
 
 
-    /*
-    * will store everything in one matrix, the entries will be summed over all simulations
-    */
-
-   // comment up to last bracket
-    ofstream output3("chemicalLinearDATA.csv");
 
 
-    for (int i = 0; i < num_parts; i++) {
-
-        for (int j = 0; j < number_parameters; j++) {
-
-            output3 << sum_of_all(i, j) << ", ";
-
-        }
-        output3 << "\n" << endl;
-    }
-
+//
+//
+//    /*
+//    * will store everything in one matrix, the entries will be summed over all simulations
+//    */
+//
+//   // comment up to last bracket
+//    ofstream output3("chemicalLinearDATA.csv");
+//
+//
+//    for (int i = 0; i < num_parts; i++) {
+//
+//        for (int j = 0; j < number_parameters; j++) {
+//
+//            output3 << sum_of_all(i, j) << ", ";
+//
+//        }
+//        output3 << "\n" << endl;
+//    }
+//
 
 }
