@@ -41,7 +41,10 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
     double initial_domain_length = domain_length;
     const int length_y = int(1.2 * space_grid_controller); // length in y direction of the chemoattractant matrix
     const double final_time = 54; // number of timesteps, 1min - 0.05, now dt =0.01, for 18hours we have 54.
+    //const double final_time = 24; //chemical ablation of growth 12hours
     double final_length = 1014;//real 1014
+    //double final_length =510;// chemical ablation of growth, 520 control, 16hours // 400 uniform ablation, 510 linear ablation. For D3 I will try 550 for linear growth
+
 
 // parameters for the dynamics of chemoattractant concentration
 
@@ -49,7 +52,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
     double t = 0.0; // initialise time
     double dt = 0.01; // time step
     double dt_init = dt;
-    int number_time = int(1 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
+    int number_time = int(1.0 / dt_init); // how many timesteps in 1min, which is the actual simulation timestep
     double dx = 1.0;// / space_grid_controller; // space step in x direction, double to be consistent with other types
     double dy = 1.0;// / space_grid_controller; // space step in y direction
 
@@ -70,7 +73,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
     //double diff_conc = 0.1; // sensing threshold, i.e. how much concentration has to be bigger, so that the cell moves in that direction
     int freq_growth = 1; // determines how frequently domain grows (actually not relevant because it will go every timestep)
     int insertion_freq = 1; // determines how frequently new cells are inserted, regulates the density of population
-    double speed_l = 1.6/5.0;//  // speed of a leader cell default: 0.14;, before I checked 0.8
+    double speed_l = 0.14;// 2.5/5.0;//  // speed of a leader cell default: 0.14;, before I checked 0.8mu m/min, since 1 min is 0.05, 0.01 is 1/5 min
     double increase_fol_speed = 1.3;
     double speed_f = increase_fol_speed * speed_l;//0.05;//0.1;//0.08; // speed of a follower cell
     double dettach_prob = 0.5; // probability that a follower cell which is on trail looses the trail
@@ -122,7 +125,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
     * strain rate
     * */
     // G3 baseline
-    double initial_strain = 0.0; // 0.01 now
+    double initial_strain = 0.01;//0.0; // 0.01 now
 
     //piecewise constant, two parts
     // 1 part n_faster times faster than the other part
@@ -137,50 +140,50 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 
     /*
      * Uncomment for cell-hindered growth (G4)
-     * */
-//    //check whether first part grows
-    double thetasmalltemp = thetasmall;
-    if (first_part_grows ==true){
-        double xvar = final_length/ (n_faster * double(length_x)*thetasmalltemp + double(length_x)*(1-thetasmalltemp)); // solve: 2 *xvar * length_x * thetasmall + xvar * length(1-thetasmall) = final_length
-
-        double ratio1 = n_faster * double(length_x)*thetasmalltemp * xvar / (double(length_x)*thetasmalltemp);
-
-        alpha1 = log (ratio1)/final_time;
-
-        double ratio2 =  double(length_x)*(1- thetasmalltemp) * xvar / (double(length_x)*(1- thetasmalltemp));
-
-        alpha2 = log (ratio2)/final_time;
-
-    }
-
-    else if(first_part_grows == false){
-        double xvar = final_length/ (double(length_x)*thetasmall + n_faster*double(length_x)*(1-thetasmall)); // solve: 2 *xvar * length_x * thetasmall + x * length(1-thetasmall) = final_length
-
-        double ratio1 = double(length_x)*thetasmall * xvar / (double(length_x)*thetasmall);
-
-        alpha1 = log (ratio1)/final_time;
-
-        double ratio2 =  double(length_x)*(1- thetasmall) * xvar*n_faster / (double(length_x)*(1- thetasmall));
-
-        alpha2 = log (ratio2)/final_time;
-    }
-
-
-
-    double strainInitial = alpha1 +domain_growth_par; // for all before I had +0.01
-
-    // first part it is linear growth
-    for (int i = 0; i < theta1; i++) {
-        strain(i) = alpha1+domain_growth_par;//linear_par * double(theta1) /
-        // double(space_grid_controller);//linear_par * (double(i) / double(space_grid_controller));
-    }
-
-    for (int i = theta1; i < length_x; i++) {
-        strain(i) = alpha2+domain_growth_par;// 0.002;//0.5 * linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
-        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
-    }
-
-// end of G4
+//     * */
+////    //check whether first part grows
+//    double thetasmalltemp = thetasmall;
+//    if (first_part_grows ==true){
+//        double xvar = final_length/ (n_faster * double(length_x)*thetasmalltemp + double(length_x)*(1-thetasmalltemp)); // solve: 2 *xvar * length_x * thetasmall + xvar * length(1-thetasmall) = final_length
+//
+//        double ratio1 = n_faster * double(length_x)*thetasmalltemp * xvar / (double(length_x)*thetasmalltemp);
+//
+//        alpha1 = log (ratio1)/final_time;
+//
+//        double ratio2 =  double(length_x)*(1- thetasmalltemp) * xvar / (double(length_x)*(1- thetasmalltemp));
+//
+//        alpha2 = log (ratio2)/final_time;
+//
+//    }
+//
+//    else if(first_part_grows == false){
+//        double xvar = final_length/ (double(length_x)*thetasmall + n_faster*double(length_x)*(1-thetasmall)); // solve: 2 *xvar * length_x * thetasmall + x * length(1-thetasmall) = final_length
+//
+//        double ratio1 = double(length_x)*thetasmall * xvar / (double(length_x)*thetasmall);
+//
+//        alpha1 = log (ratio1)/final_time;
+//
+//        double ratio2 =  double(length_x)*(1- thetasmall) * xvar*n_faster / (double(length_x)*(1- thetasmall));
+//
+//        alpha2 = log (ratio2)/final_time;
+//    }
+//
+//
+//
+//    double strainInitial = alpha1 +domain_growth_par; // for all before I had +0.01
+//
+//    // first part it is linear growth
+//    for (int i = 0; i < theta1; i++) {
+//        strain(i) = alpha1+domain_growth_par;//linear_par * double(theta1) /
+//        // double(space_grid_controller);//linear_par * (double(i) / double(space_grid_controller));
+//    }
+//
+//    for (int i = theta1; i < length_x; i++) {
+//        strain(i) = alpha2+domain_growth_par;// 0.002;//0.5 * linear_par * double(theta1) / double(space_grid_controller); // constant to where it was
+//        //strain(i,j) = linear_par*theta1/(theta1- (theta2-1))*(i-(theta2-1)); // linearly decreasing, if I do this do not forget to change Gamma
+//    }
+//
+//// end of G4
 
 
     // growth function
@@ -515,22 +518,22 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 
         theta1 = value;
 
-////    // linearly increasing (G3)
+////    // linearly decreasing (G3)
 
-//        for (int i = 0; i < theta1; i++) {
-//            strain(i) = domain_growth_par * (theta1 - i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
-//        }
-//        for (int i = theta1; i < length_x-1; i++) {
-//            strain(i) = initial_strain; //when there is baseline growth // linearly increasing to the NT
-//        }
+        for (int i = 0; i < theta1; i++) {
+            strain(i) = domain_growth_par * (theta1 - i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+        }
+        for (int i = theta1; i < length_x-1; i++) {
+            strain(i) = initial_strain; //when there is baseline growth // linearly increasing to the NT
+        }
 
 
 
 
         // Cell-hindered (G4)
-        for (int i = 0; i < theta1; i++) {
-            strain(i) = strainInitial * (i) / theta1; // linearly decreasing
-        }
+//        for (int i = 0; i < theta1; i++) {
+//            strain(i) = strainInitial * (i) / theta1; // linearly increasing
+//        }
 
         // G1 and G2
 //        for (int i = 0; i < theta1; i++){
@@ -688,7 +691,9 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
         }
 
 
+        //physical aplabtion of cells, cells only start moving after 2 hours
 
+        //if (t > 6) {
         /// update positions uniformly based on the domain growth
 
         vdouble2 x; // use variable x for the position of cells
@@ -732,7 +737,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 
         }
 
-
+        //} // physical ablation
         Gamma_old = Gamma;
 
 
@@ -870,6 +875,8 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
             }
         }
 
+        // physical ablation of NC cells
+        //if (t>6) {
         // update the position of all particles in a random order created above
 
         for (int j = 0; j < particles.size(); j++) {
@@ -1488,6 +1495,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
             }
 
         }
+        //} // physical ablation
 
         // update positions
         particles.update_positions();
@@ -1496,29 +1504,26 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
         if (counter % 100 == 0) {
 
 
-#ifdef HAVE_VTK
-            vtkWriteGrid("G5Speed1p6CELLS", t, particles.get_grid(true));
-#endif
+//#ifdef HAVE_VTK
+//            vtkWriteGrid("G5Speed2p5CELLS", t, particles.get_grid(true));
+//#endif
+//
+//
+////
+//            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+//            ofstream output("G5Speed2p5MATRIX" + to_string(int(t)) + ".csv");
+//
+//
+//            output << "x, y, z, u" << "\n" << endl;
 
 
 //
-            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-            ofstream output("G5Speed1p6MATRIX" + to_string(int(t)) + ".csv");
-
-
-            output << "x, y, z, u" << "\n" << endl;
-
-
-
-            //output << "x, y, z, u" << "\n" << endl;
-
-
-            for (int i = 0; i < length_x * length_y; i++) {
-                for (int j = 0; j < 4; j++) {
-                    output << chemo_3col(i, j) << ", ";
-                }
-                output << "\n" << endl;
-            }
+//            for (int i = 0; i < length_x * length_y; i++) {
+//                for (int j = 0; j < 4; j++) {
+//                    output << chemo_3col(i, j) << ", ";
+//                }
+//                output << "\n" << endl;
+//            }
 
 
         }
@@ -1599,7 +1604,7 @@ double domain_growth_par;
 
         for (int k = 0; k < 1; k++){
             //domain_growth_par = 0.006 + 0.002*double(k);
-            domain_growth_par = 0.018; //for G3: 0.01 + 0.0013*double(k);, for G4: 0.006 + 0.0005 * double(k)  // test 0.018
+            domain_growth_par = 0.018; //cellinduced: 0.018; // cellhindered 0.006; //cellinduced: 0.018; //for G3: 0.01 + 0.0013*double(k);, for G4: 0.006 + 0.0005 * double(k)  // test 0.018
             for (int n = 0; n < sim_num; n++) {
                 proportions(0.05, n, domain_growth_par); //just to know what the length is
             }
