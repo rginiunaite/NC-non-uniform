@@ -1,5 +1,5 @@
 //
-// Created by giniunaite on 14/05/19.
+// Created by giniunaite on 22/07/20.
 // non uniform growth, two parts, cell-induced domain growth
 //
 
@@ -426,7 +426,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 //              insert new cells
 //
 
-
+    //if (particles.size() < 50){
 
         bool free_position = false;
         particle_type::value_type f;
@@ -460,7 +460,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
             get<attached_to_id>(f) = -1;
             particles.push_back(f);
         }
-        //} // this
+        //} // this, less than 50 cells end
         particles.update_positions();
 
 
@@ -1505,16 +1505,14 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 
 
 #ifdef HAVE_VTK
-            // vtkWriteGrid("G5Speed2p5CELLS", t, particles.get_grid(true));
-            vtkWriteGrid("cellinducedmaincodeCELLS", t, particles.get_grid(true));
-
+            vtkWriteGrid("Cell_induced_controlCELLS", t, particles.get_grid(true));
 #endif
-
-
 //
+//
+////
+//            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+            ofstream output("Cell_induced_controlMATRIX" + to_string(int(t)) + ".csv");
 
-            //ofstream output("G5Speed2p5MATRIX" + to_string(int(t)) + ".csv");
-        ofstream output("cellinducedmaincodematrix" + to_string(int(round(t))) + ".csv");
 
             output << "x, y, z, u" << "\n" << endl;
 
