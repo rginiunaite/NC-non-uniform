@@ -43,7 +43,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
     const double final_time = 54; // number of timesteps, 1min - 0.05, now dt =0.01, for 18hours we have 54.
     //const double final_time = 24; //chemical ablation of growth 12hours
     double final_length = 1014;//real 1014
-    //double final_length =400;// chemical ablation of growth, 520 control, 16hours // 400 uniform ablation, 510 linear ablation. For D3 I will try 550 for linear growth
+    //double final_length = 520;// chemical ablation of growth, 520 control, 16hours // 400 uniform ablation, 510 linear ablation. For D3 I will try 550 for linear growth
 
 
 // parameters for the dynamics of chemoattractant concentration
@@ -57,7 +57,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
     double dy = 1.0;// / space_grid_controller; // space step in y direction
 
     // reaction rate
-    double k_reac = 1.0;//0.00001;//0.1;//0.105;//0.03;//.205; // reaction term
+    double k_reac = 0.001;//1.0;//0.00001;//0.1;//0.105;//0.03;//.205; // reaction term
 
 
     // cell parameters
@@ -125,7 +125,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
     * strain rate
     * */
     // G3 baseline
-    double initial_strain = 0.01;// trying now 0.005, chemical ablation
+    double initial_strain = 0.01;// trying now 0.005, chemical ablation, reduction 0.005
 
     //piecewise constant, two parts
     // 1 part n_faster times faster than the other part
@@ -460,7 +460,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
             get<attached_to_id>(f) = -1;
             particles.push_back(f);
         }
-        //} // this, less than 50 cells end
+       // } // this, less than 50 cells end
         particles.update_positions();
 
 
@@ -520,12 +520,84 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 
 ////    // linearly decreasing (G3) G4 if strain(i) non-zero for i>theta1
 
-        for (int i = 0; i < theta1; i++) {
-            strain(i) = domain_growth_par * (theta1 - i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+
+//        if (t < 40.5){
+//            for (int i = 0; i < theta1 + 50; i++) {
+//                strain(i) = domain_growth_par * i / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+//            }
+//            for (int i = theta1 +50; i < length_x-1; i++) {
+//                strain(i) = initial_strain; //when there is baseline growth // linearly increasing to the NT
+//            }
+//        }else{
+            for (int i = 0; i < theta1; i++) {
+                strain(i) = domain_growth_par+ initial_strain;// * (theta1-i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+            }
+            for (int i = theta1; i < length_x-1; i++) {
+                strain(i) = initial_strain; //when there is baseline growth // linearly increasing to the NT
+            }
+        //}
+
+
+        // Density dependent growth rate
+
+        //split the domain into sections of length 100, the whole domain or from 0 to that length
+
+    const int domain_partition = int(Gamma(length_x - 1) / double(55));; // number of intervals of 50 \mu m
+
+
+    VectorXi parts = VectorXi::Zero(domain_partition); // integer with number of cells in particular part that plus one is proportions that are not in chains
+
+    double one_part = Gamma(length_x - 1) / double(domain_partition);
+
+
+    for (int i = 0; i < domain_partition; i++) {
+
+        for (int j = 0; j < particles.size(); j++) {
+            vdouble2 x = get<position>(particles[j]);
+            if (i * one_part < x[0] && x[0] < (i + 1) * one_part) {
+                parts(i) += 1;
+            }
         }
-        for (int i = theta1; i < length_x-1; i++) {
-            strain(i) = initial_strain; //when there is baseline growth // linearly increasing to the NT
+
+    }
+
+    int k = 0;
+    int k_old = 0;
+    for (int i = 0; i < domain_partition; i++) {
+        if (parts(i) < 10){ //if less than ten cells in a section, then strain rate only as an initial strain rate
+
+                while (i * one_part > Gamma_old(k)) {// // av_lead-100.0> Gamma_old(j) (when with delay, G2)
+                    value = k;
+                    k = k + 1;
+                    }
+                for (j=k_old;j<k;j++){
+                    strain(k) = initial_strain;// * (theta1-i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+                }
+                k_old = k;
+            }
+
+
+        if (parts(i) < 20 && parts(i) >= 10){//if more than 10 but less than 20 cells in a section, then strain rate an initial strain rate +domain_growhth_par
+                while (i * one_part > Gamma_old(k)) {// // av_lead-100.0> Gamma_old(j) (when with delay, G2)
+                    value = k;
+                    k = k + 1;
+                    }
+                for (j=k_old;j<k;j++){
+                    strain(k) = initial_strain+ domain_growth_par;// * (theta1-i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+                }
+                k_old = k;
         }
+        if ( parts(i) >= 20){ //if more than 20 cells in a section, then strain rate an initial strain rate + 2 * domain_growhth_par
+                while (i * one_part > Gamma_old(k)) {// // av_lead-100.0> Gamma_old(j) (when with delay, G2)
+                    value = k;
+                    k = k + 1;
+                    }
+                for (j=k_old;j<k;j++){
+                    strain(k) = initial_strain+ 2* domain_growth_par;// * (theta1-i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+                }
+                k_old = k;
+        }
+    }
 
 
 
@@ -694,48 +766,48 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
         //physical aplabtion of cells, cells only start moving after 2 hours (t > 6), 4hrs (t>12)
 
 //        if (t > 12) {
-//        /// update positions uniformly based on the domain growth
-//
-//            vdouble2 x; // use variable x for the position of cells
-//            double x0 = 0;
-//            int pos;
-//
-//            for (int i = 0; i < particles.size(); i++) {
-//
-//                x = get<position>(particles[i]);
-//
-//                // since I do not know how to do it for general case, I will do it for my specific
-//
-//                // analytical for two different regions
-//    //            if (x[0] > Gamma_old(theta1 - 1)) {
-//    //
-//    //                x0 = (x[0] - Gamma_old(theta1 - 1)) *
-//    //                        ((Gamma(length_x - 1) - Gamma(theta1 - 1)) /
-//    //                     (Gamma_old(length_x - 1) - Gamma_old(theta1 - 1))) + Gamma(theta1 - 1);
-//    //
-//    //                get<position>(particles)[i] = vdouble2(x0,x[1]);
-//    //
-//    //            } else {
-//    //                get<position>(particles)[i] *= vdouble2((Gamma(theta1 - 1)) / (Gamma_old(theta1 - 1)),
-//    //                                                        1); // update position based on changes in Gamma
-//    //            }
-//                int j = 0;
-//                while (x[0] > Gamma_old(j)) {
-//                    value = j;
-//                    j = j + 1;
-//                    //cout << "value " << value << endl;
-//
-//                }
-//
-//
-//                get<scaling>(particles)[i] = value;
-//
-//    //            x[0] = x[0] + Gamma(value)-Gamma_old(value);
-//
-//                get<position>(particles)[i] += vdouble2(Gamma(value) - Gamma_old(value), 0);
-//
-//
-//            }
+        /// update positions uniformly based on the domain growth
+
+            vdouble2 x; // use variable x for the position of cells
+            double x0 = 0;
+            int pos;
+
+            for (int i = 0; i < particles.size(); i++) {
+
+                x = get<position>(particles[i]);
+
+                // since I do not know how to do it for general case, I will do it for my specific
+
+                // analytical for two different regions
+    //            if (x[0] > Gamma_old(theta1 - 1)) {
+    //
+    //                x0 = (x[0] - Gamma_old(theta1 - 1)) *
+    //                        ((Gamma(length_x - 1) - Gamma(theta1 - 1)) /
+    //                     (Gamma_old(length_x - 1) - Gamma_old(theta1 - 1))) + Gamma(theta1 - 1);
+    //
+    //                get<position>(particles)[i] = vdouble2(x0,x[1]);
+    //
+    //            } else {
+    //                get<position>(particles)[i] *= vdouble2((Gamma(theta1 - 1)) / (Gamma_old(theta1 - 1)),
+    //                                                        1); // update position based on changes in Gamma
+    //            }
+                int j = 0;
+                while (x[0] > Gamma_old(j)) {
+                    value = j;
+                    j = j + 1;
+                    //cout << "value " << value << endl;
+
+                }
+
+
+                get<scaling>(particles)[i] = value;
+
+    //            x[0] = x[0] + Gamma(value)-Gamma_old(value);
+
+                get<position>(particles)[i] += vdouble2(Gamma(value) - Gamma_old(value), 0);
+
+
+            }
 //
 //        } // physical ablation
         Gamma_old = Gamma;
@@ -876,7 +948,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
         }
 
         // physical ablation of NC cells, 1hrs 6, 4hrs 12
-        if (t>12) {
+        //if (t>12) {
         // update the position of all particles in a random order created above
 
             for (int j = 0; j < particles.size(); j++) {
@@ -1495,7 +1567,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
                 }
 
             }
-        } // physical ablation
+        //} // physical ablation
 
         // update positions
         particles.update_positions();
@@ -1503,15 +1575,15 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 
         if (counter % 100 == 0) {
 
-
-#ifdef HAVE_VTK
-            vtkWriteGrid("Cell_induced_controlCELLS", t, particles.get_grid(true));
-#endif
 //
-//
-////
-//            //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-            ofstream output("Cell_induced_controlMATRIX" + to_string(int(t)) + ".csv");
+            #ifdef HAVE_VTK
+                        vtkWriteGrid("Sectionsdomgr0p005Cell_inducedCELLS", t, particles.get_grid(true));
+            #endif
+            //
+            //
+            ////
+           //  //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
+            ofstream output("Sectionsdomgr0p005Cell_inducedMATRIX" + to_string(int(t)) + ".csv");
 
 
             output << "x, y, z, u" << "\n" << endl;
@@ -1601,12 +1673,12 @@ double domain_growth_par;
     double speed;
     // n would correspond to different seeds
     // parallel programming
-
+    #pragma omp parallel for
         for (int k = 0; k < 1; k++){
             //domain_growth_par = 0.006 + 0.002*double(k);
-            domain_growth_par = 0.018;//0.015 for cell hindered, speed 0.14*1.5!!!! //cellinduced: 0.018; // cellhindered 0.006; //cellinduced: 0.018; //for G3: 0.01 + 0.0013*double(k);, for G4: 0.006 + 0.0005 * double(k)  // test 0.018
+            domain_growth_par = 0.005;//0.018;//0.015 for cell hindered, speed 0.14*1.5!!!! //cellinduced: 0.018; // cellhindered 0.006; //cellinduced: 0.018; //for G3: 0.01 + 0.0013*double(k);, for G4: 0.006 + 0.0005 * double(k)  // test 0.018
             for (int n = 0; n < sim_num; n++) {
-                proportions(0.05, n, domain_growth_par); //just to know what the length is
+                proportions(0.01, n, domain_growth_par); //0.01 is the control
             }
 
         }
