@@ -501,13 +501,22 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
         double leaders_pos = 0.0;
         double av_lead = 0.0;
         vdouble2 lead_coord;
-        //position of leaders
+       // position of leaders, take the average of leaders
         for (int i = 0; i < N; i++) {
             //cout << "position leaders " << get<position>(particles[i]) << endl;
             lead_coord = get<position>(particles[i]);
             leaders_pos = leaders_pos + lead_coord[0];
         }
         av_lead = leaders_pos / double(N); // not scaled to initial coordinates
+
+        // if I only take the cells that is the furthest ahead
+//        for (int i = 0; i < N; i++) {
+//            lead_coord = get<position>(particles[i]);
+//            if (lead_coord[0] > leaders_pos) {
+//                av_lead = lead_coord[0];
+//                leaders_pos = lead_coord[0];
+//            }
+//        }
 
         int j = 0;
         while (av_lead > Gamma_old(j)) {// // av_lead-100.0> Gamma_old(j) (when with delay, G2)
@@ -516,9 +525,9 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 
         }
 
-        theta1 = value;
+        theta1 = value +20;
 
-////    // linearly decreasing (G3) G4 if strain(i) non-zero for i>theta1
+//    // linearly decreasing (G3) G4 if strain(i) non-zero for i>theta1
 
 
 //        if (t < 40.5){
@@ -535,70 +544,78 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
             for (int i = theta1; i < length_x-1; i++) {
                 strain(i) = initial_strain; //when there is baseline growth // linearly increasing to the NT
             }
-        //}
+//        }
 
 
         // Density dependent growth rate
 
         //split the domain into sections of length 100, the whole domain or from 0 to that length
+//
+//    const int domain_partition = int(Gamma(length_x - 1) / double(55)); // number of intervals of 50 \mu m
+//
+//
+//    VectorXi parts = VectorXi::Zero(domain_partition); // integer with number of cells in particular part that plus one is proportions that are not in chains
+//
+//    double one_part = Gamma(length_x - 1) / double(domain_partition);
+//
+//
+//    for (int i = 0; i < domain_partition; i++) {
+//
+//        for (int j = 0; j < particles.size(); j++) {
+//            vdouble2 x = get<position>(particles[j]);
+//            if (i * one_part < x[0] && x[0] < (i + 1) * one_part) {
+//                parts(i) += 1;
+//            }
+//        }
+//
+//    }
 
-    const int domain_partition = int(Gamma(length_x - 1) / double(55));; // number of intervals of 50 \mu m
+//    cout << "one part " << one_part << endl;
+//    cout << "parts " << parts << endl;
+//    cout << "domain partition " << domain_partition << endl;
+//    int k = 0;
+//    int k_old = 0;
+//    for (int i = 0; i < domain_partition; i++) {
+//        if (parts(i) < 10){ //if less than ten cells in a section, then strain rate only as an initial strain rate
+//                while ((i+1) * one_part > Gamma_old(k)) {// // av_lead-100.0> Gamma_old(j) (when with delay, G2)
+//                    value = k;
+//                    k = k + 1;
+//                    }
+//                for (int j=k_old;j<k;j++){
+//                    strain(j) = initial_strain;// * (theta1-i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+//                }
+//                k_old = k;
+//            }
+//
+//
+//        if (parts(i) < 20 && parts(i) >= 10){//if more than 10 but less than 20 cells in a section, then strain rate an initial strain rate +domain_growhth_par
+//                while ((i+1) * one_part > Gamma_old(k)) {// // av_lead-100.0> Gamma_old(j) (when with delay, G2)
+//                    value = k;
+//                    k = k + 1;
+//                    }
+//                for (int j=k_old;j<k;j++){
+//                    strain(j) = initial_strain+ domain_growth_par;// * (theta1-i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+//                }
+//                k_old = k;
+//        }
+//        if ( parts(i) >= 20){ //if more than 20 cells in a section, then strain rate an initial strain rate + 2 * domain_growhth_par
+//                while ((i+1) * one_part > Gamma_old(k)) {// // av_lead-100.0> Gamma_old(j) (when with delay, G2)
+//                    value = k;
+//                    k = k + 1;
+//                    }
+//                for (int j=k_old;j<k;j++){
+//                    strain(j) = initial_strain+ 2* domain_growth_par;// * (theta1-i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
+//                }
+//                k_old = k;
+//        }
+//    }
 
 
-    VectorXi parts = VectorXi::Zero(domain_partition); // integer with number of cells in particular part that plus one is proportions that are not in chains
-
-    double one_part = Gamma(length_x - 1) / double(domain_partition);
+    // end of density dependent domain growth
 
 
-    for (int i = 0; i < domain_partition; i++) {
-
-        for (int j = 0; j < particles.size(); j++) {
-            vdouble2 x = get<position>(particles[j]);
-            if (i * one_part < x[0] && x[0] < (i + 1) * one_part) {
-                parts(i) += 1;
-            }
-        }
-
-    }
-
-    int k = 0;
-    int k_old = 0;
-    for (int i = 0; i < domain_partition; i++) {
-        if (parts(i) < 10){ //if less than ten cells in a section, then strain rate only as an initial strain rate
-
-                while (i * one_part > Gamma_old(k)) {// // av_lead-100.0> Gamma_old(j) (when with delay, G2)
-                    value = k;
-                    k = k + 1;
-                    }
-                for (j=k_old;j<k;j++){
-                    strain(k) = initial_strain;// * (theta1-i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
-                }
-                k_old = k;
-            }
-
-
-        if (parts(i) < 20 && parts(i) >= 10){//if more than 10 but less than 20 cells in a section, then strain rate an initial strain rate +domain_growhth_par
-                while (i * one_part > Gamma_old(k)) {// // av_lead-100.0> Gamma_old(j) (when with delay, G2)
-                    value = k;
-                    k = k + 1;
-                    }
-                for (j=k_old;j<k;j++){
-                    strain(k) = initial_strain+ domain_growth_par;// * (theta1-i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
-                }
-                k_old = k;
-        }
-        if ( parts(i) >= 20){ //if more than 20 cells in a section, then strain rate an initial strain rate + 2 * domain_growhth_par
-                while (i * one_part > Gamma_old(k)) {// // av_lead-100.0> Gamma_old(j) (when with delay, G2)
-                    value = k;
-                    k = k + 1;
-                    }
-                for (j=k_old;j<k;j++){
-                    strain(k) = initial_strain+ 2* domain_growth_par;// * (theta1-i) / theta1 + initial_strain; //when there is baseline growth // 0.035*(theta1-i)/theta1; // linearly increasing to the NT
-                }
-                k_old = k;
-        }
-    }
-
+//    cout << "new strain " << endl;
+//    cout << "strain rate " << strain << endl;
 
 
 
@@ -625,7 +642,6 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
         /*
          * this is important and it will change based on strain rates, now since there is linear growth in the first section,
          * the first factor appears due to integration
-         *
          * */
 //        if (t != 0) {
 //            domain_length = 1.0 / (t * linear_par) * (Gamma_x(theta1 - 1) - 1) +
@@ -1577,13 +1593,13 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 
 //
             #ifdef HAVE_VTK
-                        vtkWriteGrid("Sectionsdomgr0p005Cell_inducedCELLS", t, particles.get_grid(true));
+                        vtkWriteGrid("CutOFFplus20domgrowthpar0p018Cell_inducedCELLS", t, particles.get_grid(true));
             #endif
             //
             //
             ////
            //  //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-            ofstream output("Sectionsdomgr0p005Cell_inducedMATRIX" + to_string(int(t)) + ".csv");
+            ofstream output("CutOFFplus20domgrowthpar0p018Cell_inducedMATRIX" + to_string(int(t)) + ".csv");
 
 
             output << "x, y, z, u" << "\n" << endl;
@@ -1676,7 +1692,7 @@ double domain_growth_par;
     #pragma omp parallel for
         for (int k = 0; k < 1; k++){
             //domain_growth_par = 0.006 + 0.002*double(k);
-            domain_growth_par = 0.005;//0.018;//0.015 for cell hindered, speed 0.14*1.5!!!! //cellinduced: 0.018; // cellhindered 0.006; //cellinduced: 0.018; //for G3: 0.01 + 0.0013*double(k);, for G4: 0.006 + 0.0005 * double(k)  // test 0.018
+            domain_growth_par = 0.018;//0.018;//0.015 for cell hindered, speed 0.14*1.5!!!! //cellinduced: 0.018; // cellhindered 0.006; //cellinduced: 0.018; //for G3: 0.01 + 0.0013*double(k);, for G4: 0.006 + 0.0005 * double(k)  // test 0.018
             for (int n = 0; n < sim_num; n++) {
                 proportions(0.01, n, domain_growth_par); //0.01 is the control
             }
