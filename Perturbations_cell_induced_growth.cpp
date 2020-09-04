@@ -59,7 +59,8 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
     // reaction rate
     double k_reac = 0.001;//1.0;//0.00001;//0.1;//0.105;//0.03;//.205; // reaction term
 
-   bool cellsmove = false; // cells undergo active movement(e.g. chemotaxis, random movement)
+   bool cellsmove = true; // cells undergo active movement(e.g. chemotaxis, random movement)
+   bool insertnewcells = true; // if there is influx of cells
     // cell parameters
 
     double cell_radius = 7.5;//0.5; // radius of a cell
@@ -347,7 +348,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
     typedef particle_type::position position;
 
     // initialise the number of particles
-    particle_type particles(N*6); // times 6 beforehand
+    particle_type particles(N); // times 6 beforehand
 
     // initialise random number generator for particles entering the domain, appearing at the start in x and uniformly in y
     std::default_random_engine gen;
@@ -364,36 +365,56 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
         get<radius>(particles[i]) = cell_radius;
         get<type>(particles[i]) = 0; // initially all cells are leaders
 
-//                get<position>(particles[i]) = vdouble2(cell_radius, (i + 1) * double(length_y - 1) / double(N) -
+                get<position>(particles[i]) = vdouble2(cell_radius+320, (i + 1) * double(length_y - 1) / double(N) -
+                                                            0.5 * double(length_y - 1) /
+                                                            double(N)); // x=2, uniformly in y
+
+
+//        // equidistributed cells
+//        //IMPORTANT UNCOMMENT
+//        get<position>(particles[i+10*N]) = vdouble2(cell_radius, (i + 1) * double(length_y - 1) / double(N) -
 //                                                            0.5 * double(length_y - 1) /
 //                                                            double(N)); // x=2, uniformly in y
-
-
-        // equidistributed cells
-        //IMPORTANT UNCOMMENT
-        get<position>(particles[i+5*N]) = vdouble2(cell_radius, (i + 1) * double(length_y - 1) / double(N) -
-                                                            0.5 * double(length_y - 1) /
-                                                            double(N)); // x=2, uniformly in y
-
-        get<position>(particles[i+4*N]) = vdouble2(cell_radius + 50, (i + 1) * double(length_y - 1) / double(N) -
-                                                            0.5 * double(length_y - 1) /
-                                                            double(N)); // x=2, uniformly in y
-
-        get<position>(particles[i+ 3*N]) = vdouble2(cell_radius + 100, (i + 1) * double(length_y - 1) / double(N) -
-                                                            0.5 * double(length_y - 1) /
-                                                            double(N)); // x=2, uniformly in y
-
-        get<position>(particles[i + 2*N]) = vdouble2(cell_radius + 150, (i + 1) * double(length_y - 1) / double(N) -
-                                                            0.5 * double(length_y - 1) /
-                                                            double(N)); // x=2, uniformly in y
-
-        get<position>(particles[i + N]) = vdouble2(cell_radius + 200, (i + 1) * double(length_y - 1) / double(N) -
-                                                            0.5 * double(length_y - 1) /
-                                                            double(N)); // x=2, uniformly in y
-
-        get<position>(particles[i]) = vdouble2(cell_radius + 250, (i + 1) * double(length_y - 1) / double(N) -
-                                                            0.5 * double(length_y - 1) /
-                                                            double(N)); // x=2, uniformly in y
+//
+//        get<position>(particles[i+9*N]) = vdouble2(cell_radius + 25, (i + 1) * double(length_y - 1) / double(N) -
+//                                                                     0.5 * double(length_y - 1) /
+//                                                                     double(N)); // x=2, uniformly in y
+//
+//        get<position>(particles[i+8*N]) = vdouble2(cell_radius + 50, (i + 1) * double(length_y - 1) / double(N) -
+//                                                                     0.5 * double(length_y - 1) /
+//                                                                     double(N)); // x=2, uniformly in y
+//
+//        get<position>(particles[i+7*N]) = vdouble2(cell_radius + 75, (i + 1) * double(length_y - 1) / double(N) -
+//                                                                     0.5 * double(length_y - 1) /
+//                                                                     double(N)); // x=2, uniformly in y
+//
+//        get<position>(particles[i+6*N]) = vdouble2(cell_radius + 100, (i + 1) * double(length_y - 1) / double(N) -
+//                                                                     0.5 * double(length_y - 1) /
+//                                                                     double(N)); // x=2, uniformly in y
+//
+//        get<position>(particles[i+5*N]) = vdouble2(cell_radius + 125, (i + 1) * double(length_y - 1) / double(N) -
+//                                                                     0.5 * double(length_y - 1) /
+//                                                                     double(N)); // x=2, uniformly in y
+//
+//        get<position>(particles[i+4*N]) = vdouble2(cell_radius + 150, (i + 1) * double(length_y - 1) / double(N) -
+//                                                            0.5 * double(length_y - 1) /
+//                                                            double(N)); // x=2, uniformly in y
+//
+//        get<position>(particles[i+ 3*N]) = vdouble2(cell_radius + 175, (i + 1) * double(length_y - 1) / double(N) -
+//                                                            0.5 * double(length_y - 1) /
+//                                                            double(N)); // x=2, uniformly in y
+//
+//        get<position>(particles[i + 2*N]) = vdouble2(cell_radius + 200, (i + 1) * double(length_y - 1) / double(N) -
+//                                                            0.5 * double(length_y - 1) /
+//                                                            double(N)); // x=2, uniformly in y
+//
+//        get<position>(particles[i + N]) = vdouble2(cell_radius + 225, (i + 1) * double(length_y - 1) / double(N) -
+//                                                            0.5 * double(length_y - 1) /
+//                                                            double(N)); // x=2, uniformly in y
+//
+//        get<position>(particles[i]) = vdouble2(cell_radius + 250, (i + 1) * double(length_y - 1) / double(N) -
+//                                                            0.5 * double(length_y - 1) /
+//                                                            double(N)); // x=2, uniformly in y
 
         get<persistence_extent>(particles[i]) = 0;
         get<same_dir_step>(particles[i]) = 0;
@@ -455,8 +476,8 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 
 //              insert new cells
 //
-
-        //if (particles.size() < 50){
+        if (insertnewcells == true){
+            //if (particles.size() < 50){
 
         bool free_position = false;
         particle_type::value_type f;
@@ -493,9 +514,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
        // } // this, less than 50 cells end
         particles.update_positions();
 
-
-
-
+        }
 
 
         /*
@@ -541,7 +560,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 //        }
 //        av_lead = leaders_pos / double(N); // not scaled to initial coordinates
 
-//         if I only take the cells that is the furthest ahead
+        // if I only take the cells that is the furthest ahead
         for (int i = 0; i < N; i++) {
             lead_coord = get<position>(particles[i]);
             if (lead_coord[0] > leaders_pos) {
@@ -550,14 +569,19 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
             }
         }
 
+
         int j = 0;
-        while (av_lead  - 100 > Gamma_old(j)) {// // av_lead- 100.0> Gamma_old(j) (when with delay, G2) av_lead + 100.0 when ahead
+
+        while (av_lead + 100 > Gamma_old(j)) {// // av_lead- 100.0> Gamma_old(j) (when with delay, G2) av_lead + 100.0 when ahead
             value = j;
             j = j + 1;
-
+            if (j == length_x){ // if closer to the end than 100
+                break;
+            }
         }
-
         theta1 = value;
+        // if the cells are close to the front, there will be not +100 growth but less, only to the end of the domain
+
 
 //    // linearly decreasing (G3) G4 if strain(i) non-zero for i>theta1
 
@@ -755,35 +779,6 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
         }
 
 
-//new
-
-//        Gamma_temp(0) = 0; // this is assumption, since I cannot calculate it
-//
-//        double total_increase = 0;
-//        double smallest_increase = 0;
-//        double total_sum = Gamma_x(0);
-//        double factor = 0; // sum all gamma over this factor is equal to total change
-//
-////            cout << "theta1 " << theta1 << endl;
-////            cout << "Gamma_base " << Gamma_base(theta1) << endl;
-//
-//            // old version which worked
-//            //   this is for general case
-//            for (int i = 1; i < length_x; i++) {
-//
-//                Gamma_temp(i) = Gamma_x(i) * dx + Gamma_temp(i - 1);
-//                total_sum = total_sum + Gamma_x(i);
-//            }
-//            total_increase = Gamma_temp(length_x - 1) - Gamma(length_x - 1);
-//
-//            factor = Gamma_temp(length_x-1) / total_increase;
-//
-//            for (int i = 1; i < length_x; i++) {
-//                Gamma(i) = Gamma_old(i) + Gamma_temp(i) / factor;
-//            }
-
-
-
 
 
 
@@ -914,7 +909,7 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 
         // internalisation
         for (int i = 0; i < length_x; i++) {
-            for (int jGamma_x_old = 0; j < length_y; j++) {
+            for (int j = 0; j < length_y; j++) {
                 //go through all the cells
                 for (int k = 0; k < particles.size(); k++) {
                     // leaders
@@ -1681,13 +1676,13 @@ VectorXi proportions(double diff_conc, int n_seed, double domain_growth_par) {
 //
 
 #ifdef HAVE_VTK
-            vtkWriteGrid("EQuidistrdomgrowthrate0p018CELLS", t, particles.get_grid(true));
+            vtkWriteGrid("CellInducedplus100domgrowthrate0p015CELLS", t, particles.get_grid(true));
 #endif
             //
             //
             ////
             //  //ofstream output("matrix_FIRST_025theta" + to_string(int(round(t))) + ".csv");
-            ofstream output("EQuidistrdomgrowthrate0p018Matrix" + to_string(int(t)) + ".csv");
+            ofstream output("CellInducedplus100domgrowthrate0p01Matrix" + to_string(int(t)) + ".csv");
 
 
 
@@ -1782,7 +1777,7 @@ double domain_growth_par;
     #pragma omp parallel for
         for (int k = 0; k < 1; k++){
             //domain_growth_par = 0.006 + 0.002*double(k);
-            domain_growth_par = 0.018;//0.018;//0.015 for cell hindered, speed 0.14*1.5!!!! //cellinduced: 0.018; // cellhindered 0.006; //cellinduced: 0.018; //for G3: 0.01 + 0.0013*double(k);, for G4: 0.006 + 0.0005 * double(k)  // test 0.018
+            domain_growth_par = 0.01;//0.018;//0.015 for cell hindered, speed 0.14*1.5!!!! //cellinduced: 0.018; // cellhindered 0.006; //cellinduced: 0.018; //for G3: 0.01 + 0.0013*double(k);, for G4: 0.006 + 0.0005 * double(k)  // test 0.018
             for (int n = 0; n < sim_num; n++) {
                 proportions(0.01, n, domain_growth_par); //0.01 is the control
             }
